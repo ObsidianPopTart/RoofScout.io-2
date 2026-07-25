@@ -9,6 +9,9 @@ export const dictionaries = {
       featureHeadline: "See condition before you knock",
       featureBody:
         "Every scan grades rooftop condition from real satellite imagery — so your team only visits roofs that are actually worth the drive.",
+      statement: "Every neglected roof, found, ranked, and priced — automatically.",
+      finalCta: "Stop canvassing blind.",
+      finalCtaSub: "Start free — 3 scans, no card required.",
     },
     pricing: {
       title: "Simple, scan-based pricing",
@@ -252,6 +255,9 @@ export const dictionaries = {
       featureHeadline: "Ve el estado antes de tocar la puerta",
       featureBody:
         "Cada escaneo califica el estado del techo a partir de imágenes satelitales reales, para que tu equipo solo visite techos que realmente valgan la pena.",
+      statement: "Cada techo descuidado, encontrado, ordenado y cotizado — automáticamente.",
+      finalCta: "Deja de tocar puertas a ciegas.",
+      finalCtaSub: "Empieza gratis — 3 escaneos, sin tarjeta.",
     },
     pricing: {
       title: "Precios simples, basados en escaneos",
