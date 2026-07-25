@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { getAllLeads } from "@/lib/store";
 import { urgencyRank } from "@/lib/leadFilter";
 import LeadsTable from "@/components/LeadsTable";
+import { getDictionary } from "@/lib/i18n/getLocale";
 
 export const dynamic = "force-dynamic";
 
@@ -11,13 +12,7 @@ export const metadata = {
   title: "Leads — RoofScout",
 };
 
-const FILTERS = [
-  { key: "all", label: "All" },
-  { key: "critical", label: "Critical" },
-  { key: "poor", label: "Poor" },
-  { key: "fair", label: "Fair" },
-  { key: "ungraded", label: "Ungraded" },
-] as const;
+const FILTER_KEYS = ["all", "critical", "poor", "fair", "ungraded"] as const;
 
 export default async function LeadsPage({
   searchParams,
@@ -26,9 +21,18 @@ export default async function LeadsPage({
 }) {
   const session = await auth();
   if (!session?.user) redirect("/login");
+  const { locale, t } = await getDictionary();
+  const d = t.leadsPage;
+  const FILTER_LABELS: Record<(typeof FILTER_KEYS)[number], string> = {
+    all: d.filterAll,
+    critical: d.filterCritical,
+    poor: d.filterPoor,
+    fair: d.filterFair,
+    ungraded: d.filterUngraded,
+  };
 
   const { cond } = await searchParams;
-  const activeFilter = FILTERS.some((f) => f.key === cond) ? (cond as string) : "all";
+  const activeFilter = FILTER_KEYS.includes(cond as (typeof FILTER_KEYS)[number]) ? (cond as string) : "all";
 
   const all = (await getAllLeads(session.user.orgId)).sort(
     (a, b) => urgencyRank(a.condition) - urgencyRank(b.condition)
@@ -45,34 +49,34 @@ export default async function LeadsPage({
     <div className="mx-auto w-full max-w-6xl px-4 py-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">Leads</h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Every scanned roof, worst condition first.</p>
+          <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">{d.title}</h1>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{d.subtitle}</p>
         </div>
         <Link
           href="/app/scan"
           className="rounded-lg bg-amber-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-amber-700"
         >
-          Run a new scan
+          {d.runNewScan}
         </Link>
       </div>
 
       <div className="mt-5 flex flex-wrap gap-2">
-        {FILTERS.map((f) => (
+        {FILTER_KEYS.map((key) => (
           <Link
-            key={f.key}
-            href={f.key === "all" ? "/app/leads" : `/app/leads?cond=${f.key}`}
+            key={key}
+            href={key === "all" ? "/app/leads" : `/app/leads?cond=${key}`}
             className={`rounded-full border px-3 py-1 text-sm font-medium transition ${
-              activeFilter === f.key
+              activeFilter === key
                 ? "border-slate-900 bg-slate-900 text-white dark:border-white dark:bg-white dark:text-slate-900"
                 : "border-slate-300 bg-white text-slate-600 hover:border-slate-400 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-500"
             }`}
           >
-            {f.label} ({countFor(f.key)})
+            {FILTER_LABELS[key]} ({countFor(key)})
           </Link>
         ))}
       </div>
 
-      <LeadsTable leads={leads} />
+      <LeadsTable leads={leads} locale={locale} />
     </div>
   );
 }

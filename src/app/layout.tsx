@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { isLiveMode } from "@/lib/live/config";
 import OfflineBanner from "@/components/OfflineBanner";
 import { themeInitScript } from "@/components/ThemeToggle";
+import { getLocale } from "@/lib/i18n/getLocale";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,14 +21,15 @@ export const metadata: Metadata = {
   description: "Find neglected roofs, build lead profiles, and quote jobs — automatically.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
   return (
     <html
-      lang="en"
+      lang={locale}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
@@ -47,7 +49,7 @@ export default function RootLayout({
           </div>
         )}
         <main className="flex flex-1 flex-col">{children}</main>
-        <OfflineBanner />
+        <OfflineBanner locale={locale} />
       </body>
     </html>
   );

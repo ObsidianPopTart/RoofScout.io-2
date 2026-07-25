@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { dictionaries, type Locale } from "@/lib/i18n/dictionaries";
 
-export default function OfflineBanner() {
+export default function OfflineBanner({ locale = "en" }: { locale?: Locale }) {
   const [offline, setOffline] = useState(false);
 
   useEffect(() => {
@@ -21,7 +22,7 @@ export default function OfflineBanner() {
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-700 bg-slate-900 px-4 py-3 text-center text-sm text-white shadow-lg">
-      No connection — RoofScout needs the internet to load scans and leads. Reconnect to continue.
+      {dictionaries[locale].offline.message}
     </div>
   );
 }

@@ -8,10 +8,14 @@ import type { Lead, ScanRecord } from "@/lib/types";
 import { urgencyRank } from "@/lib/leadFilter";
 import { CONDITION_COLORS } from "@/components/ConditionBadge";
 import { boundsAreaKm2, isScanAreaTooLarge, MAX_SCAN_AREA_KM2 } from "@/lib/scanBounds";
+import { dictionaries, type Locale } from "@/lib/i18n/dictionaries";
+import { tf } from "@/lib/i18n/format";
 
 type ScanResponse = { scan: ScanRecord; leads: Lead[] };
 
-export default function ScanMap() {
+export default function ScanMap({ locale = "en" }: { locale?: Locale }) {
+  const t = dictionaries[locale].scanMap;
+  const tCondition = dictionaries[locale].condition;
   const mapDivRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LeafletMap | null>(null);
   const LRef = useRef<typeof import("leaflet") | null>(null);
@@ -82,10 +86,10 @@ export default function ScanMap() {
     try {
       const res = await fetch(`/api/geocode?address=${encodeURIComponent(query)}`);
       const body = await res.json().catch(() => null);
-      if (!res.ok) throw new Error(body?.error ?? "Couldn't find that address");
+      if (!res.ok) throw new Error(body?.error ?? t.couldntFindAddress);
       map.setView([body.lat, body.lng], 18);
     } catch (err) {
-      setAddressError(err instanceof Error ? err.message : "Couldn't find that address");
+      setAddressError(err instanceof Error ? err.message : t.couldntFindAddress);
     } finally {
       setSearchingAddress(false);
     }
@@ -106,16 +110,14 @@ export default function ScanMap() {
     setLimitReached(false);
 
     if (map.getZoom() < 14) {
-      setError("Zoom in closer — the scan needs neighborhood-level detail (zoom 14+).");
+      setError(t.zoomInError);
       return;
     }
 
     const b = map.getBounds();
     const bounds = { north: b.getNorth(), south: b.getSouth(), east: b.getEast(), west: b.getWest() };
     if (isScanAreaTooLarge(bounds)) {
-      setError(
-        `That area is too large for one scan (max ${MAX_SCAN_AREA_KM2} km²) — zoom in to a smaller neighborhood.`
-      );
+      setError(tf(t.tooLargeError, { max: MAX_SCAN_AREA_KM2 }));
       return;
     }
 
@@ -146,8 +148,8 @@ export default function ScanMap() {
           .bindPopup(
             `<strong>${lead.address}</strong><br/>` +
               (lead.condition.graded
-                ? `${lead.condition.label} — score ${lead.condition.score}/100<br/>`
-                : `Ungraded — condition not verified<br/>`) +
+                ? `${tCondition[lead.condition.label]} — score ${lead.condition.score}/100<br/>`
+                : `${tCondition.Ungraded} — condition not verified<br/>`) +
               `<a href="/app/leads/${lead.id}">Open profile →</a>`
           )
           .addTo(markers);
@@ -174,7 +176,7 @@ export default function ScanMap() {
             type="text"
             value={addressQuery}
             onChange={(e) => setAddressQuery(e.target.value)}
-            placeholder="Jump to an address…"
+            placeholder={t.addressPlaceholder}
             className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
           />
           <button
@@ -182,7 +184,7 @@ export default function ScanMap() {
             disabled={searchingAddress}
             className="shrink-0 rounded-lg bg-slate-800 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700 disabled:cursor-wait disabled:bg-slate-500 dark:bg-slate-700 dark:hover:bg-slate-600"
           >
-            {searchingAddress ? "Searching…" : "Go"}
+            {searchingAddress ? t.searching : t.go}
           </button>
         </form>
         {addressError && (
@@ -199,7 +201,7 @@ export default function ScanMap() {
           <div />
           <button
             type="button"
-            aria-label="Pan up"
+            aria-label={t.panUp}
             onClick={() => pan(0, -1)}
             className="col-start-2 rounded-md bg-white/90 px-2 py-1 text-sm font-semibold text-slate-700 shadow hover:bg-white dark:bg-slate-800/90 dark:text-slate-200 dark:hover:bg-slate-800"
           >
@@ -208,7 +210,7 @@ export default function ScanMap() {
           <div />
           <button
             type="button"
-            aria-label="Pan left"
+            aria-label={t.panLeft}
             onClick={() => pan(-1, 0)}
             className="rounded-md bg-white/90 px-2 py-1 text-sm font-semibold text-slate-700 shadow hover:bg-white dark:bg-slate-800/90 dark:text-slate-200 dark:hover:bg-slate-800"
           >
@@ -216,7 +218,7 @@ export default function ScanMap() {
           </button>
           <button
             type="button"
-            aria-label="Pan down"
+            aria-label={t.panDown}
             onClick={() => pan(0, 1)}
             className="rounded-md bg-white/90 px-2 py-1 text-sm font-semibold text-slate-700 shadow hover:bg-white dark:bg-slate-800/90 dark:text-slate-200 dark:hover:bg-slate-800"
           >
@@ -224,7 +226,7 @@ export default function ScanMap() {
           </button>
           <button
             type="button"
-            aria-label="Pan right"
+            aria-label={t.panRight}
             onClick={() => pan(1, 0)}
             className="rounded-md bg-white/90 px-2 py-1 text-sm font-semibold text-slate-700 shadow hover:bg-white dark:bg-slate-800/90 dark:text-slate-200 dark:hover:bg-slate-800"
           >
@@ -239,11 +241,11 @@ export default function ScanMap() {
           disabled={scanning}
           className="rounded-lg bg-amber-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-700 disabled:cursor-wait disabled:bg-amber-400"
         >
-          {scanning ? "Scanning rooftops…" : "Scan visible area"}
+          {scanning ? t.scanning : t.scanButton}
         </button>
         <p className={`text-xs ${areaTooLarge ? "font-medium text-red-600 dark:text-red-400" : "text-slate-500 dark:text-slate-400"}`}>
-          {areaKm2 !== null ? `Visible area: ≈${areaKm2.toFixed(1)} km²` : "…"} · Larger areas take longer to
-          analyze (max {MAX_SCAN_AREA_KM2} km² per scan).
+          {areaKm2 !== null ? tf(t.visibleArea, { area: areaKm2.toFixed(1) }) : "…"} ·{" "}
+          {tf(t.largerAreasTakeLonger, { max: MAX_SCAN_AREA_KM2 })}
         </p>
 
         {error && (
@@ -251,7 +253,7 @@ export default function ScanMap() {
             <p>{error}</p>
             {limitReached && (
               <Link href="/app/billing" className="mt-1 inline-block font-semibold text-red-800 underline dark:text-red-300">
-                Upgrade your plan →
+                {t.upgradeYourPlan}
               </Link>
             )}
           </div>
@@ -261,9 +263,9 @@ export default function ScanMap() {
           <div className="flex min-h-0 flex-1 flex-col rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
             <div className="border-b border-slate-100 px-4 py-3 dark:border-slate-800">
               <div className="text-sm font-semibold text-slate-800 dark:text-slate-100">
-                {result.scan.leadCount} neglected roofs found
+                {tf(t.neglectedRoofsFound, { count: result.scan.leadCount })}
               </div>
-              <div className="text-xs text-slate-500 dark:text-slate-400">worst first · healthy roofs filtered out</div>
+              <div className="text-xs text-slate-500 dark:text-slate-400">{t.worstFirstHealthy}</div>
             </div>
             <ul className="min-h-0 flex-1 divide-y divide-slate-100 overflow-y-auto dark:divide-slate-800">
               {sortedLeads.map((lead) => (
@@ -277,7 +279,9 @@ export default function ScanMap() {
                           style={{ background: CONDITION_COLORS[lead.condition.label] }}
                           aria-hidden
                         />
-                        {lead.condition.graded ? `${lead.condition.label} · ${lead.condition.score}` : "Ungraded"}
+                        {lead.condition.graded
+                          ? `${tCondition[lead.condition.label]} · ${lead.condition.score}`
+                          : tCondition.Ungraded}
                       </span>
                     </div>
                     <div className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
@@ -290,27 +294,23 @@ export default function ScanMap() {
             </ul>
             <div className="border-t border-slate-100 px-4 py-2.5 dark:border-slate-800">
               <Link href="/app/leads" className="text-sm font-medium text-amber-700 hover:text-amber-800 dark:text-amber-400 dark:hover:text-amber-300">
-                View all leads →
+                {t.viewAllLeads}
               </Link>
             </div>
           </div>
         ) : (
           <div className="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
-            <p className="font-medium text-slate-800 dark:text-slate-100">How to run a scan</p>
+            <p className="font-medium text-slate-800 dark:text-slate-100">{t.howToRunScan}</p>
             <ol className="mt-2 list-decimal space-y-1.5 pl-4">
-              <li>Pan and zoom until you can see the rooftops you want to canvass.</li>
+              <li>{t.howToStep1}</li>
               <li>
-                Click <span className="font-medium">Scan visible area</span>.
+                {t.howToStep2Pre}
+                <span className="font-medium">{t.howToStep2Button}</span>
+                {t.howToStep2Post}
               </li>
-              <li>
-                The AI inspects a close-up satellite photo of each roof, keeps the neglected ones,
-                and drops healthy roofs automatically.
-              </li>
+              <li>{t.howToStep3}</li>
             </ol>
-            <p className="mt-3 text-xs text-slate-400 dark:text-slate-500">
-              Demo mode simulates the analysis. With the Google Solar API connected, this same flow
-              returns real rooftops with measured areas.
-            </p>
+            <p className="mt-3 text-xs text-slate-400 dark:text-slate-500">{t.demoModeNote}</p>
           </div>
         )}
       </div>
