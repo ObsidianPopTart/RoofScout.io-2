@@ -66,7 +66,7 @@ export default function LeadsTable({ leads }: { leads: Lead[] }) {
               <span className="text-sm font-medium text-slate-700">{selected.size} selected</span>
               <a
                 href={exportUrl(selectedIds)}
-                className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:border-slate-400"
+                className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:border-slate-400 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-500"
               >
                 Export CSV
               </a>
@@ -79,13 +79,13 @@ export default function LeadsTable({ leads }: { leads: Lead[] }) {
               </button>
               <button
                 onClick={() => setSelected(new Set())}
-                className="text-sm font-medium text-slate-400 hover:text-slate-600"
+                className="text-sm font-medium text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
               >
                 Clear
               </button>
             </>
           ) : (
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-400 dark:text-slate-500">
               Select leads to export a CSV or hand them off to a marketing team for an outbound
               campaign.
             </p>
@@ -100,16 +100,16 @@ export default function LeadsTable({ leads }: { leads: Lead[] }) {
       </div>
 
       {notice && (
-        <p className="mt-2 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-sm text-indigo-800">
+        <p className="mt-2 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-sm text-indigo-800 dark:border-indigo-900 dark:bg-indigo-950 dark:text-indigo-300">
           {notice}
         </p>
       )}
 
-      <div className="mt-3 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+      <div className="mt-3 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-xs uppercase tracking-wide text-slate-400">
+              <tr className="text-left text-xs uppercase tracking-wide text-slate-400 dark:text-slate-500">
                 <th className="w-10 px-4 py-2.5">
                   <input
                     type="checkbox"
@@ -129,11 +129,11 @@ export default function LeadsTable({ leads }: { leads: Lead[] }) {
                 <th className="px-4 py-2.5 font-medium"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {leads.map((lead) => {
                 const q = defaultQuoteForLead(lead);
                 return (
-                  <tr key={lead.id} className={selected.has(lead.id) ? "bg-amber-50/60" : "hover:bg-slate-50"}>
+                  <tr key={lead.id} className={selected.has(lead.id) ? "bg-amber-50/60 dark:bg-amber-950/30" : "hover:bg-slate-50 dark:hover:bg-slate-800"}>
                     <td className="px-4 py-3">
                       <input
                         type="checkbox"
@@ -144,22 +144,22 @@ export default function LeadsTable({ leads }: { leads: Lead[] }) {
                       />
                     </td>
                     <td className="px-4 py-3">
-                      <Link href={`/app/leads/${lead.id}`} className="font-medium text-slate-800 hover:text-amber-700">
+                      <Link href={`/app/leads/${lead.id}`} className="font-medium text-slate-800 hover:text-amber-700 dark:text-slate-100 dark:hover:text-amber-400">
                         {lead.address}
                       </Link>
-                      <div className="text-xs text-slate-400">
+                      <div className="text-xs text-slate-400 dark:text-slate-500">
                         {lead.city ? `${lead.city}, ${lead.state} ${lead.zip}` : "—"}
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-slate-600">{lead.owner?.name ?? "—"}</td>
+                    <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{lead.owner?.name ?? "—"}</td>
                     <td className="px-4 py-3">
                       <ConditionBadge condition={lead.condition} />
                     </td>
-                    <td className="px-4 py-3 text-slate-600">{number(lead.roof.areaSqFt)} sq ft</td>
-                    <td className="px-4 py-3 text-slate-600">
+                    <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{number(lead.roof.areaSqFt)} sq ft</td>
+                    <td className="px-4 py-3 text-slate-600 dark:text-slate-300">
                       {lead.roof.estAgeYears > 0 ? `~${lead.roof.estAgeYears} yrs` : "—"}
                     </td>
-                    <td className="px-4 py-3 text-slate-600">
+                    <td className="px-4 py-3 text-slate-600 dark:text-slate-300">
                       {moneyCompact(q.low)}–{moneyCompact(q.high)}
                     </td>
                     <td className="px-4 py-3">
@@ -178,7 +178,7 @@ export default function LeadsTable({ leads }: { leads: Lead[] }) {
               })}
               {leads.length === 0 && (
                 <tr>
-                  <td colSpan={9} className="px-4 py-10 text-center text-slate-400">
+                  <td colSpan={9} className="px-4 py-10 text-center text-slate-400 dark:text-slate-500">
                     No leads match this filter yet.
                   </td>
                 </tr>

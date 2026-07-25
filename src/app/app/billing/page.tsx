@@ -37,28 +37,28 @@ export default async function BillingPage({
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-semibold text-slate-900">Billing</h1>
-      <p className="mt-1 text-sm text-slate-500">Manage your RoofScout plan.</p>
+      <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">Billing</h1>
+      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Manage your RoofScout plan.</p>
 
       {checkout === "success" && (
-        <p className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
+        <p className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-300">
           Subscription updated — thanks!
         </p>
       )}
       {checkout === "cancelled" && (
-        <p className="mt-4 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">
+        <p className="mt-4 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
           Checkout cancelled — no changes were made.
         </p>
       )}
 
-      <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-xs font-medium uppercase tracking-wide text-slate-400">Current plan</div>
-            <div className="mt-1 text-xl font-semibold text-slate-900">
+            <div className="text-xs font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">Current plan</div>
+            <div className="mt-1 text-xl font-semibold text-slate-900 dark:text-white">
               {PLAN_COPY[plan].label} · {PLAN_COPY[plan].price}
             </div>
-            <div className="mt-1 text-sm text-slate-500">{usageLine}</div>
+            <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">{usageLine}</div>
           </div>
           {org.stripeCustomerId && <ManageBillingButton />}
         </div>
@@ -68,10 +68,10 @@ export default async function BillingPage({
         {(["pro", "apex"] as const)
           .filter((p) => p !== plan)
           .map((p) => (
-            <div key={p} className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div className="text-lg font-semibold text-slate-900">{PLAN_COPY[p].label}</div>
-              <div className="mt-1 text-2xl font-bold text-slate-900">{PLAN_COPY[p].price}</div>
-              <div className="mt-1 text-sm text-slate-500">{PLAN_COPY[p].detail}</div>
+            <div key={p} className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <div className="text-lg font-semibold text-slate-900 dark:text-white">{PLAN_COPY[p].label}</div>
+              <div className="mt-1 text-2xl font-bold text-slate-900 dark:text-white">{PLAN_COPY[p].price}</div>
+              <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">{PLAN_COPY[p].detail}</div>
               <div className="mt-4">
                 <UpgradeButton plan={p} label={`Upgrade to ${PLAN_COPY[p].label}`} />
               </div>

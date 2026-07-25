@@ -45,8 +45,8 @@ export default async function LeadsPage({
     <div className="mx-auto w-full max-w-6xl px-4 py-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-900">Leads</h1>
-          <p className="mt-1 text-sm text-slate-500">Every scanned roof, worst condition first.</p>
+          <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">Leads</h1>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Every scanned roof, worst condition first.</p>
         </div>
         <Link
           href="/app/scan"
@@ -63,8 +63,8 @@ export default async function LeadsPage({
             href={f.key === "all" ? "/app/leads" : `/app/leads?cond=${f.key}`}
             className={`rounded-full border px-3 py-1 text-sm font-medium transition ${
               activeFilter === f.key
-                ? "border-slate-900 bg-slate-900 text-white"
-                : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
+                ? "border-slate-900 bg-slate-900 text-white dark:border-white dark:bg-white dark:text-slate-900"
+                : "border-slate-300 bg-white text-slate-600 hover:border-slate-400 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-500"
             }`}
           >
             {f.label} ({countFor(f.key)})

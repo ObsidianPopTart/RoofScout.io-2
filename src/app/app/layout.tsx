@@ -2,19 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth, signOut } from "@/lib/auth";
+import Logo from "@/components/Logo";
+import ThemeToggle from "@/components/ThemeToggle";
+import LocaleToggle from "@/components/LocaleToggle";
+import { getDictionary } from "@/lib/i18n/getLocale";
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false }, // internal tool — real per-org data, never indexed
 };
-
-function RoofLogo() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M2 12 L12 3 L22 12" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M5 11.5 V20 H19 V11.5" stroke="#cbd5e1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   // Defense in depth: src/proxy.ts already gates /app/:path* by redirecting
@@ -24,29 +19,36 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const session = await auth();
   if (!session?.user) redirect("/login");
 
+  const { locale, t } = await getDictionary();
+
   return (
     <div className="flex flex-1 flex-col">
       <nav className="bg-slate-900 text-white">
         <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-8 px-4">
           <Link href="/app" className="flex items-center gap-2 text-lg font-semibold">
-            <RoofLogo />
+            <Logo />
             RoofScout
           </Link>
           <div className="flex gap-6 text-sm text-slate-300">
             <Link href="/app" className="hover:text-white">
-              Dashboard
+              {t.appNav.dashboard}
             </Link>
             <Link href="/app/scan" className="hover:text-white">
-              New Scan
+              {t.appNav.newScan}
             </Link>
             <Link href="/app/leads" className="hover:text-white">
-              Leads
+              {t.appNav.leads}
             </Link>
             <Link href="/app/billing" className="hover:text-white">
-              Billing
+              {t.appNav.billing}
             </Link>
           </div>
           <div className="ml-auto flex items-center gap-4 text-sm text-slate-300">
+            <LocaleToggle
+              locale={locale}
+              className="rounded-md border border-slate-700 px-2 py-1 text-xs font-semibold hover:border-slate-500"
+            />
+            <ThemeToggle className="hover:text-white" />
             <span>{session.user.orgName}</span>
             <form
               action={async () => {
@@ -55,13 +57,13 @@ export default async function AppLayout({ children }: { children: React.ReactNod
               }}
             >
               <button type="submit" className="hover:text-white">
-                Sign out
+                {t.appNav.signOut}
               </button>
             </form>
           </div>
         </div>
       </nav>
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 bg-slate-50 dark:bg-slate-950">{children}</main>
     </div>
   );
 }

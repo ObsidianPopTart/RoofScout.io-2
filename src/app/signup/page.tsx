@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import { prisma } from "@/lib/db";
 import { signIn } from "@/lib/auth";
+import { getDictionary } from "@/lib/i18n/getLocale";
 
 export const metadata = { title: "Sign up — RoofScout" };
 
@@ -58,66 +59,67 @@ export default async function SignupPage({
   searchParams: Promise<{ error?: string }>;
 }) {
   const { error } = await searchParams;
+  const { t } = await getDictionary();
 
   return (
-    <div className="flex flex-1 items-center justify-center bg-slate-50 px-4 py-16">
-      <div className="w-full max-w-sm rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h1 className="text-xl font-semibold text-slate-900">Start free</h1>
-        <p className="mt-1 text-sm text-slate-500">Set up your company&apos;s RoofScout account.</p>
+    <div className="flex flex-1 items-center justify-center bg-slate-50 px-4 py-16 dark:bg-slate-950">
+      <div className="w-full max-w-sm rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <h1 className="text-xl font-semibold text-slate-900 dark:text-white">{t.signup.title}</h1>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{t.signup.sub}</p>
 
         {error && (
-          <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+          <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-300">
             {error}
           </p>
         )}
 
         <form action={signupAction} className="mt-5 space-y-4">
           <div>
-            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
-              Company name
+            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+              {t.signup.companyName}
             </label>
             <input
               type="text"
               name="companyName"
               required
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
-              Email
+            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+              {t.signup.email}
             </label>
             <input
               type="email"
               name="email"
               required
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
-              Password
+            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+              {t.signup.password}
             </label>
             <input
               type="password"
               name="password"
               required
               minLength={8}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
             />
           </div>
           <button
             type="submit"
             className="w-full rounded-lg bg-amber-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-amber-700"
           >
-            Create account
+            {t.signup.cta}
           </button>
         </form>
 
-        <p className="mt-4 text-center text-sm text-slate-500">
-          Already have an account?{" "}
-          <Link href="/login" className="font-medium text-amber-700 hover:text-amber-800">
-            Log in
+        <p className="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
+          {t.signup.haveAccount}{" "}
+          <Link href="/login" className="font-medium text-amber-700 hover:text-amber-800 dark:text-amber-400 dark:hover:text-amber-300">
+            {t.signup.login}
           </Link>
         </p>
       </div>
