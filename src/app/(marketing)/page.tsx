@@ -5,7 +5,7 @@ export default function MarketingHomePage() {
     <div className="flex flex-1 flex-col bg-slate-950 text-white">
       <nav className="border-b border-slate-800">
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4">
-          <span className="text-lg font-semibold">RoofScout.io</span>
+          <span className="text-lg font-semibold">RoofScout</span>
           <div className="flex items-center gap-4 text-sm">
             <Link href="/login" className="text-slate-300 hover:text-white">
               Log in
@@ -25,7 +25,7 @@ export default function MarketingHomePage() {
           Find the neglected roofs before your competitors do.
         </h1>
         <p className="mt-5 max-w-2xl text-lg text-slate-300">
-          RoofScout.io scans a neighborhood, measures every roof with satellite data, grades condition
+          RoofScout scans a neighborhood, measures every roof with satellite data, grades condition
           with AI, and hands your sales team a ranked, priced lead list — automatically.
         </p>
         <div className="mt-8 flex gap-4">
@@ -45,7 +45,7 @@ export default function MarketingHomePage() {
       </section>
 
       <footer className="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
-        RoofScout.io
+        RoofScout
       </footer>
     </div>
   );

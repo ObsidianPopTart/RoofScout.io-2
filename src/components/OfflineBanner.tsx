@@ -21,7 +21,7 @@ export default function OfflineBanner() {
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-700 bg-slate-900 px-4 py-3 text-center text-sm text-white shadow-lg">
-      No connection — RoofScout.io needs the internet to load scans and leads. Reconnect to continue.
+      No connection — RoofScout needs the internet to load scans and leads. Reconnect to continue.
     </div>
   );
 }

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">RoofScout.io</string>
-    <string name="title_activity_main">RoofScout.io</string>
+    <string name="app_name">RoofScout</string>
+    <string name="title_activity_main">RoofScout</string>
     <string name="package_name">io.roofscout.app</string>
     <string name="custom_url_scheme">io.roofscout.app</string>
 </resources>

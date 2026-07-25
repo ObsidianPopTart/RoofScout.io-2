@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RoofScout.io — AI roofing lead engine",
+  title: "RoofScout — AI roofing lead engine",
   description: "Find neglected roofs, build lead profiles, and quote jobs — automatically.",
 };
 

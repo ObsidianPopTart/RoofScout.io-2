@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import ScanMap from "@/components/ScanMap";
 
 export const metadata = {
-  title: "New Scan — RoofScout.io",
+  title: "New Scan — RoofScout",
 };
 
 export default async function ScanPage() {

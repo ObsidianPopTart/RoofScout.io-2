@@ -6,7 +6,7 @@ import { AuthError } from "next-auth";
 import { prisma } from "@/lib/db";
 import { signIn } from "@/lib/auth";
 
-export const metadata = { title: "Sign up — RoofScout.io" };
+export const metadata = { title: "Sign up — RoofScout" };
 
 const signupSchema = z.object({
   companyName: z.string().trim().min(1, "Company name is required"),
@@ -63,7 +63,7 @@ export default async function SignupPage({
     <div className="flex flex-1 items-center justify-center bg-slate-50 px-4 py-16">
       <div className="w-full max-w-sm rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <h1 className="text-xl font-semibold text-slate-900">Start free</h1>
-        <p className="mt-1 text-sm text-slate-500">Set up your company&apos;s RoofScout.io account.</p>
+        <p className="mt-1 text-sm text-slate-500">Set up your company&apos;s RoofScout account.</p>
 
         {error && (
           <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">

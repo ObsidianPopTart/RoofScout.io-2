@@ -8,7 +8,7 @@ import LeadsTable from "@/components/LeadsTable";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Leads — RoofScout.io",
+  title: "Leads — RoofScout",
 };
 
 const FILTERS = [
