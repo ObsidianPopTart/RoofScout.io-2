@@ -48,7 +48,10 @@ export default function MarketingHomePage() {
       </section>
 
       <footer className="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
-        RoofScout
+        RoofScout ·{" "}
+        <Link href="/privacy" className="underline hover:text-slate-300">
+          Privacy Policy
+        </Link>
       </footer>
     </div>
   );
