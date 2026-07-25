@@ -22,6 +22,9 @@ export default function ScanMap() {
   const [limitReached, setLimitReached] = useState(false);
   const [result, setResult] = useState<ScanResponse | null>(null);
   const [areaKm2, setAreaKm2] = useState<number | null>(null);
+  const [addressQuery, setAddressQuery] = useState("");
+  const [searchingAddress, setSearchingAddress] = useState(false);
+  const [addressError, setAddressError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -67,6 +70,26 @@ export default function ScanMap() {
       mapRef.current = null;
     };
   }, []);
+
+  async function searchAddress(e: React.FormEvent) {
+    e.preventDefault();
+    const map = mapRef.current;
+    const query = addressQuery.trim();
+    if (!map || !query) return;
+
+    setAddressError(null);
+    setSearchingAddress(true);
+    try {
+      const res = await fetch(`/api/geocode?address=${encodeURIComponent(query)}`);
+      const body = await res.json().catch(() => null);
+      if (!res.ok) throw new Error(body?.error ?? "Couldn't find that address");
+      map.setView([body.lat, body.lng], 18);
+    } catch (err) {
+      setAddressError(err instanceof Error ? err.message : "Couldn't find that address");
+    } finally {
+      setSearchingAddress(false);
+    }
+  }
 
   function pan(dx: number, dy: number) {
     const map = mapRef.current;
@@ -146,6 +169,25 @@ export default function ScanMap() {
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_330px]">
       <div className="relative">
+        <form onSubmit={searchAddress} className="mb-2 flex gap-2">
+          <input
+            type="text"
+            value={addressQuery}
+            onChange={(e) => setAddressQuery(e.target.value)}
+            placeholder="Jump to an address…"
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+          />
+          <button
+            type="submit"
+            disabled={searchingAddress}
+            className="shrink-0 rounded-lg bg-slate-800 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700 disabled:cursor-wait disabled:bg-slate-500 dark:bg-slate-700 dark:hover:bg-slate-600"
+          >
+            {searchingAddress ? "Searching…" : "Go"}
+          </button>
+        </form>
+        {addressError && (
+          <p className="mb-2 text-xs font-medium text-red-600 dark:text-red-400">{addressError}</p>
+        )}
         <div
           ref={mapDivRef}
           className="h-[68vh] w-full rounded-xl border border-slate-200 shadow-sm dark:border-slate-800"

@@ -249,6 +249,40 @@ export async function reverseGeocode(lat: number, lng: number): Promise<Geocoded
   };
 }
 
+export interface GeocodeResult {
+  lat: number;
+  lng: number;
+  formattedAddress: string;
+}
+
+interface ForwardGeocodeResponse {
+  results?: Array<{ formatted_address?: string; geometry?: { location?: { lat: number; lng: number } } }>;
+  status?: string;
+}
+
+// Forward geocoding (address text -> coordinates), used by the "jump to
+// address" search box on the scan map — the reverse of reverseGeocode()
+// above (coordinates -> address, used when labeling a scanned rooftop).
+export async function forwardGeocode(address: string): Promise<GeocodeResult | null> {
+  const url =
+    `https://maps.googleapis.com/maps/api/geocode/json` +
+    `?address=${encodeURIComponent(address)}&key=${liveConfig.googleKey}`;
+  let res: Response;
+  try {
+    res = await fetchWithTimeout(url);
+  } catch {
+    return null;
+  }
+  if (!res.ok) return null;
+
+  const data = (await res.json()) as ForwardGeocodeResponse;
+  const top = data.results?.[0];
+  const loc = top?.geometry?.location;
+  if (!loc) return null;
+
+  return { lat: loc.lat, lng: loc.lng, formattedAddress: top?.formatted_address ?? address };
+}
+
 // Satellite tile for one rooftop, fetched server-side so the API key never
 // reaches the browser. Used both for Claude vision grading and (via the
 // /api/roof-image proxy) for display on the profile page.
