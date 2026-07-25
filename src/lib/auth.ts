@@ -2,10 +2,11 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "./db";
+import { authConfig } from "./auth.config";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  ...authConfig,
   session: { strategy: "jwt" },
-  pages: { signIn: "/login" },
   providers: [
     Credentials({
       credentials: {
@@ -41,15 +42,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    // Gate the /app/* tree. This is the "outer" check only — every API route
-    // still re-checks the session independently (see src/proxy.ts and the
-    // Next.js docs' own warning that a matcher change can silently drop
-    // Proxy coverage; never rely on this alone).
-    authorized({ auth, request }) {
-      const isAppRoute = request.nextUrl.pathname.startsWith("/app");
-      if (!isAppRoute) return true;
-      return Boolean(auth?.user);
-    },
+    ...authConfig.callbacks,
     async jwt({ token, user }) {
       // `user` is only present on the initial sign-in call; persist the
       // multi-tenant fields onto the token for subsequent requests.
