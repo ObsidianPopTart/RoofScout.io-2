@@ -80,7 +80,7 @@ export async function runLiveScan(
   const buildings = await findBuildings(bounds, liveConfig.maxBuildingsPerScan * 2);
 
   const drafts: LeadDraft[] = [];
-  for (const group of chunk(buildings, 4)) {
+  for (const group of chunk(buildings, 6)) {
     if (drafts.length >= liveConfig.maxBuildingsPerScan) break;
     const results = await Promise.allSettled(group.map((b) => analyzeBuilding(b)));
     for (const r of results) {
