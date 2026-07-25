@@ -7,6 +7,7 @@ import type { Map as LeafletMap, LayerGroup } from "leaflet";
 import type { Lead, ScanRecord } from "@/lib/types";
 import { urgencyRank } from "@/lib/leadFilter";
 import { CONDITION_COLORS } from "@/components/ConditionBadge";
+import { boundsAreaKm2, isScanAreaTooLarge, MAX_SCAN_AREA_KM2 } from "@/lib/scanBounds";
 
 type ScanResponse = { scan: ScanRecord; leads: Lead[] };
 
@@ -20,6 +21,7 @@ export default function ScanMap() {
   const [error, setError] = useState<string | null>(null);
   const [limitReached, setLimitReached] = useState(false);
   const [result, setResult] = useState<ScanResponse | null>(null);
+  const [areaKm2, setAreaKm2] = useState<number | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -47,6 +49,16 @@ export default function ScanMap() {
       L.control.layers({ Satellite: satellite, Streets: streets }).addTo(map);
       markersRef.current = L.layerGroup().addTo(map);
       mapRef.current = map;
+
+      const updateArea = () => {
+        const b = map.getBounds();
+        setAreaKm2(
+          boundsAreaKm2({ north: b.getNorth(), south: b.getSouth(), east: b.getEast(), west: b.getWest() })
+        );
+      };
+      map.on("moveend", updateArea);
+      map.on("zoomend", updateArea);
+      updateArea();
     })();
 
     return () => {
@@ -55,6 +67,13 @@ export default function ScanMap() {
       mapRef.current = null;
     };
   }, []);
+
+  function pan(dx: number, dy: number) {
+    const map = mapRef.current;
+    if (!map) return;
+    const size = map.getSize();
+    map.panBy([dx * size.x * 0.35, dy * size.y * 0.35]);
+  }
 
   async function runScan() {
     const map = mapRef.current;
@@ -68,18 +87,21 @@ export default function ScanMap() {
       return;
     }
 
+    const b = map.getBounds();
+    const bounds = { north: b.getNorth(), south: b.getSouth(), east: b.getEast(), west: b.getWest() };
+    if (isScanAreaTooLarge(bounds)) {
+      setError(
+        `That area is too large for one scan (max ${MAX_SCAN_AREA_KM2} km²) — zoom in to a smaller neighborhood.`
+      );
+      return;
+    }
+
     setScanning(true);
     try {
-      const b = map.getBounds();
       const res = await fetch("/api/scan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          north: b.getNorth(),
-          south: b.getSouth(),
-          east: b.getEast(),
-          west: b.getWest(),
-        }),
+        body: JSON.stringify(bounds),
       });
       if (!res.ok) {
         const body = await res.json().catch(() => null);
@@ -119,9 +141,55 @@ export default function ScanMap() {
     ? [...result.leads].sort((a, b) => urgencyRank(a.condition) - urgencyRank(b.condition))
     : [];
 
+  const areaTooLarge = areaKm2 !== null && areaKm2 > MAX_SCAN_AREA_KM2;
+
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_330px]">
-      <div ref={mapDivRef} className="h-[68vh] w-full rounded-xl border border-slate-200 shadow-sm" />
+      <div className="relative">
+        <div
+          ref={mapDivRef}
+          className="h-[68vh] w-full rounded-xl border border-slate-200 shadow-sm dark:border-slate-800"
+        />
+        {/* Pan controls — Leaflet already supports drag-to-pan; these give
+            precise, discoverable directional control (useful on touch/trackpad
+            and for fine-tuning right before a scan). */}
+        <div className="absolute bottom-3 right-3 z-[1000] grid grid-cols-3 grid-rows-2 gap-1">
+          <div />
+          <button
+            type="button"
+            aria-label="Pan up"
+            onClick={() => pan(0, -1)}
+            className="col-start-2 rounded-md bg-white/90 px-2 py-1 text-sm font-semibold text-slate-700 shadow hover:bg-white dark:bg-slate-800/90 dark:text-slate-200 dark:hover:bg-slate-800"
+          >
+            ↑
+          </button>
+          <div />
+          <button
+            type="button"
+            aria-label="Pan left"
+            onClick={() => pan(-1, 0)}
+            className="rounded-md bg-white/90 px-2 py-1 text-sm font-semibold text-slate-700 shadow hover:bg-white dark:bg-slate-800/90 dark:text-slate-200 dark:hover:bg-slate-800"
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            aria-label="Pan down"
+            onClick={() => pan(0, 1)}
+            className="rounded-md bg-white/90 px-2 py-1 text-sm font-semibold text-slate-700 shadow hover:bg-white dark:bg-slate-800/90 dark:text-slate-200 dark:hover:bg-slate-800"
+          >
+            ↓
+          </button>
+          <button
+            type="button"
+            aria-label="Pan right"
+            onClick={() => pan(1, 0)}
+            className="rounded-md bg-white/90 px-2 py-1 text-sm font-semibold text-slate-700 shadow hover:bg-white dark:bg-slate-800/90 dark:text-slate-200 dark:hover:bg-slate-800"
+          >
+            →
+          </button>
+        </div>
+      </div>
 
       <div className="flex max-h-[68vh] flex-col gap-3">
         <button
@@ -131,12 +199,16 @@ export default function ScanMap() {
         >
           {scanning ? "Scanning rooftops…" : "Scan visible area"}
         </button>
+        <p className={`text-xs ${areaTooLarge ? "font-medium text-red-600 dark:text-red-400" : "text-slate-500 dark:text-slate-400"}`}>
+          {areaKm2 !== null ? `Visible area: ≈${areaKm2.toFixed(1)} km²` : "…"} · Larger areas take longer to
+          analyze (max {MAX_SCAN_AREA_KM2} km² per scan).
+        </p>
 
         {error && (
-          <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+          <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-300">
             <p>{error}</p>
             {limitReached && (
-              <Link href="/app/billing" className="mt-1 inline-block font-semibold text-red-800 underline">
+              <Link href="/app/billing" className="mt-1 inline-block font-semibold text-red-800 underline dark:text-red-300">
                 Upgrade your plan →
               </Link>
             )}
@@ -144,20 +216,20 @@ export default function ScanMap() {
         )}
 
         {result ? (
-          <div className="flex min-h-0 flex-1 flex-col rounded-xl border border-slate-200 bg-white shadow-sm">
-            <div className="border-b border-slate-100 px-4 py-3">
-              <div className="text-sm font-semibold text-slate-800">
+          <div className="flex min-h-0 flex-1 flex-col rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div className="border-b border-slate-100 px-4 py-3 dark:border-slate-800">
+              <div className="text-sm font-semibold text-slate-800 dark:text-slate-100">
                 {result.scan.leadCount} neglected roofs found
               </div>
-              <div className="text-xs text-slate-500">worst first · healthy roofs filtered out</div>
+              <div className="text-xs text-slate-500 dark:text-slate-400">worst first · healthy roofs filtered out</div>
             </div>
-            <ul className="min-h-0 flex-1 divide-y divide-slate-100 overflow-y-auto">
+            <ul className="min-h-0 flex-1 divide-y divide-slate-100 overflow-y-auto dark:divide-slate-800">
               {sortedLeads.map((lead) => (
                 <li key={lead.id}>
-                  <Link href={`/app/leads/${lead.id}`} className="block px-4 py-2.5 hover:bg-slate-50">
+                  <Link href={`/app/leads/${lead.id}`} className="block px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="truncate text-sm font-medium text-slate-800">{lead.address}</span>
-                      <span className="flex shrink-0 items-center gap-1.5 text-xs text-slate-600">
+                      <span className="truncate text-sm font-medium text-slate-800 dark:text-slate-100">{lead.address}</span>
+                      <span className="flex shrink-0 items-center gap-1.5 text-xs text-slate-600 dark:text-slate-300">
                         <span
                           className="h-2 w-2 rounded-full"
                           style={{ background: CONDITION_COLORS[lead.condition.label] }}
@@ -166,7 +238,7 @@ export default function ScanMap() {
                         {lead.condition.graded ? `${lead.condition.label} · ${lead.condition.score}` : "Ungraded"}
                       </span>
                     </div>
-                    <div className="mt-0.5 text-xs text-slate-500">
+                    <div className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
                       {lead.owner ? `${lead.owner.name} · ` : ""}≈
                       {lead.roof.areaSqFt.toLocaleString("en-US")} sq ft
                     </div>
@@ -174,15 +246,15 @@ export default function ScanMap() {
                 </li>
               ))}
             </ul>
-            <div className="border-t border-slate-100 px-4 py-2.5">
-              <Link href="/app/leads" className="text-sm font-medium text-amber-700 hover:text-amber-800">
+            <div className="border-t border-slate-100 px-4 py-2.5 dark:border-slate-800">
+              <Link href="/app/leads" className="text-sm font-medium text-amber-700 hover:text-amber-800 dark:text-amber-400 dark:hover:text-amber-300">
                 View all leads →
               </Link>
             </div>
           </div>
         ) : (
-          <div className="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-600 shadow-sm">
-            <p className="font-medium text-slate-800">How to run a scan</p>
+          <div className="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-600 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+            <p className="font-medium text-slate-800 dark:text-slate-100">How to run a scan</p>
             <ol className="mt-2 list-decimal space-y-1.5 pl-4">
               <li>Pan and zoom until you can see the rooftops you want to canvass.</li>
               <li>
@@ -193,7 +265,7 @@ export default function ScanMap() {
                 and drops healthy roofs automatically.
               </li>
             </ol>
-            <p className="mt-3 text-xs text-slate-400">
+            <p className="mt-3 text-xs text-slate-400 dark:text-slate-500">
               Demo mode simulates the analysis. With the Google Solar API connected, this same flow
               returns real rooftops with measured areas.
             </p>

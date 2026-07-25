@@ -46,6 +46,35 @@ export const dictionaries = {
       login: "Log in",
     },
     appNav: { dashboard: "Dashboard", newScan: "New Scan", leads: "Leads", billing: "Billing", signOut: "Sign out" },
+    onboarding: {
+      skip: "Skip",
+      back: "Back",
+      next: "Next",
+      done: "Got it",
+      stepOf: "Step {n} of {total}",
+      steps: [
+        {
+          title: "Welcome to RoofScout",
+          body: "A quick tour of how scanning works before you run your first one.",
+        },
+        {
+          title: "Pan, zoom, then scan",
+          body: "Drag the map or use the arrow buttons to pan, and zoom in until you can see individual rooftops. Then click \"Scan visible area\".",
+        },
+        {
+          title: "Bigger areas take longer",
+          body: "Each scan measures and grades every rooftop in view — the more roofs in frame, the longer it takes. We cap each scan at 5 km² to keep results fast and focused.",
+        },
+        {
+          title: "AI grades every roof",
+          body: "Every roof gets a condition score from real satellite imagery. Only neglected roofs become leads — healthy ones are filtered out automatically.",
+        },
+        {
+          title: "Free plan includes 3 scans",
+          body: "Your free plan covers 3 scans total. Upgrade to Pro or Apex anytime from Billing for more.",
+        },
+      ],
+    },
   },
   es: {
     nav: { pricing: "Precios", login: "Iniciar sesión", signup: "Regístrate" },
@@ -94,6 +123,35 @@ export const dictionaries = {
       login: "Iniciar sesión",
     },
     appNav: { dashboard: "Panel", newScan: "Nuevo escaneo", leads: "Clientes potenciales", billing: "Facturación", signOut: "Cerrar sesión" },
+    onboarding: {
+      skip: "Omitir",
+      back: "Atrás",
+      next: "Siguiente",
+      done: "Entendido",
+      stepOf: "Paso {n} de {total}",
+      steps: [
+        {
+          title: "Bienvenido a RoofScout",
+          body: "Un recorrido rápido de cómo funciona el escaneo antes de hacer el primero.",
+        },
+        {
+          title: "Desplaza, acerca y luego escanea",
+          body: "Arrastra el mapa o usa las flechas para desplazarte, y acércate hasta ver techos individuales. Luego haz clic en \"Escanear área visible\".",
+        },
+        {
+          title: "Las áreas más grandes tardan más",
+          body: "Cada escaneo mide y califica todos los techos visibles — mientras más techos, más tiempo toma. Limitamos cada escaneo a 5 km² para mantener resultados rápidos y enfocados.",
+        },
+        {
+          title: "La IA califica cada techo",
+          body: "Cada techo recibe una calificación de estado a partir de imágenes satelitales reales. Solo los techos descuidados se convierten en clientes potenciales — los sanos se filtran automáticamente.",
+        },
+        {
+          title: "El plan gratis incluye 3 escaneos",
+          body: "Tu plan gratis cubre 3 escaneos en total. Mejora a Pro o Apex cuando quieras desde Facturación para obtener más.",
+        },
+      ],
+    },
   },
 } as const;
 

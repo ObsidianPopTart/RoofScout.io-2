@@ -4,6 +4,7 @@ import { runMockScan } from "@/lib/store";
 import { runLiveScan } from "@/lib/live/scan";
 import { isLiveMode } from "@/lib/live/config";
 import { checkAndIncrementScanUsage, ScanLimitExceededError } from "@/lib/usage";
+import { isScanAreaTooLarge, MAX_SCAN_AREA_KM2 } from "@/lib/scanBounds";
 import type { ScanBounds } from "@/lib/types";
 
 export async function POST(request: Request) {
@@ -30,6 +31,16 @@ export async function POST(request: Request) {
     bounds = { north, south, east, west };
   } catch {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+  }
+
+  if (isScanAreaTooLarge(bounds)) {
+    return NextResponse.json(
+      {
+        error: "scan_area_too_large",
+        message: `That area is too large for one scan (max ${MAX_SCAN_AREA_KM2} km²). Zoom in to a smaller neighborhood and try again.`,
+      },
+      { status: 400 }
+    );
   }
 
   try {

@@ -2,9 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth, signOut } from "@/lib/auth";
+import { prisma } from "@/lib/db";
 import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
 import LocaleToggle from "@/components/LocaleToggle";
+import HelpButton from "@/components/HelpButton";
+import OnboardingTour from "@/components/OnboardingTour";
 import { getDictionary } from "@/lib/i18n/getLocale";
 
 export const metadata: Metadata = {
@@ -20,6 +23,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   if (!session?.user) redirect("/login");
 
   const { locale, t } = await getDictionary();
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { onboardedAt: true },
+  });
 
   return (
     <div className="flex flex-1 flex-col">
@@ -49,6 +56,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
               className="rounded-md border border-slate-700 px-2 py-1 text-xs font-semibold hover:border-slate-500"
             />
             <ThemeToggle className="hover:text-white" />
+            <HelpButton className="flex h-5 w-5 items-center justify-center rounded-full border border-slate-700 text-xs font-semibold hover:border-slate-500" />
             <span>{session.user.orgName}</span>
             <form
               action={async () => {
@@ -64,6 +72,16 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         </div>
       </nav>
       <main className="flex-1 bg-slate-50 dark:bg-slate-950">{children}</main>
+      <OnboardingTour
+        initialOpen={!user?.onboardedAt}
+        steps={t.onboarding.steps}
+        labels={{
+          skip: t.onboarding.skip,
+          back: t.onboarding.back,
+          next: t.onboarding.next,
+          done: t.onboarding.done,
+        }}
+      />
     </div>
   );
 }
