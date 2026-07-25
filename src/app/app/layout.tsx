@@ -42,6 +42,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             <Link href="/app/leads" className="hover:text-white">
               Leads
             </Link>
+            <Link href="/app/billing" className="hover:text-white">
+              Billing
+            </Link>
           </div>
           <div className="ml-auto flex items-center gap-4 text-sm text-slate-300">
             <span>{session.user.orgName}</span>

@@ -8,14 +8,15 @@ datasource db {
 }
 
 model Organization {
-  id                 String   @id @default(cuid())
-  name               String
-  planTier           String   @default("free")
-  stripeCustomerId   String?
-  scanCountThisMonth Int      @default(0)
-  scanCountResetAt   DateTime @default(now())
-  monthlyScanLimit   Int      @default(25)
-  createdAt          DateTime @default(now())
+  id                   String   @id @default(cuid())
+  name                 String
+  planTier             String   @default("free")
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  scanCountThisMonth   Int      @default(0)
+  scanCountResetAt     DateTime @default(now())
+  monthlyScanLimit     Int      @default(25)
+  createdAt            DateTime @default(now())
 
   memberships Membership[]
   leads       Lead[]

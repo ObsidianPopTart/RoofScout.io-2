@@ -7,6 +7,9 @@ export default function MarketingHomePage() {
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4">
           <span className="text-lg font-semibold">RoofScout</span>
           <div className="flex items-center gap-4 text-sm">
+            <Link href="/pricing" className="text-slate-300 hover:text-white">
+              Pricing
+            </Link>
             <Link href="/login" className="text-slate-300 hover:text-white">
               Log in
             </Link>

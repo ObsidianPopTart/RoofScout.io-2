@@ -18,6 +18,7 @@ export default function ScanMap() {
 
   const [scanning, setScanning] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [limitReached, setLimitReached] = useState(false);
   const [result, setResult] = useState<ScanResponse | null>(null);
 
   useEffect(() => {
@@ -60,6 +61,7 @@ export default function ScanMap() {
     const L = LRef.current;
     if (!map || !L) return;
     setError(null);
+    setLimitReached(false);
 
     if (map.getZoom() < 14) {
       setError("Zoom in closer — the scan needs neighborhood-level detail (zoom 14+).");
@@ -81,6 +83,7 @@ export default function ScanMap() {
       });
       if (!res.ok) {
         const body = await res.json().catch(() => null);
+        if (res.status === 402) setLimitReached(true);
         throw new Error(body?.message ?? body?.error ?? `Scan failed (HTTP ${res.status})`);
       }
       const data = (await res.json()) as ScanResponse;
@@ -130,7 +133,14 @@ export default function ScanMap() {
         </button>
 
         {error && (
-          <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
+          <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p>{error}</p>
+            {limitReached && (
+              <Link href="/app/billing" className="mt-1 inline-block font-semibold text-red-800 underline">
+                Upgrade your plan →
+              </Link>
+            )}
+          </div>
         )}
 
         {result ? (

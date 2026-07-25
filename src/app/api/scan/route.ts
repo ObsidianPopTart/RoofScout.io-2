@@ -37,7 +37,11 @@ export async function POST(request: Request) {
   } catch (err) {
     if (err instanceof ScanLimitExceededError) {
       return NextResponse.json(
-        { error: "monthly_scan_limit_reached", message: `Monthly scan limit of ${err.limit} reached. Upgrade to continue.` },
+        {
+          error: err.planTier === "free" ? "free_scan_limit_reached" : "monthly_scan_limit_reached",
+          message: `${err.message}. Upgrade to continue.`,
+          planTier: err.planTier,
+        },
         { status: 402 }
       );
     }
