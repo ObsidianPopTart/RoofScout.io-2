@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id                 String   @id @default(cuid())
+  name               String
+  planTier           String   @default("free")
+  stripeCustomerId   String?
+  scanCountThisMonth Int      @default(0)
+  scanCountResetAt   DateTime @default(now())
+  monthlyScanLimit   Int      @default(25)
+  createdAt          DateTime @default(now())
+
+  memberships Membership[]
+  leads       Lead[]
+  scans       ScanRecord[]
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime @default(now())
+
+  memberships Membership[]
+}
+
+model Membership {
+  id     String @id @default(cuid())
+  userId String
+  orgId  String
+  role   String @default("Owner") // "Owner" | "Admin" | "Member"
+
+  user User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org  Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, orgId])
+}
+
+model ScanRecord {
+  id        String   @id @default(cuid())
+  orgId     String
+  createdAt DateTime @default(now())
+  label     String
+  north     Float
+  south     Float
+  east      Float
+  west      Float
+  leadCount Int      @default(0)
+
+  org   Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  leads Lead[]
+
+  @@index([orgId])
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  orgId     String
+  scanId    String
+  createdAt DateTime @default(now())
+
+  address String
+  city    String
+  state   String
+  zip     String
+  lat     Float
+  lng     Float
+
+  ownerName          String?
+  ownerPhone         String?
+  ownerEmail         String?
+  ownerYearsOwned    Int?
+  ownerAssessedValue Int?
+
+  roofAreaSqFt    Int
+  roofPitch       String
+  roofMaterial    String
+  roofEstAgeYears Int
+  roofSegments    Int
+
+  conditionScore   Int
+  conditionLabel   String
+  conditionIssues  String // JSON-encoded string[]
+  conditionSummary String
+  conditionGraded  Boolean
+
+  salesAngles String // JSON-encoded string[]
+  status      String  @default("New")
+  imageUrl    String?
+  source      String?
+
+  org  Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  scan ScanRecord   @relation(fields: [scanId], references: [id], onDelete: Cascade)
+
+  @@index([orgId])
+  @@index([scanId])
+}

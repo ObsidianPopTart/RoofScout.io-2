@@ -1,0 +1,126 @@
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { z } from "zod";
+import bcrypt from "bcryptjs";
+import { AuthError } from "next-auth";
+import { prisma } from "@/lib/db";
+import { signIn } from "@/lib/auth";
+
+export const metadata = { title: "Sign up — RoofScout.io" };
+
+const signupSchema = z.object({
+  companyName: z.string().trim().min(1, "Company name is required"),
+  email: z.string().trim().toLowerCase().email("Enter a valid email"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+async function signupAction(formData: FormData) {
+  "use server";
+
+  const parsed = signupSchema.safeParse({
+    companyName: formData.get("companyName"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+  });
+  if (!parsed.success) {
+    redirect(`/signup?error=${encodeURIComponent(parsed.error.issues[0]?.message ?? "Invalid input")}`);
+  }
+  const { companyName, email, password } = parsed.data;
+
+  const existing = await prisma.user.findUnique({ where: { email } });
+  if (existing) {
+    redirect("/signup?error=" + encodeURIComponent("An account with that email already exists"));
+  }
+
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  await prisma.$transaction(async (tx) => {
+    const org = await tx.organization.create({ data: { name: companyName } });
+    const user = await tx.user.create({ data: { email, passwordHash } });
+    await tx.membership.create({ data: { userId: user.id, orgId: org.id, role: "Owner" } });
+  });
+
+  try {
+    await signIn("credentials", { email, password, redirectTo: "/app" });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      // Account was created successfully; login failing right after would be
+      // a bug in the sign-in flow itself, not a user input problem.
+      redirect("/login?error=invalid");
+    }
+    throw error;
+  }
+}
+
+export default async function SignupPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
+
+  return (
+    <div className="flex flex-1 items-center justify-center bg-slate-50 px-4 py-16">
+      <div className="w-full max-w-sm rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h1 className="text-xl font-semibold text-slate-900">Start free</h1>
+        <p className="mt-1 text-sm text-slate-500">Set up your company&apos;s RoofScout.io account.</p>
+
+        {error && (
+          <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+            {error}
+          </p>
+        )}
+
+        <form action={signupAction} className="mt-5 space-y-4">
+          <div>
+            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
+              Company name
+            </label>
+            <input
+              type="text"
+              name="companyName"
+              required
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              required
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500">
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              required
+              minLength={8}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full rounded-lg bg-amber-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-amber-700"
+          >
+            Create account
+          </button>
+        </form>
+
+        <p className="mt-4 text-center text-sm text-slate-500">
+          Already have an account?{" "}
+          <Link href="/login" className="font-medium text-amber-700 hover:text-amber-800">
+            Log in
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
+}
