@@ -3,127 +3,148 @@ import Image from "next/image";
 import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
 import LocaleToggle from "@/components/LocaleToggle";
+import ScanHero from "@/components/ScanHero";
+import Reveal from "@/components/Reveal";
 import { getDictionary } from "@/lib/i18n/getLocale";
 
 export default async function MarketingHomePage() {
   const { locale, t } = await getDictionary();
 
   return (
-    <div className="flex flex-1 flex-col bg-slate-950 text-white">
+    <div className="flex flex-1 flex-col bg-[var(--rs-ink)] text-[var(--rs-paper)]">
       <nav className="relative z-10">
-        <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
+        <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4">
+          <Link href="/" className="flex shrink-0 items-center gap-2 text-lg font-semibold">
             <Logo />
-            RoofScout
+            <span className="hidden sm:inline">RoofScout</span>
           </Link>
-          <div className="flex items-center gap-5 text-sm">
-            <Link href="/pricing" className="text-slate-300 hover:text-white">
+          <div className="flex items-center gap-2 text-sm sm:gap-5">
+            <Link href="/pricing" className="hidden text-[var(--rs-paper)]/70 hover:text-[var(--rs-paper)] sm:inline">
               {t.nav.pricing}
             </Link>
-            <Link href="/login" className="text-slate-300 hover:text-white">
+            <Link href="/login" className="whitespace-nowrap text-[var(--rs-paper)]/70 hover:text-[var(--rs-paper)]">
               {t.nav.login}
             </Link>
             <Link
               href="/signup"
-              className="rounded-full bg-amber-500 px-5 py-2 font-semibold text-slate-950 hover:bg-amber-400"
+              className="group relative shrink-0 overflow-hidden rounded-full bg-[var(--rs-amber)] px-4 py-2 whitespace-nowrap font-semibold text-[#1a1206] sm:px-5"
             >
-              {t.nav.signup}
+              <span className="relative z-10">{t.nav.signup}</span>
+              <span className="absolute inset-0 -translate-x-full bg-[var(--rs-scan)] transition-transform duration-300 group-hover:translate-x-0" />
             </Link>
             <LocaleToggle
               locale={locale}
-              className="rounded-md border border-slate-700 px-2 py-1 text-xs font-semibold text-slate-400 hover:border-slate-500"
+              className="hidden rounded-md border border-white/15 px-2 py-1 font-mono text-xs text-[var(--rs-paper)]/60 hover:border-white/30 sm:inline-block"
             />
-            <ThemeToggle className="text-slate-400 hover:text-white" />
+            <ThemeToggle className="hidden text-[var(--rs-paper)]/60 hover:text-[var(--rs-paper)] sm:inline-block" />
           </div>
         </div>
       </nav>
 
-      {/* Hero — oversized display type on a full-bleed dark field */}
-      <section className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-10 px-4 pt-8 pb-20 lg:grid-cols-[1.2fr_1fr] lg:pt-16 lg:pb-28">
+      {/* Hero — a live-scan viewport, not a stock photo with text next to it */}
+      <section className="rs-grid relative mx-auto grid w-full max-w-6xl flex-1 items-center gap-10 px-4 pt-8 pb-20 lg:grid-cols-[1.15fr_1fr] lg:pt-14 lg:pb-24">
         <div>
-          <h1 className="text-6xl leading-[0.95] font-black tracking-tighter sm:text-7xl lg:text-[5.5rem]">
+          <div
+            className="rs-fade-up mb-5 inline-flex items-center gap-2 font-mono text-xs tracking-widest text-[var(--rs-scan)]"
+          >
+            <span className="rs-blink h-1.5 w-1.5 rounded-full bg-[var(--rs-scan)]" aria-hidden />
+            LIVE AERIAL SCAN
+          </div>
+          <h1
+            className="rs-fade-up text-5xl leading-[0.98] font-black tracking-tight sm:text-6xl lg:text-[4.25rem]"
+            style={{ animationDelay: "0.1s" }}
+          >
             {t.home.headline}
           </h1>
-          <p className="mt-7 max-w-md text-lg text-slate-400">{t.home.sub}</p>
-          <div className="mt-9 flex flex-wrap gap-4">
+          <p
+            className="rs-fade-up mt-6 max-w-md text-lg text-[var(--rs-paper)]/60"
+            style={{ animationDelay: "0.28s" }}
+          >
+            {t.home.sub}
+          </p>
+          <div className="rs-fade-up mt-8 flex flex-wrap gap-4" style={{ animationDelay: "0.44s" }}>
             <Link
               href="/signup"
-              className="rounded-full bg-amber-500 px-8 py-4 text-base font-bold text-slate-950 hover:bg-amber-400"
+              className="rounded-full bg-[var(--rs-amber)] px-8 py-4 text-base font-bold text-[#1a1206] transition-transform hover:-translate-y-0.5"
             >
               {t.home.startFree}
             </Link>
             <Link
               href="/login"
-              className="rounded-full border border-slate-700 px-8 py-4 text-base font-bold text-white hover:border-slate-500"
+              className="rounded-full border border-white/20 px-8 py-4 text-base font-bold text-[var(--rs-paper)] transition-colors hover:border-white/45"
             >
               {t.home.login}
             </Link>
           </div>
         </div>
-        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
-          <Image
-            src="/images/hero-neighborhood-aerial.jpg"
-            alt="Aerial satellite view of a suburban neighborhood with many rooftops"
-            fill
-            priority
-            className="object-cover"
-            sizes="(min-width: 1024px) 50vw, 100vw"
-          />
+        <div className="rs-fade-up" style={{ animationDelay: "0.2s" }}>
+          <ScanHero />
         </div>
       </section>
 
-      {/* Feature — full-bleed amber block */}
-      <section className="bg-amber-500 text-slate-950">
-        <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-4 py-20 lg:grid-cols-2 lg:py-28">
-          <div className="relative aspect-[3/2] w-full overflow-hidden rounded-2xl lg:order-2">
-            <Image
-              src="/images/roof-tiles-closeup.jpg"
-              alt="Close-up of weathered roof tiles showing wear and moss"
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 50vw, 100vw"
-            />
-          </div>
-          <div>
-            <h2 className="text-4xl leading-[0.95] font-black tracking-tighter sm:text-6xl">
+      {/* Feature — warm paper section, roof close-up in a specimen frame */}
+      <section className="bg-[var(--rs-paper)] text-[#1a1206]">
+        <div className="mx-auto grid w-full max-w-6xl items-center gap-12 px-4 py-20 lg:grid-cols-2 lg:py-28">
+          <Reveal className="lg:order-2">
+            <div className="border border-black/10 p-2">
+              <div className="relative aspect-[3/2] w-full overflow-hidden">
+                <Image
+                  src="/images/roof-tiles-closeup.jpg"
+                  alt="Close-up of weathered roof tiles showing wear and moss"
+                  fill
+                  className="object-cover grayscale-[15%]"
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                />
+              </div>
+              <p className="px-1 pt-2 font-mono text-[11px] tracking-wide text-black/50">
+                SPECIMEN 04 · WEATHERED ASPHALT SHINGLE
+              </p>
+            </div>
+          </Reveal>
+          <Reveal>
+            <div className="mb-4 font-mono text-xs tracking-widest text-[#8a5a2b]">CONDITION GRADING</div>
+            <h2 className="text-3xl leading-[1.02] font-black tracking-tight sm:text-5xl">
               {t.home.featureHeadline}
             </h2>
-            <p className="mt-6 max-w-md text-lg text-slate-800">{t.home.featureBody}</p>
-          </div>
+            <p className="mt-6 max-w-md text-lg text-black/60">{t.home.featureBody}</p>
+          </Reveal>
         </div>
       </section>
 
-      {/* Statement — bold pull-quote with arrow accent */}
-      <section className="bg-white text-slate-950">
-        <div className="mx-auto flex w-full max-w-6xl items-start gap-6 px-4 py-20 lg:py-28">
-          <span className="mt-2 shrink-0 text-4xl text-amber-500 sm:text-5xl" aria-hidden>
-            →
-          </span>
-          <p className="text-3xl leading-[1.05] font-black tracking-tight sm:text-5xl lg:text-6xl">
-            {t.home.statement}
-          </p>
+      {/* Statement — dark, scan-result framing */}
+      <section className="bg-[var(--rs-ink-2)]">
+        <div className="mx-auto w-full max-w-6xl px-4 py-20 lg:py-28">
+          <Reveal>
+            <div className="mb-5 flex items-center gap-2 font-mono text-xs tracking-widest text-[var(--rs-scan)]">
+              <span aria-hidden>→</span> RESULT
+            </div>
+            <p className="max-w-4xl text-3xl leading-[1.08] font-black tracking-tight sm:text-5xl lg:text-6xl">
+              {t.home.statement}
+            </p>
+          </Reveal>
         </div>
       </section>
 
-      {/* Final CTA — dark block bookending the hero */}
-      <section className="bg-slate-950">
+      {/* Final CTA */}
+      <section className="rs-grid bg-[var(--rs-ink)]">
         <div className="mx-auto flex w-full max-w-6xl flex-col items-start gap-6 px-4 py-20 lg:py-28">
-          <h2 className="text-4xl leading-[0.95] font-black tracking-tighter sm:text-6xl">
-            {t.home.finalCta}
-          </h2>
-          <p className="text-lg text-slate-400">{t.home.finalCtaSub}</p>
-          <Link
-            href="/signup"
-            className="mt-2 rounded-full bg-amber-500 px-8 py-4 text-base font-bold text-slate-950 hover:bg-amber-400"
-          >
-            {t.home.startFree}
-          </Link>
+          <Reveal>
+            <div className="mb-2 font-mono text-xs tracking-widest text-[var(--rs-paper)]/50">GET STARTED</div>
+            <h2 className="text-4xl leading-[0.98] font-black tracking-tight sm:text-6xl">{t.home.finalCta}</h2>
+            <p className="mt-4 text-lg text-[var(--rs-paper)]/60">{t.home.finalCtaSub}</p>
+            <Link
+              href="/signup"
+              className="mt-7 inline-block rounded-full bg-[var(--rs-amber)] px-8 py-4 text-base font-bold text-[#1a1206] transition-transform hover:-translate-y-0.5"
+            >
+              {t.home.startFree}
+            </Link>
+          </Reveal>
         </div>
       </section>
 
-      <footer className="border-t border-slate-800 bg-slate-950 py-6 text-center text-xs text-slate-500">
+      <footer className="border-t border-white/10 bg-[var(--rs-ink)] py-6 text-center font-mono text-xs text-[var(--rs-paper)]/40">
         RoofScout ·{" "}
-        <Link href="/privacy" className="underline hover:text-slate-300">
+        <Link href="/privacy" className="underline hover:text-[var(--rs-paper)]/70">
           Privacy Policy
         </Link>
       </footer>

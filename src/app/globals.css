@@ -28,3 +28,110 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
+
+/* --- Marketing site: aerial-scan visual language ---
+   Bespoke palette grounded in the product's real subject (satellite
+   scanning + roofing materials), not generic Tailwind slate/amber. */
+:root {
+  --rs-ink: #0a0d12;
+  --rs-ink-2: #10141b;
+  --rs-paper: #edeae1;
+  --rs-amber: #f2994a;
+  --rs-scan: #7de0c4;
+  --rs-critical: #d6432e;
+  --rs-line: rgba(237, 234, 225, 0.14);
+}
+
+.rs-grid {
+  background-image: radial-gradient(var(--rs-line) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+@keyframes rs-sweep {
+  0% {
+    top: -10%;
+  }
+  50% {
+    top: 100%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+@keyframes rs-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rs-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes rs-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.rs-sweep-line {
+  animation: rs-sweep 4.5s ease-in-out infinite;
+}
+
+.rs-fade-up {
+  animation: rs-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.rs-pop {
+  animation: rs-pop 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.rs-blink {
+  animation: rs-blink 1.1s step-start infinite;
+}
+
+.rs-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rs-reveal.rs-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rs-sweep-line,
+  .rs-fade-up,
+  .rs-pop,
+  .rs-blink {
+    animation: none !important;
+  }
+  .rs-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

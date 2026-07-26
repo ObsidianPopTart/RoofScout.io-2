@@ -17,70 +17,85 @@ export default async function PricingPage() {
   const { locale, t } = await getDictionary();
 
   return (
-    <div className="flex flex-1 flex-col bg-slate-950 text-white">
+    <div className="flex flex-1 flex-col bg-[var(--rs-ink)] text-[var(--rs-paper)]">
       <nav>
-        <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
+        <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4">
+          <Link href="/" className="flex shrink-0 items-center gap-2 text-lg font-semibold">
             <Logo />
-            RoofScout
+            <span className="hidden sm:inline">RoofScout</span>
           </Link>
-          <div className="flex items-center gap-5 text-sm">
-            <Link href="/login" className="text-slate-300 hover:text-white">
+          <div className="flex items-center gap-2 text-sm sm:gap-5">
+            <Link href="/login" className="whitespace-nowrap text-[var(--rs-paper)]/70 hover:text-[var(--rs-paper)]">
               {t.nav.login}
             </Link>
             <Link
               href="/signup"
-              className="rounded-full bg-amber-500 px-5 py-2 font-semibold text-slate-950 hover:bg-amber-400"
+              className="shrink-0 whitespace-nowrap rounded-full bg-[var(--rs-amber)] px-4 py-2 font-semibold text-[#1a1206] sm:px-5"
             >
               {t.nav.signup}
             </Link>
             <LocaleToggle
               locale={locale}
-              className="rounded-md border border-slate-700 px-2 py-1 text-xs font-semibold text-slate-400 hover:border-slate-500"
+              className="hidden rounded-md border border-white/15 px-2 py-1 font-mono text-xs text-[var(--rs-paper)]/60 hover:border-white/30 sm:inline-block"
             />
-            <ThemeToggle className="text-slate-400 hover:text-white" />
+            <ThemeToggle className="hidden text-[var(--rs-paper)]/60 hover:text-[var(--rs-paper)] sm:inline-block" />
           </div>
         </div>
       </nav>
 
-      <section className="mx-auto w-full max-w-5xl px-4 pt-12 pb-20">
-        <h1 className="text-5xl leading-[0.95] font-black tracking-tighter sm:text-7xl">{t.pricing.title}</h1>
-        <p className="mt-5 max-w-xl text-lg text-slate-400">{t.pricing.sub}</p>
+      <section className="rs-grid mx-auto w-full max-w-5xl px-4 pt-12 pb-20">
+        <div className="rs-fade-up font-mono text-xs tracking-widest text-[var(--rs-scan)]">PLANS</div>
+        <h1
+          className="rs-fade-up mt-3 text-5xl leading-[0.95] font-black tracking-tighter sm:text-7xl"
+          style={{ animationDelay: "0.08s" }}
+        >
+          {t.pricing.title}
+        </h1>
+        <p className="rs-fade-up mt-5 max-w-xl text-lg text-[var(--rs-paper)]/60" style={{ animationDelay: "0.16s" }}>
+          {t.pricing.sub}
+        </p>
 
         <div className="mt-14 grid gap-6 sm:grid-cols-3">
-          {PLAN_KEYS.map((key) => {
+          {PLAN_KEYS.map((key, i) => {
             const meta = PLAN_META[key];
             const copy = t.pricing[key];
             const highlight = "highlight" in meta && meta.highlight;
             return (
               <div
                 key={key}
-                className={`rounded-2xl p-6 ${
-                  highlight ? "bg-amber-500 text-slate-950" : "border border-slate-800 bg-slate-900"
+                className={`rs-fade-up rounded-2xl p-6 ${
+                  highlight
+                    ? "bg-[var(--rs-amber)] text-[#1a1206]"
+                    : "border border-white/10 bg-[var(--rs-ink-2)]"
                 }`}
+                style={{ animationDelay: `${0.24 + i * 0.08}s` }}
               >
                 <div className="text-lg font-bold">{copy.name}</div>
                 <div className="mt-2 flex items-baseline gap-1">
                   <span className="text-4xl font-black tracking-tight">{meta.price}</span>
                   {"period" in meta && (
-                    <span className={highlight ? "text-slate-800" : "text-slate-400"}>{meta.period}</span>
+                    <span className={highlight ? "text-[#1a1206]/70" : "text-[var(--rs-paper)]/50"}>
+                      {meta.period}
+                    </span>
                   )}
                 </div>
-                <div className={`mt-1 text-sm ${highlight ? "text-slate-800" : "text-slate-400"}`}>{copy.detail}</div>
-                <ul className={`mt-5 space-y-2 text-sm ${highlight ? "text-slate-800" : "text-slate-300"}`}>
+                <div className={`mt-1 text-sm ${highlight ? "text-[#1a1206]/70" : "text-[var(--rs-paper)]/50"}`}>
+                  {copy.detail}
+                </div>
+                <ul className={`mt-5 space-y-2 text-sm ${highlight ? "text-[#1a1206]/80" : "text-[var(--rs-paper)]/70"}`}>
                   {copy.features.map((f) => (
                     <li key={f} className="flex gap-2">
-                      <span className={highlight ? "text-slate-950" : "text-amber-500"}>✓</span>
+                      <span className={highlight ? "text-[#1a1206]" : "text-[var(--rs-scan)]"}>✓</span>
                       {f}
                     </li>
                   ))}
                 </ul>
                 <Link
                   href="/signup"
-                  className={`mt-6 block rounded-full px-4 py-2.5 text-center text-sm font-bold ${
+                  className={`mt-6 block rounded-full px-4 py-2.5 text-center text-sm font-bold transition-transform hover:-translate-y-0.5 ${
                     highlight
-                      ? "bg-slate-950 text-white hover:bg-slate-800"
-                      : "border border-slate-700 text-white hover:border-slate-500"
+                      ? "bg-[#1a1206] text-[var(--rs-paper)]"
+                      : "border border-white/15 text-[var(--rs-paper)] hover:border-white/35"
                   }`}
                 >
                   {copy.cta}
@@ -90,17 +105,17 @@ export default async function PricingPage() {
           })}
         </div>
 
-        <p className="mt-10 flex items-start gap-3 text-sm text-slate-400">
-          <span className="shrink-0 text-amber-500" aria-hidden>
+        <p className="mt-10 flex items-start gap-3 text-sm text-[var(--rs-paper)]/50">
+          <span className="shrink-0 text-[var(--rs-scan)]" aria-hidden>
             →
           </span>
           {t.pricing.footnote}
         </p>
       </section>
 
-      <footer className="mt-auto border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+      <footer className="mt-auto border-t border-white/10 py-6 text-center font-mono text-xs text-[var(--rs-paper)]/40">
         RoofScout ·{" "}
-        <Link href="/privacy" className="underline hover:text-slate-300">
+        <Link href="/privacy" className="underline hover:text-[var(--rs-paper)]/70">
           Privacy Policy
         </Link>
       </footer>
