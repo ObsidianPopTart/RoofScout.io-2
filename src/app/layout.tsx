@@ -16,9 +16,31 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://roof-scout.org";
+const DEFAULT_DESCRIPTION =
+  "RoofScout scans a neighborhood by satellite, grades every roof's condition with AI, and hands your sales team a ranked, priced lead list — automatically.";
+
 export const metadata: Metadata = {
-  title: "RoofScout — AI roofing lead engine",
-  description: "Find neglected roofs, build lead profiles, and quote jobs — automatically.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "RoofScout — AI Roofing Lead Generation from Satellite Imagery",
+    template: "%s — RoofScout",
+  },
+  description: DEFAULT_DESCRIPTION,
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "RoofScout",
+    title: "RoofScout — AI Roofing Lead Generation from Satellite Imagery",
+    description: DEFAULT_DESCRIPTION,
+    images: [{ url: "/images/hero-neighborhood-aerial.jpg", width: 1600, height: 1066 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "RoofScout — AI Roofing Lead Generation from Satellite Imagery",
+    description: DEFAULT_DESCRIPTION,
+    images: ["/images/hero-neighborhood-aerial.jpg"],
+  },
 };
 
 export default async function RootLayout({

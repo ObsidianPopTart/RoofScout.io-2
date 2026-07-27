@@ -5,7 +5,10 @@ import { signIn } from "@/lib/auth";
 import { getDictionary } from "@/lib/i18n/getLocale";
 import Logo from "@/components/Logo";
 
-export const metadata = { title: "Log in — RoofScout" };
+export const metadata = {
+  title: "Log In",
+  robots: { index: false, follow: true }, // utility page, no unique SEO value — avoid thin-content indexing
+};
 
 async function loginAction(formData: FormData) {
   "use server";

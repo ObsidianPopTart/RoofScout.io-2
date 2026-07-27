@@ -1,4 +1,8 @@
-export const metadata = { title: "Privacy Policy — RoofScout" };
+export const metadata = {
+  title: "Privacy Policy",
+  description: "How RoofScout collects, uses, and protects your data.",
+  alternates: { canonical: "/privacy" },
+};
 
 export default function PrivacyPolicyPage() {
   return (

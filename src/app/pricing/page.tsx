@@ -4,7 +4,12 @@ import ThemeToggle from "@/components/ThemeToggle";
 import LocaleToggle from "@/components/LocaleToggle";
 import { getDictionary } from "@/lib/i18n/getLocale";
 
-export const metadata = { title: "Pricing — RoofScout" };
+export const metadata = {
+  title: "Pricing",
+  description:
+    "Simple, scan-based pricing. Start free with 3 scans — no card required. Upgrade to Pro ($49/mo, 50 scans) or Apex ($149/mo, unlimited) anytime.",
+  alternates: { canonical: "/pricing" },
+};
 
 const PLAN_KEYS = ["free", "pro", "apex"] as const;
 const PLAN_META = {

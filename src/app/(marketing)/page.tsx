@@ -6,12 +6,37 @@ import LocaleToggle from "@/components/LocaleToggle";
 import ScanHero from "@/components/ScanHero";
 import Reveal from "@/components/Reveal";
 import { getDictionary } from "@/lib/i18n/getLocale";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Find Neglected Roofs Before Your Competitors Do",
+  description:
+    "RoofScout scans a neighborhood by satellite, grades every roof's condition with AI, and hands your sales team a ranked, priced lead list — automatically. Free to try, 3 scans included.",
+  alternates: { canonical: "/" },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "RoofScout",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web, Android",
+  description:
+    "AI-powered roofing lead generation: scans neighborhoods via satellite imagery, grades roof condition, and builds a ranked, priced lead list for roofing sales teams.",
+  url: "https://roof-scout.org",
+  offers: [
+    { "@type": "Offer", name: "Free", price: "0", priceCurrency: "USD" },
+    { "@type": "Offer", name: "Pro", price: "49", priceCurrency: "USD" },
+    { "@type": "Offer", name: "Apex", price: "149", priceCurrency: "USD" },
+  ],
+};
 
 export default async function MarketingHomePage() {
   const { locale, t } = await getDictionary();
 
   return (
     <div className="flex flex-1 flex-col bg-[var(--rs-ink)] text-[var(--rs-paper)]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <nav className="relative z-10">
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4">
           <Link href="/" className="flex shrink-0 items-center gap-2 text-lg font-semibold">
