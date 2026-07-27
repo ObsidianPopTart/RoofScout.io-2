@@ -44,6 +44,9 @@ export default async function MarketingHomePage() {
             <span className="hidden sm:inline">RoofScout</span>
           </Link>
           <div className="flex items-center gap-2 text-sm sm:gap-5">
+            <Link href="/blog" className="hidden text-[var(--rs-paper)]/70 hover:text-[var(--rs-paper)] sm:inline">
+              Blog
+            </Link>
             <Link href="/pricing" className="hidden text-[var(--rs-paper)]/70 hover:text-[var(--rs-paper)] sm:inline">
               {t.nav.pricing}
             </Link>
@@ -169,6 +172,10 @@ export default async function MarketingHomePage() {
 
       <footer className="border-t border-white/10 bg-[var(--rs-ink)] py-6 text-center font-mono text-xs text-[var(--rs-paper)]/40">
         RoofScout ·{" "}
+        <Link href="/blog" className="underline hover:text-[var(--rs-paper)]/70">
+          Blog
+        </Link>{" "}
+        ·{" "}
         <Link href="/privacy" className="underline hover:text-[var(--rs-paper)]/70">
           Privacy Policy
         </Link>
