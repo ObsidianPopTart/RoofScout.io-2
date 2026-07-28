@@ -108,11 +108,60 @@ async function queryOverpass(query: string): Promise<{ elements?: OverpassElemen
   throw lastError ?? new Error("Building lookup failed (no Overpass endpoint reachable)");
 }
 
+// Overpass's default result order tends to cluster geographically (elements
+// loaded from the same import batch / internal spatial index come back
+// together), not spread across the query bbox. Naively taking the first
+// `limit` results after that would scan one street and call it a
+// neighborhood — this buckets candidates into a grid over the bbox and
+// round-robins across occupied cells, so a scan actually samples the whole
+// visible area instead of whichever corner Overpass happened to list first.
+function sampleAcrossBounds(
+  buildings: BuildingCandidate[],
+  bounds: ScanBounds,
+  limit: number
+): BuildingCandidate[] {
+  if (buildings.length <= limit) return buildings;
+
+  const cols = Math.max(1, Math.round(Math.sqrt(limit)));
+  const rows = Math.max(1, Math.ceil(limit / cols));
+  const latSpan = bounds.north - bounds.south || 1e-9;
+  const lngSpan = bounds.east - bounds.west || 1e-9;
+
+  const buckets = new Map<number, BuildingCandidate[]>();
+  for (const b of buildings) {
+    const row = Math.min(rows - 1, Math.floor(((b.lat - bounds.south) / latSpan) * rows));
+    const col = Math.min(cols - 1, Math.floor(((b.lng - bounds.west) / lngSpan) * cols));
+    const cell = row * cols + col;
+    const bucket = buckets.get(cell);
+    if (bucket) bucket.push(b);
+    else buckets.set(cell, [b]);
+  }
+
+  const cellKeys = [...buckets.keys()];
+  const result: BuildingCandidate[] = [];
+  for (let round = 0; result.length < limit; round++) {
+    let addedThisRound = false;
+    for (const key of cellKeys) {
+      const bucket = buckets.get(key)!;
+      if (bucket.length > round) {
+        result.push(bucket[round]);
+        addedThisRound = true;
+        if (result.length >= limit) break;
+      }
+    }
+    if (!addedThisRound) break; // every cell's buildings have been used
+  }
+  return result;
+}
+
 // Building footprints come from OpenStreetMap (free, ODbL-licensed) —
 // we only need centroids to feed the Google Solar API.
 export async function findBuildings(bounds: ScanBounds, limit: number): Promise<BuildingCandidate[]> {
   const bbox = `${bounds.south},${bounds.west},${bounds.north},${bounds.east}`;
-  const query = `[out:json][timeout:25];way["building"](${bbox});out center tags ${Math.max(limit * 4, 80)};`;
+  // Cap generously above `limit` — this is the raw pool sampleAcrossBounds()
+  // draws from, so it needs enough candidates from every part of the bbox,
+  // not just enough to cover `limit` if the first ones happened to be spread out.
+  const query = `[out:json][timeout:25];way["building"](${bbox});out center tags ${Math.max(limit * 15, 400)};`;
 
   const data = await queryOverpass(query);
   const withCenter = (data.elements ?? []).filter((e) => e.center);
@@ -126,9 +175,11 @@ export async function findBuildings(bounds: ScanBounds, limit: number): Promise<
     return { lat: e.center!.lat, lng: e.center!.lon, address };
   };
 
-  const residential = withCenter.filter((e) => !NON_RESIDENTIAL_TAGS.has(e.tags?.building ?? ""));
+  const residential = withCenter
+    .filter((e) => !NON_RESIDENTIAL_TAGS.has(e.tags?.building ?? ""))
+    .map(toCandidate);
 
-  return residential.slice(0, limit).map(toCandidate);
+  return sampleAcrossBounds(residential, bounds, limit);
 }
 
 export interface SolarRoofData {
