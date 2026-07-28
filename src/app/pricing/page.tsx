@@ -21,8 +21,19 @@ const PLAN_META = {
 export default async function PricingPage() {
   const { locale, t } = await getDictionary();
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: t.pricing.faq.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  };
+
   return (
     <div className="flex flex-1 flex-col bg-[var(--rs-ink)] text-[var(--rs-paper)]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <nav>
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4">
           <Link href="/" className="flex shrink-0 items-center gap-2 text-lg font-semibold">
@@ -30,6 +41,9 @@ export default async function PricingPage() {
             <span className="hidden sm:inline">RoofScout</span>
           </Link>
           <div className="flex items-center gap-2 text-sm sm:gap-5">
+            <Link href="/blog" className="hidden text-[var(--rs-paper)]/70 hover:text-[var(--rs-paper)] sm:inline">
+              Blog
+            </Link>
             <Link href="/login" className="whitespace-nowrap text-[var(--rs-paper)]/70 hover:text-[var(--rs-paper)]">
               {t.nav.login}
             </Link>
@@ -115,6 +129,31 @@ export default async function PricingPage() {
             →
           </span>
           {t.pricing.footnote}
+        </p>
+
+        <div className="mt-20">
+          <h2 className="text-2xl font-black tracking-tight sm:text-3xl">{t.pricing.faqTitle}</h2>
+          <div className="mt-6 divide-y divide-white/10 border-t border-white/10">
+            {t.pricing.faq.map((item) => (
+              <details key={item.q} className="group py-5">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-bold">
+                  {item.q}
+                  <span className="shrink-0 text-[var(--rs-paper)]/40 transition-transform group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <p className="mt-3 text-[var(--rs-paper)]/60">{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+
+        <p className="mt-10 text-sm text-[var(--rs-paper)]/50">
+          Not sure where to start?{" "}
+          <Link href="/blog/how-to-find-roofing-leads" className="underline hover:text-[var(--rs-paper)]/80">
+            Read how roofing teams generate leads
+          </Link>{" "}
+          before you pick a plan.
         </p>
       </section>
 

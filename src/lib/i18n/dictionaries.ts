@@ -12,10 +12,72 @@ export const dictionaries = {
       statement: "Every neglected roof, found, ranked, and priced — automatically.",
       finalCta: "Stop canvassing blind.",
       finalCtaSub: "Start free — 3 scans, no card required.",
+      trustBullets: ["No credit card required", "3 free scans included", "Cancel anytime"],
+      howItWorksTitle: "How it works",
+      howItWorks: [
+        {
+          title: "Scan a neighborhood",
+          body: "Pan and zoom the map to any neighborhood, then click Scan. RoofScout pulls real satellite imagery and building outlines for every rooftop in view.",
+        },
+        {
+          title: "AI grades every roof",
+          body: "Each rooftop gets a 0–100 condition score from a close-up satellite photo. Healthy roofs are filtered out automatically — you only see what's worth a knock.",
+        },
+        {
+          title: "Get a ranked, priced lead list",
+          body: "Every neglected roof becomes a lead with an estimated quote range, ready to export to CSV or hand straight to your sales team.",
+        },
+      ],
+      faqTitle: "Frequently asked questions",
+      faq: [
+        {
+          q: "Do I need a credit card to start?",
+          a: "No. The free plan includes 3 scans with no card required — upgrade only if you need more volume.",
+        },
+        {
+          q: "How accurate is the AI condition grading?",
+          a: "RoofScout grades each rooftop from real satellite imagery using the same visual signals — staining, moss, missing shingles, sagging lines — an experienced inspector looks for from the street. It's a screening tool to prioritize which doors to knock on first, not a replacement for an on-roof inspection.",
+        },
+        {
+          q: "Does RoofScout replace my sales team?",
+          a: "No — it replaces guesswork. Your reps still do the canvassing and the selling; RoofScout just tells them which roofs are actually worth the drive before they leave the office.",
+        },
+        {
+          q: "How is this different from a lead marketplace?",
+          a: "Marketplace leads are typically sold to three to five contractors at once. Every lead RoofScout finds is yours alone — you're not racing competitors to the same homeowner.",
+        },
+        {
+          q: "Can I cancel or change plans anytime?",
+          a: "Yes. Upgrade, downgrade, or cancel anytime from your billing page — no contracts, no cancellation fees.",
+        },
+        {
+          q: "What areas does RoofScout cover?",
+          a: "Anywhere with Google satellite imagery and Solar API coverage, which includes most of the US.",
+        },
+      ],
     },
     pricing: {
       title: "Simple, scan-based pricing",
       sub: "Try RoofScout free, then pay for the scan volume your team actually needs.",
+      faqTitle: "Billing questions",
+      faq: [
+        {
+          q: "Can I switch plans later?",
+          a: "Yes — upgrade or downgrade anytime from your billing page. Changes take effect immediately and billing is prorated.",
+        },
+        {
+          q: "What happens if I hit my scan limit?",
+          a: "You'll be prompted to upgrade before your next scan — nothing runs, and nothing bills, without your say-so.",
+        },
+        {
+          q: "Is there a contract or setup fee?",
+          a: "No. Every plan is month-to-month with no setup fee and no cancellation fee.",
+        },
+        {
+          q: "What's included in every plan?",
+          a: "Live satellite scanning, AI condition grading, and CSV export — even on the free plan.",
+        },
+      ],
       free: {
         name: "Free",
         detail: "3 scans, once — no card required",
@@ -258,10 +320,72 @@ export const dictionaries = {
       statement: "Cada techo descuidado, encontrado, ordenado y cotizado — automáticamente.",
       finalCta: "Deja de tocar puertas a ciegas.",
       finalCtaSub: "Empieza gratis — 3 escaneos, sin tarjeta.",
+      trustBullets: ["Sin tarjeta de crédito", "3 escaneos gratis incluidos", "Cancela cuando quieras"],
+      howItWorksTitle: "Cómo funciona",
+      howItWorks: [
+        {
+          title: "Escanea un vecindario",
+          body: "Desplaza y acerca el mapa a cualquier vecindario y haz clic en Escanear. RoofScout obtiene imágenes satelitales reales y los contornos de cada techo visible.",
+        },
+        {
+          title: "La IA califica cada techo",
+          body: "Cada techo recibe una calificación de 0 a 100 a partir de una foto satelital cercana. Los techos sanos se filtran automáticamente — solo ves lo que vale la pena tocar.",
+        },
+        {
+          title: "Recibe una lista de leads ordenada y cotizada",
+          body: "Cada techo descuidado se convierte en un lead con un rango de cotización estimado, listo para exportar a CSV o entregar directamente a tu equipo de ventas.",
+        },
+      ],
+      faqTitle: "Preguntas frecuentes",
+      faq: [
+        {
+          q: "¿Necesito tarjeta de crédito para empezar?",
+          a: "No. El plan gratis incluye 3 escaneos sin tarjeta — mejora solo si necesitas más volumen.",
+        },
+        {
+          q: "¿Qué tan precisa es la calificación de la IA?",
+          a: "RoofScout califica cada techo a partir de imágenes satelitales reales, usando las mismas señales visuales — manchas, musgo, tejas faltantes, líneas hundidas — que un inspector experimentado busca desde la calle. Es una herramienta de filtrado para priorizar qué puertas tocar primero, no un reemplazo de una inspección en el techo.",
+        },
+        {
+          q: "¿RoofScout reemplaza a mi equipo de ventas?",
+          a: "No — reemplaza las suposiciones. Tus vendedores siguen tocando puertas y vendiendo; RoofScout solo les dice qué techos realmente valen la vuelta antes de salir de la oficina.",
+        },
+        {
+          q: "¿En qué se diferencia de un marketplace de leads?",
+          a: "Los leads de marketplace normalmente se venden a tres a cinco contratistas a la vez. Cada lead que encuentra RoofScout es solo tuyo — no compites con otros por el mismo propietario.",
+        },
+        {
+          q: "¿Puedo cancelar o cambiar de plan cuando quiera?",
+          a: "Sí. Mejora, baja de plan o cancela cuando quieras desde tu página de facturación — sin contratos, sin cargos por cancelación.",
+        },
+        {
+          q: "¿Qué áreas cubre RoofScout?",
+          a: "Cualquier lugar con cobertura de imágenes satelitales de Google y de la API de Google Solar, lo que incluye la mayor parte de EE. UU.",
+        },
+      ],
     },
     pricing: {
       title: "Precios simples, basados en escaneos",
       sub: "Prueba RoofScout gratis y luego paga según el volumen de escaneos que tu equipo realmente necesite.",
+      faqTitle: "Preguntas sobre facturación",
+      faq: [
+        {
+          q: "¿Puedo cambiar de plan más adelante?",
+          a: "Sí — mejora o baja de plan cuando quieras desde tu página de facturación. Los cambios se aplican de inmediato y el cobro se prorratea.",
+        },
+        {
+          q: "¿Qué pasa si alcanzo mi límite de escaneos?",
+          a: "Se te pedirá mejorar tu plan antes de tu próximo escaneo — nada se ejecuta, ni se cobra, sin tu autorización.",
+        },
+        {
+          q: "¿Hay contrato o costo de instalación?",
+          a: "No. Todos los planes son mes a mes, sin costo de instalación ni cargos por cancelación.",
+        },
+        {
+          q: "¿Qué incluye cada plan?",
+          a: "Escaneo satelital en vivo, calificación de estado con IA y exportación a CSV — incluso en el plan gratis.",
+        },
+      ],
       free: {
         name: "Gratis",
         detail: "3 escaneos, una vez — sin tarjeta",

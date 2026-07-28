@@ -34,9 +34,20 @@ const jsonLd = {
 export default async function MarketingHomePage() {
   const { locale, t } = await getDictionary();
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: t.home.faq.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  };
+
   return (
     <div className="flex flex-1 flex-col bg-[var(--rs-ink)] text-[var(--rs-paper)]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <nav className="relative z-10">
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4">
           <Link href="/" className="flex shrink-0 items-center gap-2 text-lg font-semibold">
@@ -104,6 +115,19 @@ export default async function MarketingHomePage() {
               {t.home.login}
             </Link>
           </div>
+          <ul
+            className="rs-fade-up mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs tracking-wide text-[var(--rs-paper)]/50"
+            style={{ animationDelay: "0.5s" }}
+          >
+            {t.home.trustBullets.map((bullet) => (
+              <li key={bullet} className="flex items-center gap-1.5">
+                <span className="text-[var(--rs-scan)]" aria-hidden>
+                  ✓
+                </span>
+                {bullet}
+              </li>
+            ))}
+          </ul>
         </div>
         <div className="rs-fade-up" style={{ animationDelay: "0.2s" }}>
           <ScanHero />
@@ -139,6 +163,27 @@ export default async function MarketingHomePage() {
         </div>
       </section>
 
+      {/* How it works — three-step process, builds confidence before the ask */}
+      <section className="bg-[var(--rs-ink)]">
+        <div className="mx-auto w-full max-w-6xl px-4 py-20 lg:py-28">
+          <Reveal>
+            <div className="mb-2 font-mono text-xs tracking-widest text-[var(--rs-paper)]/50">PROCESS</div>
+            <h2 className="text-3xl leading-[1.02] font-black tracking-tight sm:text-5xl">
+              {t.home.howItWorksTitle}
+            </h2>
+          </Reveal>
+          <div className="mt-12 grid gap-8 sm:grid-cols-3">
+            {t.home.howItWorks.map((step, i) => (
+              <Reveal key={step.title} delay={i * 80}>
+                <div className="font-mono text-sm text-[var(--rs-scan)]">0{i + 1}</div>
+                <h3 className="mt-3 text-xl font-bold tracking-tight">{step.title}</h3>
+                <p className="mt-2 text-[var(--rs-paper)]/60">{step.body}</p>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Statement — dark, scan-result framing */}
       <section className="bg-[var(--rs-ink-2)]">
         <div className="mx-auto w-full max-w-6xl px-4 py-20 lg:py-28">
@@ -150,6 +195,31 @@ export default async function MarketingHomePage() {
               {t.home.statement}
             </p>
           </Reveal>
+        </div>
+      </section>
+
+      {/* FAQ — objection handling, doubles as FAQPage schema */}
+      <section className="bg-[var(--rs-ink-2)]">
+        <div className="mx-auto w-full max-w-3xl px-4 py-20 lg:py-28">
+          <Reveal>
+            <div className="mb-2 font-mono text-xs tracking-widest text-[var(--rs-paper)]/50">QUESTIONS</div>
+            <h2 className="text-3xl leading-[1.02] font-black tracking-tight sm:text-5xl">{t.home.faqTitle}</h2>
+          </Reveal>
+          <div className="mt-10 divide-y divide-white/10 border-t border-white/10">
+            {t.home.faq.map((item, i) => (
+              <Reveal key={item.q} delay={i * 40}>
+                <details className="group py-5">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-bold">
+                    {item.q}
+                    <span className="shrink-0 text-[var(--rs-paper)]/40 transition-transform group-open:rotate-45">
+                      +
+                    </span>
+                  </summary>
+                  <p className="mt-3 text-[var(--rs-paper)]/60">{item.a}</p>
+                </details>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -166,6 +236,16 @@ export default async function MarketingHomePage() {
             >
               {t.home.startFree}
             </Link>
+            <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs tracking-wide text-[var(--rs-paper)]/50">
+              {t.home.trustBullets.map((bullet) => (
+                <li key={bullet} className="flex items-center gap-1.5">
+                  <span className="text-[var(--rs-scan)]" aria-hidden>
+                    ✓
+                  </span>
+                  {bullet}
+                </li>
+              ))}
+            </ul>
           </Reveal>
         </div>
       </section>
