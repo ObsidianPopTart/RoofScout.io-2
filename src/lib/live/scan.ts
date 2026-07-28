@@ -1,4 +1,4 @@
-import type { LeadDraft, ScanBounds, ScanRecord, Lead } from "../types";
+import type { LeadDraft, ScanBounds, ScanRecord, Lead, Condition } from "../types";
 import { createScanWithLeads } from "../store";
 import { isNeglected } from "../leadFilter";
 import { liveConfig } from "./config";
@@ -31,14 +31,21 @@ function buildSalesAngles(draft: LeadDraft): string[] {
 
 async function analyzeBuilding(b: BuildingCandidate): Promise<LeadDraft | null> {
   const solar = await solarInsights(b.lat, b.lng);
-  if (!solar) return null; // no Solar API coverage for this rooftop
+  if (!solar) return null; // no Solar API coverage for this rooftop, or footprint failed the plausible-size check
 
   const [image, geo] = await Promise.all([
     fetchRoofImage(b.lat, b.lng),
     b.address ? Promise.resolve(null) : reverseGeocode(b.lat, b.lng),
   ]);
 
-  const condition = (image && (await gradeRoof(image))) || ungradedCondition();
+  let condition: Condition;
+  if (image) {
+    const outcome = await gradeRoof(image);
+    if (outcome.status === "no-roof") return null; // not actually a rooftop — bad footprint data, tree cover, etc.
+    condition = outcome.status === "graded" ? outcome.condition : ungradedCondition();
+  } else {
+    condition = ungradedCondition();
+  }
   if (!isNeglected(condition)) return null; // AI-graded and looks new/healthy — not a lead
 
   const draft: LeadDraft = {

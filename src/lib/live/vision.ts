@@ -6,21 +6,28 @@ import { liveConfig } from "./config";
 const GRADE_SCHEMA = {
   type: "object",
   properties: {
+    roofVisible: {
+      type: "boolean",
+      description:
+        "False if the center of the image does NOT clearly show a real building rooftop — e.g. it's " +
+        "tree canopy, an empty lot, a road, water, or the building is too obscured to make out any " +
+        "roof surface at all. True only if you can actually see roofing material to grade.",
+    },
     score: {
       type: "integer",
-      description: "Roof condition 0-100. Higher is better. Below 40 = visibly failing, 40-54 = replace soon, 55-69 = early neglect, 70+ = healthy.",
+      description: "Roof condition 0-100. Higher is better. Below 40 = visibly failing, 40-54 = replace soon, 55-69 = early neglect, 70+ = healthy. Ignored when roofVisible is false.",
     },
     issues: {
       type: "array",
       items: { type: "string" },
-      description: "Visible defects, most severe first, max 6. Empty if the roof looks healthy.",
+      description: "Visible defects, most severe first, max 6. Empty if the roof looks healthy or roofVisible is false.",
     },
     summary: {
       type: "string",
-      description: "One or two sentences a roofing sales rep can act on.",
+      description: "One or two sentences a roofing sales rep can act on. If roofVisible is false, briefly say what's actually in the image instead (e.g. \"Center of frame is tree canopy — no rooftop visible\").",
     },
   },
-  required: ["score", "issues", "summary"],
+  required: ["roofVisible", "score", "issues", "summary"],
   additionalProperties: false,
 } as const;
 
@@ -29,6 +36,12 @@ const SYSTEM_PROMPT =
   "imagery for a roofing company that ONLY wants leads on old, neglected roofs — new and " +
   "recently-replaced roofs are worthless to them and must score high so they get filtered out. " +
   "Grade only the roof of the building at the center of the image.\n\n" +
+  "First check roofVisible: the building-footprint data feeding these images is occasionally wrong " +
+  "(a mistagged shed, an inaccurate coordinate, dense tree cover over a rural lot), so the center of " +
+  "the image sometimes has no real rooftop in it at all. If you cannot actually see roofing material " +
+  "to grade — it's trees, an empty lot, a road, water, or the structure is too obscured — set " +
+  "roofVisible to false and do not force a score. This matters: scoring tree canopy as a damaged " +
+  "roof sends a sales rep to a house with no bad roof to sell.\n\n" +
   "Signs of an OLD or NEGLECTED roof (score low): faded, sun-bleached, or unevenly discolored " +
   "shingles; heavy dark algae/moss streaking; missing, curling, or lifted shingle tabs; granule " +
   "loss showing bare/shiny patches; patched sections with mismatched shingle color or style " +
@@ -42,10 +55,18 @@ const SYSTEM_PROMPT =
   "Be conservative and evidence-based either way: satellite imagery has limits, so only report " +
   "issues you can actually see, and say so in the summary when image quality limits the read.";
 
-// Grades one rooftop with Claude vision. Returns null when ANTHROPIC_API_KEY
-// is missing or the call fails — callers fall back to an ungraded condition.
-export async function gradeRoof(imagePng: Buffer): Promise<Condition | null> {
-  if (!liveConfig.anthropicKey) return null;
+export type GradeOutcome =
+  | { status: "graded"; condition: Condition }
+  | { status: "no-roof"; summary: string }
+  | { status: "unavailable" };
+
+// Grades one rooftop with Claude vision. Returns "unavailable" when
+// ANTHROPIC_API_KEY is missing or the call fails — callers fall back to an
+// ungraded condition. Returns "no-roof" when the model can't actually find a
+// rooftop in the image (bad footprint data, tree cover, etc.) — callers
+// should drop that building entirely rather than surface it as a lead.
+export async function gradeRoof(imagePng: Buffer): Promise<GradeOutcome> {
+  if (!liveConfig.anthropicKey) return { status: "unavailable" };
 
   try {
     const client = new Anthropic({ apiKey: liveConfig.anthropicKey, timeout: 20_000 });
@@ -72,30 +93,43 @@ export async function gradeRoof(imagePng: Buffer): Promise<Condition | null> {
               text:
                 "Grade the age/condition of the roof at the center of this satellite image. " +
                 "Remember: this is a neglected-roof search, so a new-looking roof should score " +
-                "high (80+), not moderate.",
+                "high (80+), not moderate. If there's no real rooftop to grade, say so via roofVisible.",
             },
           ],
         },
       ],
     });
 
-    if (response.stop_reason === "refusal") return null;
+    if (response.stop_reason === "refusal") return { status: "unavailable" };
     const text = response.content.find((b) => b.type === "text")?.text;
-    if (!text) return null;
+    if (!text) return { status: "unavailable" };
 
-    const parsed = JSON.parse(text) as { score: number; issues: string[]; summary: string };
+    const parsed = JSON.parse(text) as {
+      roofVisible: boolean;
+      score: number;
+      issues: string[];
+      summary: string;
+    };
+
+    if (!parsed.roofVisible) {
+      return { status: "no-roof", summary: parsed.summary ?? "No rooftop visible in this image." };
+    }
+
     const score = Math.max(0, Math.min(100, Math.round(parsed.score)));
 
     return {
-      score,
-      label: conditionLabel(score),
-      issues: (parsed.issues ?? []).slice(0, 6),
-      summary: parsed.summary ?? "",
-      graded: true,
+      status: "graded",
+      condition: {
+        score,
+        label: conditionLabel(score),
+        issues: (parsed.issues ?? []).slice(0, 6),
+        summary: parsed.summary ?? "",
+        graded: true,
+      },
     };
   } catch (err) {
     console.error("Roof grading failed:", err);
-    return null;
+    return { status: "unavailable" };
   }
 }
 

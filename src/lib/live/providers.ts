@@ -193,6 +193,14 @@ export interface SolarRoofData {
 // if OSM's centroid was slightly off; this is the last line of defense.
 const MAX_PLAUSIBLE_HOME_ROOF_SQFT = 8000;
 
+// ...and essentially never comes in under this either. OSM tags plenty of
+// sheds, garages, and other outbuildings as plain `building=yes` (see
+// NON_RESIDENTIAL_TAGS above — that's a denylist, not an allowlist, so
+// generically-tagged outbuildings aren't caught there), and Solar's
+// "findClosest" will happily measure one of those if it's the nearest
+// building with coverage. A real lead needs a real house to knock on.
+const MIN_PLAUSIBLE_HOME_ROOF_SQFT = 400;
+
 interface SolarResponse {
   solarPotential?: {
     wholeRoofStats?: { areaMeters2?: number; groundAreaMeters2?: number };
@@ -239,7 +247,8 @@ export async function solarInsights(lat: number, lng: number): Promise<SolarRoof
   const groundM2 = sp.wholeRoofStats.groundAreaMeters2 ?? (sp.wholeRoofStats.areaMeters2 ?? 0) / 1.15;
   if (!groundM2) return null;
   const footprintSqFt = Math.round(groundM2 * SQM_TO_SQFT);
-  if (footprintSqFt > MAX_PLAUSIBLE_HOME_ROOF_SQFT) return null; // not a house — skip it
+  if (footprintSqFt > MAX_PLAUSIBLE_HOME_ROOF_SQFT) return null; // too big to be a house — skip it
+  if (footprintSqFt < MIN_PLAUSIBLE_HOME_ROOF_SQFT) return null; // too small — likely a shed/garage, not a house
 
   const segments = sp.roofSegmentStats?.length ?? 2;
   const avgPitchDeg =
