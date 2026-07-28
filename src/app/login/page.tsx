@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
 import { signIn } from "@/lib/auth";
 import { getDictionary } from "@/lib/i18n/getLocale";
+import { checkLoginRateLimit, getClientIp, recordFailedLogin } from "@/lib/rateLimit";
 import Logo from "@/components/Logo";
 
 export const metadata = {
@@ -12,8 +13,19 @@ export const metadata = {
 
 async function loginAction(formData: FormData) {
   "use server";
-  const email = String(formData.get("email") ?? "");
+  const email = String(formData.get("email") ?? "")
+    .toLowerCase()
+    .trim();
   const password = String(formData.get("password") ?? "");
+  const ip = await getClientIp();
+
+  // Checked before touching bcrypt/NextAuth at all — a blocked attempt
+  // costs nothing and never even names which part (email vs password) was
+  // wrong, on top of the generic "invalid" message already used below.
+  const { allowed } = await checkLoginRateLimit(email, ip);
+  if (!allowed) {
+    redirect("/login?error=rate_limited");
+  }
 
   try {
     await signIn("credentials", { email, password, redirectTo: "/app" });
@@ -22,6 +34,7 @@ async function loginAction(formData: FormData) {
     // other error — including Next's internal successful-redirect signal —
     // must be rethrown, not swallowed, or a successful login never redirects.
     if (error instanceof AuthError) {
+      await recordFailedLogin(email, ip);
       redirect("/login?error=invalid");
     }
     throw error;
@@ -48,7 +61,9 @@ export default async function LoginPage({
 
         {error && (
           <p className="mt-4 rounded-lg border border-red-900/60 bg-red-950/60 px-3 py-2 text-sm text-red-300">
-            Wrong email or password.
+            {error === "rate_limited"
+              ? "Too many attempts — please wait a few minutes and try again."
+              : "Wrong email or password."}
           </p>
         )}
 

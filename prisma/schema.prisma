@@ -105,3 +105,16 @@ model Lead {
   @@index([orgId])
   @@index([scanId])
 }
+
+// Failed login attempts only — successful logins never write a row. Checked
+// (and opportunistically pruned) in src/lib/rateLimit.ts to throttle
+// brute-force password guessing per-email and per-IP.
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  email     String
+  ip        String
+  createdAt DateTime @default(now())
+
+  @@index([email, createdAt])
+  @@index([ip, createdAt])
+}
