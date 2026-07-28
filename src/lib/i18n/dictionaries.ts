@@ -233,6 +233,8 @@ export const dictionaries = {
       stormError: "Couldn't load storm alerts — try again shortly.",
       stormNoAlerts: "No active severe weather alerts right now — check back during storm season.",
       stormClickToJump: "Click to jump the map here",
+      showStreets: "Streets",
+      showSatellite: "Satellite",
     },
     leadsPage: {
       title: "Leads",
@@ -568,6 +570,8 @@ export const dictionaries = {
       stormError: "No se pudieron cargar las alertas de tormenta — intenta de nuevo en breve.",
       stormNoAlerts: "No hay alertas de clima severo activas ahora — vuelve a revisar durante la temporada de tormentas.",
       stormClickToJump: "Haz clic para llevar el mapa aquí",
+      showStreets: "Calles",
+      showSatellite: "Satélite",
     },
     leadsPage: {
       title: "Clientes potenciales",

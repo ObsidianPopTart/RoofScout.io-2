@@ -2,8 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import "leaflet/dist/leaflet.css";
-import type { Map as LeafletMap, LayerGroup } from "leaflet";
+import "maplibre-gl/dist/maplibre-gl.css";
+import {
+  Map as MapLibreMap,
+  Marker,
+  Popup,
+  NavigationControl,
+  GlobeControl,
+  type GeoJSONSource,
+} from "maplibre-gl";
 import type { Lead, ScanRecord } from "@/lib/types";
 import type { StormAlert } from "@/lib/weather/nws";
 import { urgencyRank } from "@/lib/leadFilter";
@@ -14,16 +21,46 @@ import { tf } from "@/lib/i18n/format";
 import type { PlanTier } from "@/lib/usage";
 
 type ScanResponse = { scan: ScanRecord; leads: Lead[] };
+type BaseLayer = "satellite" | "streets";
+
+const SATELLITE_SOURCE_ID = "satellite";
+const STREETS_SOURCE_ID = "streets";
+const STORMS_SOURCE_ID = "storms";
+
+// GeoJSON with no features — used to initialize the storms source before any
+// fetch has happened, and to clear it when the layer is toggled off.
+const EMPTY_FEATURE_COLLECTION = { type: "FeatureCollection" as const, features: [] };
+
+function alertsToFeatureCollection(alerts: StormAlert[]) {
+  return {
+    type: "FeatureCollection" as const,
+    features: alerts
+      .filter((a) => a.geometry)
+      .map((a) => ({
+        type: "Feature" as const,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- NWS geometry is plain GeoJSON, no need for the full ambient GeoJSON types here
+        geometry: a.geometry as any,
+        properties: {
+          event: a.event,
+          areaDesc: a.areaDesc,
+          hazard: a.hazard,
+          effective: a.effective,
+          centroidLat: a.centroid?.lat ?? null,
+          centroidLng: a.centroid?.lng ?? null,
+        },
+      })),
+  };
+}
 
 export default function ScanMap({ locale = "en", planTier = "free" }: { locale?: Locale; planTier?: PlanTier }) {
   const t = dictionaries[locale].scanMap;
   const tCondition = dictionaries[locale].condition;
   const mapDivRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<LeafletMap | null>(null);
-  const LRef = useRef<typeof import("leaflet") | null>(null);
-  const markersRef = useRef<LayerGroup | null>(null);
-  const stormLayerRef = useRef<LayerGroup | null>(null);
+  const mapRef = useRef<MapLibreMap | null>(null);
+  const leadMarkersRef = useRef<Marker[]>([]);
 
+  const [mapReady, setMapReady] = useState(false);
+  const [baseLayer, setBaseLayer] = useState<BaseLayer>("satellite");
   const [scanning, setScanning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [limitReached, setLimitReached] = useState(false);
@@ -38,31 +75,96 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
   const [stormAlerts, setStormAlerts] = useState<StormAlert[] | null>(null);
 
   useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      const mod = await import("leaflet");
-      const L = ((mod as { default?: typeof import("leaflet") }).default ?? mod) as typeof import("leaflet");
-      if (cancelled || !mapDivRef.current || mapRef.current) return;
-      LRef.current = L;
+    if (!mapDivRef.current || mapRef.current) return;
 
-      const map = L.map(mapDivRef.current).setView([36.1085, -86.8005], 16);
-      const satellite = L.tileLayer(
-        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        {
-          maxNativeZoom: 19,
-          maxZoom: 20,
-          attribution: "Imagery &copy; Esri, Maxar, Earthstar Geographics",
-        }
-      );
-      const streets = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
+    // Empty style to start — sources/layers are added once in the 'load'
+    // handler below, after MapLibre has a style to attach them to.
+    const map = new MapLibreMap({
+      container: mapDivRef.current,
+      style: { version: 8, sources: {}, layers: [] },
+      center: [-95, 38], // continental US — a deliberately global-looking start
+      zoom: 3.2,
+      attributionControl: { compact: true },
+    });
+    mapRef.current = map;
+    map.addControl(new NavigationControl({ showCompass: true }), "top-left");
+    map.addControl(new GlobeControl(), "top-left");
+
+    map.on("load", () => {
+      // Globe at low zoom, automatically flattens to standard Mercator once
+      // zoomed in past the neighborhood level scanning actually needs.
+      map.setProjection({ type: "globe" });
+      map.setSky({
+        "sky-color": "#0a0d12",
+        "horizon-color": "#7de0c4",
+        "fog-color": "#0a0d12",
+        "fog-ground-blend": 0.5,
+      });
+
+      map.addSource(SATELLITE_SOURCE_ID, {
+        type: "raster",
+        tiles: [
+          "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        ],
+        tileSize: 256,
+        maxzoom: 19,
+        attribution: "Imagery &copy; Esri, Maxar, Earthstar Geographics",
+      });
+      map.addLayer({ id: "satellite-layer", type: "raster", source: SATELLITE_SOURCE_ID });
+
+      map.addSource(STREETS_SOURCE_ID, {
+        type: "raster",
+        tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+        tileSize: 256,
+        maxzoom: 19,
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       });
-      satellite.addTo(map);
-      L.control.layers({ Satellite: satellite, Streets: streets }).addTo(map);
-      markersRef.current = L.layerGroup().addTo(map);
-      mapRef.current = map;
+      map.addLayer({
+        id: "streets-layer",
+        type: "raster",
+        source: STREETS_SOURCE_ID,
+        layout: { visibility: "none" },
+      });
+
+      map.addSource(STORMS_SOURCE_ID, { type: "geojson", data: EMPTY_FEATURE_COLLECTION });
+      map.addLayer({
+        id: "storms-fill",
+        type: "fill",
+        source: STORMS_SOURCE_ID,
+        layout: { visibility: "none" },
+        paint: { "fill-color": "#ff5a36", "fill-opacity": 0.15 },
+      });
+      map.addLayer({
+        id: "storms-line",
+        type: "line",
+        source: STORMS_SOURCE_ID,
+        layout: { visibility: "none" },
+        paint: { "line-color": "#ff5a36", "line-width": 2 },
+      });
+
+      map.on("mouseenter", "storms-fill", () => {
+        map.getCanvas().style.cursor = "pointer";
+      });
+      map.on("mouseleave", "storms-fill", () => {
+        map.getCanvas().style.cursor = "";
+      });
+      map.on("click", "storms-fill", (e) => {
+        const feature = e.features?.[0];
+        if (!feature) return;
+        const props = feature.properties as Record<string, string | number | null>;
+        new Popup({ offset: 12 })
+          .setLngLat(e.lngLat)
+          .setHTML(
+            `<strong>${props.event}</strong><br/>${props.areaDesc}<br/>${props.hazard}` +
+              `<br/><span style="font-size:11px;color:#666">Effective ${new Date(String(props.effective)).toLocaleString()}</span>` +
+              `<br/><span style="font-size:11px;color:#666">${t.stormClickToJump}</span>`
+          )
+          .addTo(map);
+        if (props.centroidLat != null && props.centroidLng != null) {
+          map.flyTo({ center: [Number(props.centroidLng), Number(props.centroidLat)], zoom: 15 });
+        }
+      });
 
       const updateArea = () => {
         const b = map.getBounds();
@@ -73,14 +175,24 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
       map.on("moveend", updateArea);
       map.on("zoomend", updateArea);
       updateArea();
-    })();
+      setMapReady(true);
+    });
 
     return () => {
-      cancelled = true;
-      mapRef.current?.remove();
+      map.remove();
       mapRef.current = null;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- map is created once; t.stormClickToJump is static per-locale-mount
   }, []);
+
+  function toggleBaseLayer() {
+    const map = mapRef.current;
+    if (!map) return;
+    const next: BaseLayer = baseLayer === "satellite" ? "streets" : "satellite";
+    map.setLayoutProperty("satellite-layer", "visibility", next === "satellite" ? "visible" : "none");
+    map.setLayoutProperty("streets-layer", "visibility", next === "streets" ? "visible" : "none");
+    setBaseLayer(next);
+  }
 
   async function searchAddress(e: React.FormEvent) {
     e.preventDefault();
@@ -94,7 +206,7 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
       const res = await fetch(`/api/geocode?address=${encodeURIComponent(query)}`);
       const body = await res.json().catch(() => null);
       if (!res.ok) throw new Error(body?.error ?? t.couldntFindAddress);
-      map.setView([body.lat, body.lng], 18);
+      map.flyTo({ center: [body.lng, body.lat], zoom: 18 });
     } catch (err) {
       setAddressError(err instanceof Error ? err.message : t.couldntFindAddress);
     } finally {
@@ -104,40 +216,18 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
 
   function pan(dx: number, dy: number) {
     const map = mapRef.current;
-    if (!map) return;
-    const size = map.getSize();
-    map.panBy([dx * size.x * 0.35, dy * size.y * 0.35]);
-  }
-
-  function renderStormLayer(alerts: StormAlert[]) {
-    const L = LRef.current;
-    const map = mapRef.current;
-    if (!L || !map) return;
-    if (!stormLayerRef.current) stormLayerRef.current = L.layerGroup().addTo(map);
-    const layer = stormLayerRef.current;
-    layer.clearLayers();
-
-    for (const alert of alerts) {
-      if (!alert.geometry) continue;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- NWS geometry is plain GeoJSON, no need for the full ambient GeoJSON types here
-      const geoLayer = L.geoJSON(alert.geometry as any, {
-        style: { color: "#ff5a36", weight: 2, fillColor: "#ff5a36", fillOpacity: 0.15 },
-      });
-      geoLayer.bindPopup(
-        `<strong>${alert.event}</strong><br/>${alert.areaDesc}<br/>${alert.hazard}` +
-          `<br/><span style="font-size:11px;color:#666">Effective ${new Date(alert.effective).toLocaleString()}</span>` +
-          `<br/><span style="font-size:11px;color:#666">${t.stormClickToJump}</span>`
-      );
-      geoLayer.on("click", () => {
-        if (alert.centroid) map.setView([alert.centroid.lat, alert.centroid.lng], 15);
-      });
-      geoLayer.addTo(layer);
-    }
+    const el = mapDivRef.current;
+    if (!map || !el) return;
+    map.panBy([dx * el.clientWidth * 0.35, dy * el.clientHeight * 0.35]);
   }
 
   async function toggleStorms() {
+    const map = mapRef.current;
+    if (!map) return;
+
     if (stormsOn) {
-      stormLayerRef.current?.clearLayers();
+      map.setLayoutProperty("storms-fill", "visibility", "none");
+      map.setLayoutProperty("storms-line", "visibility", "none");
       setStormsOn(false);
       return;
     }
@@ -148,8 +238,11 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
       const res = await fetch("/api/storm-alerts");
       const data = await res.json().catch(() => null);
       if (!res.ok) throw new Error(data?.error ?? t.stormError);
-      setStormAlerts(data.alerts as StormAlert[]);
-      renderStormLayer(data.alerts as StormAlert[]);
+      const alerts = data.alerts as StormAlert[];
+      setStormAlerts(alerts);
+      (map.getSource(STORMS_SOURCE_ID) as GeoJSONSource).setData(alertsToFeatureCollection(alerts));
+      map.setLayoutProperty("storms-fill", "visibility", "visible");
+      map.setLayoutProperty("storms-line", "visibility", "visible");
       setStormsOn(true);
     } catch (e) {
       setStormError(e instanceof Error ? e.message : t.stormError);
@@ -160,8 +253,7 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
 
   async function runScan() {
     const map = mapRef.current;
-    const L = LRef.current;
-    if (!map || !L) return;
+    if (!map) return;
     setError(null);
     setLimitReached(false);
 
@@ -191,24 +283,27 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
       }
       const data = (await res.json()) as ScanResponse;
 
-      const markers = markersRef.current!;
-      markers.clearLayers();
+      leadMarkersRef.current.forEach((m) => m.remove());
+      leadMarkersRef.current = [];
       for (const lead of data.leads) {
-        L.circleMarker([lead.lat, lead.lng], {
-          radius: 9,
-          color: "#ffffff",
-          weight: 2,
-          fillColor: CONDITION_COLORS[lead.condition.label] ?? "#64748b",
-          fillOpacity: 0.95,
-        })
-          .bindPopup(
-            `<strong>${lead.address}</strong><br/>` +
-              (lead.condition.graded
-                ? `${tCondition[lead.condition.label]} — score ${lead.condition.score}/100<br/>`
-                : `${tCondition.Ungraded} — condition not verified<br/>`) +
-              `<a href="/app/leads/${lead.id}">Open profile →</a>`
-          )
-          .addTo(markers);
+        const el = document.createElement("div");
+        el.style.width = "18px";
+        el.style.height = "18px";
+        el.style.borderRadius = "50%";
+        el.style.border = "2px solid #fff";
+        el.style.boxShadow = "0 0 4px rgba(0,0,0,0.5)";
+        el.style.background = CONDITION_COLORS[lead.condition.label] ?? "#64748b";
+        el.style.cursor = "pointer";
+
+        const popup = new Popup({ offset: 14 }).setHTML(
+          `<strong>${lead.address}</strong><br/>` +
+            (lead.condition.graded
+              ? `${tCondition[lead.condition.label]} — score ${lead.condition.score}/100<br/>`
+              : `${tCondition.Ungraded} — condition not verified<br/>`) +
+            `<a href="/app/leads/${lead.id}">Open profile →</a>`
+        );
+        const marker = new Marker({ element: el }).setLngLat([lead.lng, lead.lat]).setPopup(popup).addTo(map);
+        leadMarkersRef.current.push(marker);
       }
       setResult(data);
     } catch (e) {
@@ -226,7 +321,7 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
 
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_330px]">
-      <div className="relative">
+      <div>
         <form onSubmit={searchAddress} className="mb-2 flex gap-2">
           <input
             type="text"
@@ -246,15 +341,25 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
         {addressError && (
           <p className="mb-2 text-xs font-medium text-red-600 dark:text-red-400">{addressError}</p>
         )}
-        <div
-          ref={mapDivRef}
-          className="h-[68vh] w-full rounded-xl border border-slate-200 shadow-sm dark:border-slate-800"
-        />
-        {/* Pan controls — Leaflet already supports drag-to-pan; these give
-            precise, discoverable directional control (useful on touch/trackpad
-            and for fine-tuning right before a scan). */}
-        <div className="absolute bottom-3 right-3 z-[1000] grid grid-cols-3 grid-rows-2 gap-1">
-          <div />
+        <div className="relative">
+          <div
+            ref={mapDivRef}
+            className="h-[68vh] w-full overflow-hidden rounded-xl border border-slate-200 shadow-sm dark:border-slate-800"
+          />
+          {mapReady && (
+            <button
+              type="button"
+              onClick={toggleBaseLayer}
+              className="absolute top-3 right-3 z-[1000] rounded-md bg-white/90 px-2.5 py-1.5 text-xs font-semibold text-slate-700 shadow hover:bg-white dark:bg-slate-800/90 dark:text-slate-200 dark:hover:bg-slate-800"
+            >
+              {baseLayer === "satellite" ? t.showStreets : t.showSatellite}
+            </button>
+          )}
+          {/* Pan controls — precise, discoverable directional control (useful
+              on touch/trackpad and for fine-tuning right before a scan),
+              alongside MapLibre's own drag-to-pan and drag-to-rotate. */}
+          <div className="absolute bottom-3 right-3 z-[1000] grid grid-cols-3 grid-rows-2 gap-1">
+            <div />
           <button
             type="button"
             aria-label={t.panUp}
@@ -288,13 +393,14 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
           >
             →
           </button>
+          </div>
         </div>
       </div>
 
       <div className="flex max-h-[68vh] flex-col gap-3">
         <button
           onClick={runScan}
-          disabled={scanning}
+          disabled={scanning || !mapReady}
           className="rounded-lg bg-amber-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-700 disabled:cursor-wait disabled:bg-amber-400"
         >
           {scanning ? t.scanning : t.scanButton}
@@ -308,7 +414,7 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
           <button
             type="button"
             onClick={toggleStorms}
-            disabled={stormsLoading}
+            disabled={stormsLoading || !mapReady}
             className={`rounded-lg border px-4 py-2 text-sm font-semibold shadow-sm transition disabled:cursor-wait ${
               stormsOn
                 ? "border-orange-300 bg-orange-50 text-orange-800 hover:bg-orange-100 dark:border-orange-900 dark:bg-orange-950 dark:text-orange-300"
