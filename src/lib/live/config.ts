@@ -13,6 +13,9 @@ export const liveConfig = {
   get visionModel(): string {
     return process.env.ROOFSCOUT_VISION_MODEL ?? "claude-opus-4-8";
   },
+  get supportModel(): string {
+    return process.env.ROOFSCOUT_SUPPORT_MODEL ?? "claude-haiku-4-5";
+  },
 };
 
 export function isLiveMode(): boolean {

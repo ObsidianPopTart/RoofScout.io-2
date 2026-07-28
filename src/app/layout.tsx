@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { isLiveMode } from "@/lib/live/config";
 import OfflineBanner from "@/components/OfflineBanner";
+import SupportChat from "@/components/SupportChat";
 import { themeInitScript } from "@/components/ThemeToggle";
-import { getLocale } from "@/lib/i18n/getLocale";
+import { getDictionary } from "@/lib/i18n/getLocale";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -48,7 +49,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const locale = await getLocale();
+  const { locale, t } = await getDictionary();
   return (
     <html
       lang={locale}
@@ -72,6 +73,7 @@ export default async function RootLayout({
         )}
         <main className="flex flex-1 flex-col">{children}</main>
         <OfflineBanner locale={locale} />
+        <SupportChat t={t.supportChat} />
       </body>
     </html>
   );

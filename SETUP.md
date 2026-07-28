@@ -52,6 +52,10 @@ most US metro areas) and click **Scan visible area**. Live scans take longer tha
 - `ROOFSCOUT_MAX_BUILDINGS` caps rooftops per scan (default 15).
 - `ROOFSCOUT_VISION_MODEL=claude-haiku-4-5` cuts grading cost ~5x.
 - Rooftops without Solar API coverage are skipped automatically (no charge for grading).
+- The support chat widget (bottom-right on every page) reuses `ANTHROPIC_API_KEY` and defaults
+  to `claude-haiku-4-5`; override with `ROOFSCOUT_SUPPORT_MODEL`. It's anonymous and stateless
+  (no per-user rate limiting), so abuse control is a hard 16-message cap per browser session —
+  add real per-IP throttling before this gets meaningful public traffic.
 
 ## Compliance notes
 
