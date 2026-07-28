@@ -54,6 +54,10 @@ export const dictionaries = {
           q: "What areas does RoofScout cover?",
           a: "Anywhere with Google satellite imagery and Solar API coverage, which includes most of the US.",
         },
+        {
+          q: "What is Storm Tracker?",
+          a: "An Apex-only map layer that shows active severe thunderstorm and tornado warnings from the National Weather Service right on your scan map. Click a storm to jump the map there and scan the neighborhoods that just took hail or wind damage — the highest-conversion window in roofing sales.",
+        },
       ],
     },
     pricing: {
@@ -77,6 +81,10 @@ export const dictionaries = {
           q: "What's included in every plan?",
           a: "Live satellite scanning, AI condition grading, and CSV export — even on the free plan.",
         },
+        {
+          q: "What does Apex include that Pro doesn't?",
+          a: "Unlimited scans, priority support, and Storm Tracker — a live severe-weather overlay on the scan map so you can target neighborhoods hit by hail or wind the moment a warning is issued, instead of scanning blind.",
+        },
       ],
       free: {
         name: "Free",
@@ -94,7 +102,7 @@ export const dictionaries = {
         name: "Apex",
         detail: "Unlimited scans",
         cta: "Start free, upgrade anytime",
-        features: ["Everything in Pro", "Unlimited scans", "Priority support"],
+        features: ["Everything in Pro", "Unlimited scans", "Priority support", "Storm Tracker — target scans to active severe weather"],
       },
       footnote:
         "Every plan includes live satellite scanning, AI condition grading, and CSV export. Upgrade or cancel anytime from your billing page.",
@@ -218,6 +226,13 @@ export const dictionaries = {
       panLeft: "Pan left",
       panDown: "Pan down",
       panRight: "Pan right",
+      stormShow: "🌩 Storm Tracker",
+      stormHide: "Hide storm tracker",
+      stormLoading: "Loading storms…",
+      stormLocked: "🔒 Storm Tracker — Apex only",
+      stormError: "Couldn't load storm alerts — try again shortly.",
+      stormNoAlerts: "No active severe weather alerts right now — check back during storm season.",
+      stormClickToJump: "Click to jump the map here",
     },
     leadsPage: {
       title: "Leads",
@@ -374,6 +389,10 @@ export const dictionaries = {
           q: "¿Qué áreas cubre RoofScout?",
           a: "Cualquier lugar con cobertura de imágenes satelitales de Google y de la API de Google Solar, lo que incluye la mayor parte de EE. UU.",
         },
+        {
+          q: "¿Qué es el Rastreador de tormentas?",
+          a: "Una capa del mapa exclusiva de Apex que muestra alertas activas de tormentas severas y tornados del Servicio Meteorológico Nacional directamente en tu mapa de escaneo. Haz clic en una tormenta para llevar el mapa allí y escanear los vecindarios que acaban de recibir daño por granizo o viento — la ventana de mayor conversión en ventas de techado.",
+        },
       ],
     },
     pricing: {
@@ -392,6 +411,10 @@ export const dictionaries = {
         {
           q: "¿Hay contrato o costo de instalación?",
           a: "No. Todos los planes son mes a mes, sin costo de instalación ni cargos por cancelación.",
+        },
+        {
+          q: "¿Qué incluye Apex que Pro no tiene?",
+          a: "Escaneos ilimitados, soporte prioritario y el Rastreador de tormentas — una capa de clima severo en vivo sobre el mapa de escaneo para que puedas enfocarte en vecindarios golpeados por granizo o viento en el momento en que se emite la alerta, en lugar de escanear a ciegas.",
         },
         {
           q: "¿Qué incluye cada plan?",
@@ -414,7 +437,7 @@ export const dictionaries = {
         name: "Apex",
         detail: "Escaneos ilimitados",
         cta: "Empieza gratis, mejora cuando quieras",
-        features: ["Todo lo de Pro", "Escaneos ilimitados", "Soporte prioritario"],
+        features: ["Todo lo de Pro", "Escaneos ilimitados", "Soporte prioritario", "Rastreador de tormentas — enfoca escaneos en clima severo activo"],
       },
       footnote:
         "Todos los planes incluyen escaneo satelital en vivo, calificación de estado con IA y exportación a CSV. Mejora o cancela cuando quieras desde tu página de facturación.",
@@ -538,6 +561,13 @@ export const dictionaries = {
       panLeft: "Desplazar izquierda",
       panDown: "Desplazar abajo",
       panRight: "Desplazar derecha",
+      stormShow: "🌩 Rastreador de tormentas",
+      stormHide: "Ocultar rastreador de tormentas",
+      stormLoading: "Cargando tormentas…",
+      stormLocked: "🔒 Rastreador de tormentas — solo Apex",
+      stormError: "No se pudieron cargar las alertas de tormenta — intenta de nuevo en breve.",
+      stormNoAlerts: "No hay alertas de clima severo activas ahora — vuelve a revisar durante la temporada de tormentas.",
+      stormClickToJump: "Haz clic para llevar el mapa aquí",
     },
     leadsPage: {
       title: "Clientes potenciales",

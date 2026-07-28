@@ -5,21 +5,24 @@ import Link from "next/link";
 import "leaflet/dist/leaflet.css";
 import type { Map as LeafletMap, LayerGroup } from "leaflet";
 import type { Lead, ScanRecord } from "@/lib/types";
+import type { StormAlert } from "@/lib/weather/nws";
 import { urgencyRank } from "@/lib/leadFilter";
 import { CONDITION_COLORS } from "@/components/ConditionBadge";
 import { boundsAreaKm2, isScanAreaTooLarge, MAX_SCAN_AREA_KM2 } from "@/lib/scanBounds";
 import { dictionaries, type Locale } from "@/lib/i18n/dictionaries";
 import { tf } from "@/lib/i18n/format";
+import type { PlanTier } from "@/lib/usage";
 
 type ScanResponse = { scan: ScanRecord; leads: Lead[] };
 
-export default function ScanMap({ locale = "en" }: { locale?: Locale }) {
+export default function ScanMap({ locale = "en", planTier = "free" }: { locale?: Locale; planTier?: PlanTier }) {
   const t = dictionaries[locale].scanMap;
   const tCondition = dictionaries[locale].condition;
   const mapDivRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LeafletMap | null>(null);
   const LRef = useRef<typeof import("leaflet") | null>(null);
   const markersRef = useRef<LayerGroup | null>(null);
+  const stormLayerRef = useRef<LayerGroup | null>(null);
 
   const [scanning, setScanning] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,6 +32,10 @@ export default function ScanMap({ locale = "en" }: { locale?: Locale }) {
   const [addressQuery, setAddressQuery] = useState("");
   const [searchingAddress, setSearchingAddress] = useState(false);
   const [addressError, setAddressError] = useState<string | null>(null);
+  const [stormsOn, setStormsOn] = useState(false);
+  const [stormsLoading, setStormsLoading] = useState(false);
+  const [stormError, setStormError] = useState<string | null>(null);
+  const [stormAlerts, setStormAlerts] = useState<StormAlert[] | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -100,6 +107,55 @@ export default function ScanMap({ locale = "en" }: { locale?: Locale }) {
     if (!map) return;
     const size = map.getSize();
     map.panBy([dx * size.x * 0.35, dy * size.y * 0.35]);
+  }
+
+  function renderStormLayer(alerts: StormAlert[]) {
+    const L = LRef.current;
+    const map = mapRef.current;
+    if (!L || !map) return;
+    if (!stormLayerRef.current) stormLayerRef.current = L.layerGroup().addTo(map);
+    const layer = stormLayerRef.current;
+    layer.clearLayers();
+
+    for (const alert of alerts) {
+      if (!alert.geometry) continue;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- NWS geometry is plain GeoJSON, no need for the full ambient GeoJSON types here
+      const geoLayer = L.geoJSON(alert.geometry as any, {
+        style: { color: "#ff5a36", weight: 2, fillColor: "#ff5a36", fillOpacity: 0.15 },
+      });
+      geoLayer.bindPopup(
+        `<strong>${alert.event}</strong><br/>${alert.areaDesc}<br/>${alert.hazard}` +
+          `<br/><span style="font-size:11px;color:#666">Effective ${new Date(alert.effective).toLocaleString()}</span>` +
+          `<br/><span style="font-size:11px;color:#666">${t.stormClickToJump}</span>`
+      );
+      geoLayer.on("click", () => {
+        if (alert.centroid) map.setView([alert.centroid.lat, alert.centroid.lng], 15);
+      });
+      geoLayer.addTo(layer);
+    }
+  }
+
+  async function toggleStorms() {
+    if (stormsOn) {
+      stormLayerRef.current?.clearLayers();
+      setStormsOn(false);
+      return;
+    }
+
+    setStormsLoading(true);
+    setStormError(null);
+    try {
+      const res = await fetch("/api/storm-alerts");
+      const data = await res.json().catch(() => null);
+      if (!res.ok) throw new Error(data?.error ?? t.stormError);
+      setStormAlerts(data.alerts as StormAlert[]);
+      renderStormLayer(data.alerts as StormAlert[]);
+      setStormsOn(true);
+    } catch (e) {
+      setStormError(e instanceof Error ? e.message : t.stormError);
+    } finally {
+      setStormsLoading(false);
+    }
   }
 
   async function runScan() {
@@ -247,6 +303,32 @@ export default function ScanMap({ locale = "en" }: { locale?: Locale }) {
           {areaKm2 !== null ? tf(t.visibleArea, { area: areaKm2.toFixed(1) }) : "…"} ·{" "}
           {tf(t.largerAreasTakeLonger, { max: MAX_SCAN_AREA_KM2 })}
         </p>
+
+        {planTier === "apex" ? (
+          <button
+            type="button"
+            onClick={toggleStorms}
+            disabled={stormsLoading}
+            className={`rounded-lg border px-4 py-2 text-sm font-semibold shadow-sm transition disabled:cursor-wait ${
+              stormsOn
+                ? "border-orange-300 bg-orange-50 text-orange-800 hover:bg-orange-100 dark:border-orange-900 dark:bg-orange-950 dark:text-orange-300"
+                : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+            }`}
+          >
+            {stormsLoading ? t.stormLoading : stormsOn ? t.stormHide : t.stormShow}
+          </button>
+        ) : (
+          <Link
+            href="/app/billing"
+            className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-center text-sm font-semibold text-slate-500 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400 dark:hover:bg-slate-800"
+          >
+            {t.stormLocked}
+          </Link>
+        )}
+        {stormError && <p className="text-xs font-medium text-red-600 dark:text-red-400">{stormError}</p>}
+        {stormsOn && stormAlerts?.length === 0 && (
+          <p className="text-xs text-slate-500 dark:text-slate-400">{t.stormNoAlerts}</p>
+        )}
 
         {error && (
           <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-300">

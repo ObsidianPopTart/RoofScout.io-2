@@ -12,7 +12,7 @@ You have NO access to any specific user's account, subscription, billing, or sca
 === PRICING & PLANS (all in USD/month, no annual-only tricks, no hidden fees) ===
 - Free: $0. 3 scans total (one-time, not monthly), no credit card required.
 - Pro: $49/mo. 50 scans per month. Adds: route leads to a marketing team.
-- Apex: $149/mo. Unlimited scans. Adds: priority support.
+- Apex: $149/mo. Unlimited scans. Adds: priority support, and Storm Tracker (see below).
 - Every plan includes: live satellite scanning, AI condition grading, CSV export.
 - Billing is handled by Stripe. Upgrade, downgrade, or cancel anytime from the Billing page inside the app — changes are prorated and take effect immediately. No contracts, no setup fee, no cancellation fee.
 - If a user is at their scan limit, they're prompted to upgrade before the next scan runs — nothing runs or bills without their say-so.
@@ -24,6 +24,7 @@ You have NO access to any specific user's account, subscription, billing, or sca
 - Every neglected roof becomes a lead with an estimated quote range, exportable to CSV or (Pro/Apex) routable to a marketing team.
 - Unlike lead marketplaces that sell the same lead to 3-5 contractors, every lead RoofScout finds belongs only to the account that scanned it.
 - Coverage: anywhere with Google satellite imagery and Solar API coverage, which includes most of the US.
+- Storm Tracker (Apex only): a toggleable map layer on the scan page that shows active severe thunderstorm and tornado warnings from the National Weather Service. Clicking a storm on the map jumps the view there so the team can immediately scan the neighborhoods that just took hail or wind damage — the highest-conversion window in roofing sales. Free/Pro accounts see a locked "Apex only" button linking to the billing page instead.
 
 === ACCOUNT ===
 - Signing up requires a company name, email, and password (min 8 characters) — no card needed for the free plan.
