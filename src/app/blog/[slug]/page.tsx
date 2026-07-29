@@ -113,9 +113,36 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     mainEntityOfPage: `${SITE_URL}/blog/${post.slug}`,
   };
 
+  // Breadcrumb rich results in Google search — Home > Blog > this post.
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+      { "@type": "ListItem", position: 3, name: post.title, item: `${SITE_URL}/blog/${post.slug}` },
+    ],
+  };
+
+  // A genuine step-by-step HowTo, not forced onto every post — only the
+  // canvassing checklist is actually structured as sequential steps.
+  const howToJsonLd = post.howToSteps
+    ? {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        name: post.title,
+        description: post.description,
+        step: post.howToSteps.map((s) => ({ "@type": "HowToStep", name: s.name, text: s.text })),
+      }
+    : null;
+
   return (
     <div className="flex flex-1 flex-col bg-[var(--rs-ink)] text-[var(--rs-paper)]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      {howToJsonLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
+      )}
       <nav>
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4">
           <Link href="/" className="flex shrink-0 items-center gap-2 text-lg font-semibold">

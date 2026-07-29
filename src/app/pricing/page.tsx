@@ -18,6 +18,8 @@ const PLAN_META = {
   apex: { price: "$149", period: "/mo" },
 } as const;
 
+const SITE_URL = "https://roof-scout.org";
+
 export default async function PricingPage() {
   const { locale, t } = await getDictionary();
 
@@ -31,9 +33,19 @@ export default async function PricingPage() {
     })),
   };
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Pricing", item: `${SITE_URL}/pricing` },
+    ],
+  };
+
   return (
     <div className="flex flex-1 flex-col bg-[var(--rs-ink)] text-[var(--rs-paper)]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <nav>
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4">
           <Link href="/" className="flex shrink-0 items-center gap-2 text-lg font-semibold">

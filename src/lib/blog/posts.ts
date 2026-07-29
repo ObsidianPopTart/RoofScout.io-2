@@ -17,6 +17,10 @@ export interface BlogPost {
   publishedAt: string; // ISO date
   readingMinutes: number;
   body: BlogBlock[];
+  // Only set on posts that are genuinely sequential step-by-step guides —
+  // powers an additional HowTo JSON-LD block (Google rich-result eligible)
+  // on top of the standard Article schema. Not forced onto every post.
+  howToSteps?: { name: string; text: string }[];
 }
 
 export const BLOG_POSTS: BlogPost[] = [
@@ -85,6 +89,32 @@ export const BLOG_POSTS: BlogPost[] = [
       "A pre-visit checklist and door-knock script for roofing sales reps — what to check before you knock, what to say in the first 10 seconds, and how to avoid wasting a trip.",
     publishedAt: "2026-06-16",
     readingMinutes: 6,
+    howToSteps: [
+      {
+        name: "Pull a ranked list of the worst-condition roofs",
+        text: "Target the neighborhood with a ranked list of the worst-condition roofs, not just an address list, so every knock is worth the drive.",
+      },
+      {
+        name: "Know the roof before you knock",
+        text: "Confirm the roof's approximate age, material, and square footage before you arrive — never estimate from the sidewalk.",
+      },
+      {
+        name: "Bring the aerial photo",
+        text: "Print or screenshot the aerial view of the roof. Homeowners rarely see their own roof from above, and it's the most effective prop in a door-knock.",
+      },
+      {
+        name: "Lead with what you saw, not who you are",
+        text: "Open with the specific issue visible from the street, not a company introduction — a concrete observation earns the next thirty seconds.",
+      },
+      {
+        name: "Bring a rough quote range and a specific issue to point to",
+        text: "Have a credible price range ready and a visible defect the homeowner can walk outside and verify themselves.",
+      },
+      {
+        name: "Leave a specific note, not a generic flyer",
+        text: "If no one answers, leave something naming the specific finding — a generic \"free estimates\" flyer gets thrown out.",
+      },
+    ],
     body: [
       {
         type: "p",

@@ -14,12 +14,24 @@ export const metadata: Metadata = {
   alternates: { canonical: "/blog" },
 };
 
+const SITE_URL = "https://roof-scout.org";
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+    { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+  ],
+};
+
 export default async function BlogIndexPage() {
   const { locale, t } = await getDictionary();
   const posts = [...BLOG_POSTS].sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
 
   return (
     <div className="flex flex-1 flex-col bg-[var(--rs-ink)] text-[var(--rs-paper)]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <nav>
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4">
           <Link href="/" className="flex shrink-0 items-center gap-2 text-lg font-semibold">
