@@ -12,9 +12,10 @@ export default function PrivacyPolicyPage() {
 
       <div className="prose prose-slate mt-8 max-w-none space-y-6 text-sm leading-relaxed">
         <p>
-          RoofScout (&quot;we,&quot; &quot;us&quot;) is operated by Godspeed Studios. This policy explains
-          what information we collect through the RoofScout website and Android app, why we collect it,
-          and how it&apos;s handled.
+          RoofScout is a software service published and operated by Lunchbox (&quot;Lunchbox,&quot;
+          &quot;we,&quot; &quot;us&quot;) — RoofScout itself is not a company. This policy explains what
+          information we collect through the RoofScout website and Android app, why we collect it, and
+          how it&apos;s handled.
         </p>
 
         <section>
