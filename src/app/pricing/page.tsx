@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Logo from "@/components/Logo";
+import LunchboxBadge from "@/components/LunchboxBadge";
 import ThemeToggle from "@/components/ThemeToggle";
 import LocaleToggle from "@/components/LocaleToggle";
 import { getDictionary } from "@/lib/i18n/getLocale";
@@ -174,6 +175,7 @@ export default async function PricingPage() {
         <Link href="/privacy" className="underline hover:text-[var(--rs-paper)]/70">
           Privacy Policy
         </Link>
+        <LunchboxBadge />
       </footer>
     </div>
   );

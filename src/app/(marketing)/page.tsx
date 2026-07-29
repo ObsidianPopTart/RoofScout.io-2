@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "@/components/Logo";
+import LunchboxBadge from "@/components/LunchboxBadge";
 import ThemeToggle from "@/components/ThemeToggle";
 import LocaleToggle from "@/components/LocaleToggle";
 import ScanHero from "@/components/ScanHero";
@@ -259,6 +260,7 @@ export default async function MarketingHomePage() {
         <Link href="/privacy" className="underline hover:text-[var(--rs-paper)]/70">
           Privacy Policy
         </Link>
+        <LunchboxBadge />
       </footer>
     </div>
   );
