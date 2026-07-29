@@ -81,6 +81,17 @@ function renderBlock(block: BlogBlock, key: number) {
           {block.text}
         </blockquote>
       );
+    case "link":
+      return (
+        <p key={key} className="mt-6">
+          <Link
+            href={block.href}
+            className="text-lg font-semibold text-[var(--rs-amber)] underline-offset-4 hover:underline"
+          >
+            {block.text}
+          </Link>
+        </p>
+      );
   }
 }
 
