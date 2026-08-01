@@ -433,6 +433,66 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: "roofscout-vs-roofr-vs-eagleview",
+    title: "RoofScout vs. Roofr vs. EagleView: Which One Actually Fits Your Team?",
+    description:
+      "An honest comparison of RoofScout, Roofr, and EagleView for roofing companies — what each one actually does, real pricing, and which combination makes sense depending on where your bottleneck is.",
+    publishedAt: "2026-08-01",
+    readingMinutes: 7,
+    body: [
+      {
+        type: "p",
+        text: "These three tools get compared a lot, but they're not really solving the same problem — and the honest answer for most roofing companies isn't \"pick one,\" it's \"know which gap each one fills.\" Here's what each actually does, what it costs, and where the overlap and the differences really are.",
+      },
+      { type: "h2", text: "RoofScout: finding which roofs to target" },
+      {
+        type: "p",
+        text: "RoofScout scans a whole neighborhood at once — satellite imagery, Google Solar measurement data, and AI vision grading of every rooftop's condition — and hands back a ranked, priced list of the roofs actually worth a knock. It's built for the step before a lead exists: deciding where to point your team in the first place, across an entire area rather than one address at a time.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Free: 3 scans total, no card required",
+          "Pro: $49/mo, 50 scans/month",
+          "Apex: $149/mo, unlimited scans + Storm Tracker (targets scans to active severe weather)",
+        ],
+      },
+      { type: "h2", text: "Roofr: running the deal once you have an address" },
+      {
+        type: "p",
+        text: "Roofr is a full back-office platform built around a specific address you already have: instant estimates, $13 measurement reports delivered in about 2 hours, proposals, material ordering, invoicing, payments, and scheduling — the CRM and paperwork layer of actually closing and running a job. It offers one free measurement report to try it, then per-seat monthly plans.",
+      },
+      { type: "h2", text: "EagleView: the insurance-grade measurement standard" },
+      {
+        type: "p",
+        text: "EagleView remains the industry default for insurance restoration work and complex commercial measurement — reports range roughly $13 for a basic aerial measurement up to $87+ for premium reports with full diagrams. It's not a lead-gen or prospecting tool; it's the measurement report insurance adjusters and complex jobs are used to seeing.",
+      },
+      { type: "h2", text: "The honest comparison" },
+      {
+        type: "p",
+        text: "RoofScout and Roofr genuinely don't compete for the same job — RoofScout tells you where to go, Roofr helps you run the deal once you're there. A lot of roofing companies end up using both: RoofScout to build the target list, Roofr (or EagleView, for insurance work) to measure and quote the specific address once a homeowner says yes. Where RoofScout is different from both is the condition read itself — instead of a generic \"damage detected\" flag, RoofScout's AI actually writes a specific assessment (staining, moss, missing shingles, sagging lines) for each rooftop, the same signals an inspector looks for from the street.",
+      },
+      {
+        type: "quote",
+        text: "If your bottleneck is \"we don't know which houses in this neighborhood need a roof,\" that's RoofScout. If your bottleneck is \"we have the address, now what,\" that's Roofr or EagleView.",
+      },
+      { type: "h2", text: "Which one should you start with?" },
+      {
+        type: "ul",
+        items: [
+          "Mostly canvassing blind, unsure which streets are worth driving: start with RoofScout.",
+          "Already have a steady lead flow but a slow, paperwork-heavy close: start with Roofr.",
+          "Doing insurance restoration or complex commercial work: EagleView's report format is what adjusters expect.",
+        ],
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
 ];
 
 export function getBlogPost(slug: string): BlogPost | undefined {

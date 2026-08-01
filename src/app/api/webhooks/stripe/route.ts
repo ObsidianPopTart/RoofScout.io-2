@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { prisma } from "@/lib/db";
-import { stripe, STRIPE_PRICE_IDS } from "@/lib/stripe";
+import { stripe, STRIPE_PRICE_IDS, SCAN_PACK_CREDITS } from "@/lib/stripe";
 import { applyReferralRewardOnFirstConversion } from "@/lib/referral";
+import { releaseAllTerritoriesForOrg } from "@/lib/territory";
 
 function planForPriceId(priceId: string | undefined): "pro" | "apex" | null {
   if (priceId === STRIPE_PRICE_IDS.pro) return "pro";
@@ -31,7 +32,20 @@ export async function POST(request: Request) {
     case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session;
       const orgId = session.metadata?.orgId ?? session.client_reference_id;
-      if (!orgId || typeof session.subscription !== "string") break;
+      if (!orgId) break;
+
+      // One-time scan-credit pack — no subscription involved, just add the
+      // credits. Handled separately from the subscription flow below since
+      // session.subscription is never set for a mode: "payment" Checkout.
+      if (session.metadata?.type === "scan_pack") {
+        await prisma.organization.update({
+          where: { id: orgId },
+          data: { scanCreditBalance: { increment: SCAN_PACK_CREDITS } },
+        });
+        break;
+      }
+
+      if (typeof session.subscription !== "string") break;
 
       const subscription = await stripe.subscriptions.retrieve(session.subscription);
       const plan = planForPriceId(subscription.items.data[0]?.price.id);
@@ -63,12 +77,16 @@ export async function POST(request: Request) {
         const plan = planForPriceId(subscription.items.data[0]?.price.id);
         if (plan) {
           await prisma.organization.update({ where: { id: orgId }, data: { planTier: plan } });
+          // Territory exclusivity is an Apex-only perk — downgrading to Pro
+          // while still subscribed shouldn't let claims linger for free.
+          if (plan !== "apex") await releaseAllTerritoriesForOrg(orgId);
         }
       } else if (subscription.status === "canceled" || subscription.status === "unpaid") {
         await prisma.organization.update({
           where: { id: orgId },
           data: { planTier: "free", stripeSubscriptionId: null },
         });
+        await releaseAllTerritoriesForOrg(orgId);
       }
       break;
     }
@@ -82,6 +100,7 @@ export async function POST(request: Request) {
         where: { id: orgId },
         data: { planTier: "free", stripeSubscriptionId: null },
       });
+      await releaseAllTerritoriesForOrg(orgId);
       break;
     }
   }

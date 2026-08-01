@@ -4,9 +4,11 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { PLAN_LIMITS, normalizePlanTier } from "@/lib/usage";
 import { getReferralStats } from "@/lib/referral";
-import { UpgradeButton, ManageBillingButton, CopyReferralLink } from "@/components/BillingActions";
+import { UpgradeButton, ManageBillingButton, BuyScanPackButton, CopyReferralLink } from "@/components/BillingActions";
+import TerritoryManager from "@/components/TerritoryManager";
 import { getDictionary } from "@/lib/i18n/getLocale";
 import { tf } from "@/lib/i18n/format";
+import { listTerritoryClaims } from "@/lib/territory";
 
 export const dynamic = "force-dynamic";
 
@@ -33,6 +35,11 @@ export default async function BillingPage({
   const host = requestHeaders.get("host") ?? "roof-scout.org";
   const proto = requestHeaders.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
   const referral = await getReferralStats(org.id, `${proto}://${host}`);
+
+  const territoryClaims =
+    plan === "apex"
+      ? (await listTerritoryClaims(org.id)).map((c) => ({ ...c, claimedAt: c.claimedAt.toISOString() }))
+      : [];
 
   let usageLine: string = d.unlimitedScans;
   if (limits.lifetimeScans !== null) {
@@ -66,8 +73,35 @@ export default async function BillingPage({
               {t.pricing[plan].name} · {PLAN_PRICE[plan]}
             </div>
             <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">{usageLine}</div>
+            {org.scanCreditBalance > 0 && (
+              <div className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                {tf(d.scanCreditBalance, { count: org.scanCreditBalance })}
+              </div>
+            )}
           </div>
           {org.stripeCustomerId && <ManageBillingButton locale={locale} />}
+        </div>
+      </div>
+
+      <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="text-lg font-semibold text-slate-900 dark:text-white">{d.scanPackTitle}</div>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{d.scanPackBody}</p>
+        <div className="mt-4">
+          <BuyScanPackButton locale={locale} />
+        </div>
+      </div>
+
+      <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="text-lg font-semibold text-slate-900 dark:text-white">{d.territoryTitle}</div>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          {plan === "apex" ? d.territoryBodyApex : d.territoryBodyLocked}
+        </p>
+        <div className="mt-4">
+          {plan === "apex" ? (
+            <TerritoryManager initialClaims={territoryClaims} locale={locale} />
+          ) : (
+            <UpgradeButton plan="apex" label={tf(d.upgradeTo, { plan: t.pricing.apex.name })} locale={locale} />
+          )}
         </div>
       </div>
 

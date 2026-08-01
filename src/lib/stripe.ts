@@ -21,3 +21,8 @@ export const STRIPE_PRICE_IDS = {
   pro: process.env.STRIPE_PRICE_PRO ?? "",
   apex: process.env.STRIPE_PRICE_APEX ?? "",
 } as const;
+
+// One-time scan-credit pack (no subscription required) — see
+// src/lib/usage.ts for how the credits are consumed.
+export const SCAN_PACK_PRICE_ID = process.env.STRIPE_PRICE_SCAN_PACK ?? "";
+export const SCAN_PACK_CREDITS = 10;

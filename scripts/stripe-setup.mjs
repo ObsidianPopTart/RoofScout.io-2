@@ -25,6 +25,16 @@ async function upsertPlan(name, unitAmount) {
 const proPriceId = await upsertPlan("Pro", 4900);
 const apexPriceId = await upsertPlan("Apex", 14900);
 
+// One-time scan-credit pack (10 scans, no subscription) — see
+// src/lib/usage.ts and SCAN_PACK_CREDITS in src/lib/stripe.ts.
+const scanPackProduct = await stripe.products.create({ name: "RoofScout 10-Scan Pack" });
+const scanPackPrice = await stripe.prices.create({
+  product: scanPackProduct.id,
+  unit_amount: 1900,
+  currency: "usd",
+});
+console.log(`Scan Pack: product=${scanPackProduct.id} price=${scanPackPrice.id}`);
+
 const webhook = await stripe.webhookEndpoints.create({
   url: webhookUrl,
   enabled_events: [
@@ -47,5 +57,6 @@ console.log(`referral coupon: id=${referralCoupon.id}`);
 console.log("\nSet these environment variables:");
 console.log(`STRIPE_PRICE_PRO=${proPriceId}`);
 console.log(`STRIPE_PRICE_APEX=${apexPriceId}`);
+console.log(`STRIPE_PRICE_SCAN_PACK=${scanPackPrice.id}`);
 console.log(`STRIPE_WEBHOOK_SECRET=${webhook.secret}`);
 console.log(`REFERRAL_FREE_MONTH_COUPON_ID=${referralCoupon.id}`);

@@ -32,8 +32,20 @@ export class ScanLimitExceededError extends Error {
   }
 }
 
+// Consumes one purchased scan credit (see scripts/stripe-setup.mjs's scan
+// pack price); returns whether one was actually available and spent.
+// Conditional updateMany makes this safe against concurrent scans racing
+// each other down to a negative balance.
+async function tryConsumeScanCredit(orgId: string): Promise<boolean> {
+  const claim = await prisma.organization.updateMany({
+    where: { id: orgId, scanCreditBalance: { gt: 0 } },
+    data: { scanCreditBalance: { decrement: 1 } },
+  });
+  return claim.count > 0;
+}
+
 // Call this before running a scan; throws ScanLimitExceededError if the org
-// is over its plan's cap.
+// is over its plan's cap and has no purchased scan credits left either.
 export async function checkAndIncrementScanUsage(orgId: string): Promise<void> {
   const org = await prisma.organization.findUniqueOrThrow({ where: { id: orgId } });
   const plan = normalizePlanTier(org.planTier);
@@ -42,6 +54,7 @@ export async function checkAndIncrementScanUsage(orgId: string): Promise<void> {
   if (limits.lifetimeScans !== null) {
     const totalScans = await prisma.scanRecord.count({ where: { orgId } });
     if (totalScans >= limits.lifetimeScans) {
+      if (await tryConsumeScanCredit(orgId)) return;
       throw new ScanLimitExceededError(plan, limits.lifetimeScans);
     }
     return; // creating the ScanRecord itself advances this count next time
@@ -55,6 +68,7 @@ export async function checkAndIncrementScanUsage(orgId: string): Promise<void> {
   const currentCount = monthElapsed ? 0 : org.scanCountThisMonth;
 
   if (currentCount >= limits.scansPerMonth) {
+    if (await tryConsumeScanCredit(orgId)) return;
     throw new ScanLimitExceededError(plan, limits.scansPerMonth);
   }
 

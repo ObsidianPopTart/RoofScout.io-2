@@ -3,12 +3,12 @@ export const dictionaries = {
     nav: { pricing: "Pricing", login: "Log in", signup: "Sign up" },
     home: {
       headline: "Find the neglected roofs before your competitors do.",
-      sub: "RoofScout scans a neighborhood, measures every roof with satellite data, grades condition with AI, and hands your sales team a ranked, priced lead list — automatically.",
+      sub: "Most roofing tools just flag \"damage detected.\" RoofScout has AI actually look at every rooftop, write a real condition assessment, and hand your sales team a ranked, priced lead list — automatically.",
       startFree: "Start free",
       login: "Log in",
-      featureHeadline: "See condition before you knock",
+      featureHeadline: "A written assessment, not just a flag",
       featureBody:
-        "Every scan grades rooftop condition from real satellite imagery — so your team only visits roofs that are actually worth the drive.",
+        "Every scan gets an AI vision analysis of the real satellite image — the same staining, moss, and missing-shingle signals an inspector looks for, written out in plain language — so your team only visits roofs that are actually worth the drive.",
       statement: "Every neglected roof, found, ranked, and priced — automatically.",
       finalCta: "Stop canvassing blind.",
       finalCtaSub: "Start free — 3 scans, no card required.",
@@ -105,7 +105,7 @@ export const dictionaries = {
         features: ["Everything in Pro", "Unlimited scans", "Priority support", "Storm Tracker — target scans to active severe weather"],
       },
       footnote:
-        "Every plan includes live satellite scanning, AI condition grading, and CSV export. Upgrade or cancel anytime from your billing page.",
+        "Every plan includes live satellite scanning, AI condition grading, and CSV export. Upgrade or cancel anytime from your billing page. Just need a few extra scans instead of a new plan? Buy a one-time 10-scan pack from your billing page — no subscription required.",
     },
     login: { title: "Log in", welcome: "Welcome back to RoofScout.", noAccount: "No account?", signup: "Sign up" },
     oauth: { divider: "or", google: "Continue with Google" },
@@ -309,6 +309,19 @@ export const dictionaries = {
       referralCopied: "Copied!",
       referralPending: "{count} pending",
       referralConverted: "{count} converted",
+      scanPackTitle: "Need just a few more scans?",
+      scanPackBody: "Buy a one-time pack of 10 extra scans — no subscription, never expires, stacks on top of your plan.",
+      scanPackBuy: "Buy 10 scans — $19",
+      scanCreditBalance: "{count} purchased scans remaining",
+      territoryTitle: "Territory exclusivity",
+      territoryBodyApex:
+        "Claim a ZIP code and no other RoofScout customer can claim the same one — it's yours exclusively for as long as you're on Apex.",
+      territoryBodyLocked:
+        "Claim exclusive ZIP codes so no other RoofScout customer can claim the same territory — included free with Apex.",
+      territoryPlaceholder: "ZIP code",
+      territoryAdd: "Claim",
+      territoryRemove: "Release",
+      territoryEmpty: "No territories claimed yet.",
     },
     supportChat: {
       launcherLabel: "Chat with support",
@@ -348,12 +361,12 @@ export const dictionaries = {
     nav: { pricing: "Precios", login: "Iniciar sesión", signup: "Regístrate" },
     home: {
       headline: "Encuentra los techos descuidados antes que tu competencia.",
-      sub: "RoofScout escanea un vecindario, mide cada techo con datos satelitales, califica su estado con IA y le entrega a tu equipo de ventas una lista de clientes potenciales, ordenada y con precio — automáticamente.",
+      sub: "La mayoría de las herramientas para techos solo marcan \"daño detectado\". RoofScout hace que la IA realmente observe cada techo, escriba una evaluación real de su estado, y le entregue a tu equipo de ventas una lista de clientes potenciales, ordenada y con precio — automáticamente.",
       startFree: "Empieza gratis",
       login: "Iniciar sesión",
-      featureHeadline: "Ve el estado antes de tocar la puerta",
+      featureHeadline: "Una evaluación escrita, no solo una marca",
       featureBody:
-        "Cada escaneo califica el estado del techo a partir de imágenes satelitales reales, para que tu equipo solo visite techos que realmente valgan la pena.",
+        "Cada escaneo recibe un análisis visual de IA de la imagen satelital real — las mismas señales de manchas, musgo y tejas faltantes que buscaría un inspector, explicadas en lenguaje claro — para que tu equipo solo visite techos que realmente valgan la pena.",
       statement: "Cada techo descuidado, encontrado, ordenado y cotizado — automáticamente.",
       finalCta: "Deja de tocar puertas a ciegas.",
       finalCtaSub: "Empieza gratis — 3 escaneos, sin tarjeta.",
@@ -450,7 +463,7 @@ export const dictionaries = {
         features: ["Todo lo de Pro", "Escaneos ilimitados", "Soporte prioritario", "Rastreador de tormentas — enfoca escaneos en clima severo activo"],
       },
       footnote:
-        "Todos los planes incluyen escaneo satelital en vivo, calificación de estado con IA y exportación a CSV. Mejora o cancela cuando quieras desde tu página de facturación.",
+        "Todos los planes incluyen escaneo satelital en vivo, calificación de estado con IA y exportación a CSV. Mejora o cancela cuando quieras desde tu página de facturación. ¿Solo necesitas unos escaneos extra en vez de un nuevo plan? Compra un paquete único de 10 escaneos desde tu página de facturación — sin suscripción.",
     },
     login: { title: "Iniciar sesión", welcome: "Bienvenido de nuevo a RoofScout.", noAccount: "¿No tienes cuenta?", signup: "Regístrate" },
     oauth: { divider: "o", google: "Continuar con Google" },
@@ -654,6 +667,19 @@ export const dictionaries = {
       referralCopied: "¡Copiado!",
       referralPending: "{count} pendientes",
       referralConverted: "{count} convertidos",
+      scanPackTitle: "¿Necesitas solo unos escaneos más?",
+      scanPackBody: "Compra un paquete único de 10 escaneos extra — sin suscripción, nunca caducan, se suman a tu plan.",
+      scanPackBuy: "Comprar 10 escaneos — $19",
+      scanCreditBalance: "{count} escaneos comprados restantes",
+      territoryTitle: "Exclusividad de territorio",
+      territoryBodyApex:
+        "Reclama un código postal y ningún otro cliente de RoofScout podrá reclamar el mismo — es exclusivamente tuyo mientras tengas Apex.",
+      territoryBodyLocked:
+        "Reclama códigos postales exclusivos para que ningún otro cliente de RoofScout pueda reclamar el mismo territorio — incluido gratis con Apex.",
+      territoryPlaceholder: "Código postal",
+      territoryAdd: "Reclamar",
+      territoryRemove: "Liberar",
+      territoryEmpty: "Aún no has reclamado ningún territorio.",
     },
     supportChat: {
       launcherLabel: "Chatea con soporte",

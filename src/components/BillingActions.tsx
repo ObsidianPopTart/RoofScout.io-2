@@ -53,6 +53,23 @@ export function UpgradeButton({
   );
 }
 
+export function BuyScanPackButton({ locale = "en" }: { locale?: Locale }) {
+  const t = dictionaries[locale].billingPage;
+  const { run, loading, error } = useRedirectAction("/api/billing/checkout", { plan: "scan_pack" });
+  return (
+    <div>
+      <button
+        onClick={() => run(t.somethingWrong)}
+        disabled={loading}
+        className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-400 disabled:cursor-wait dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-500"
+      >
+        {loading ? t.redirecting : t.scanPackBuy}
+      </button>
+      {error && <p className="mt-2 text-xs text-red-600 dark:text-red-400">{error}</p>}
+    </div>
+  );
+}
+
 export function ManageBillingButton({ locale = "en" }: { locale?: Locale }) {
   const t = dictionaries[locale].billingPage;
   const { run, loading, error } = useRedirectAction("/api/billing/portal");
