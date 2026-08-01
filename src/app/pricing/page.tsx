@@ -12,9 +12,10 @@ export const metadata = {
   alternates: { canonical: "/pricing" },
 };
 
-const PLAN_KEYS = ["free", "pro", "apex"] as const;
+const PLAN_KEYS = ["free", "scanPack", "pro", "apex"] as const;
 const PLAN_META = {
   free: { price: "$0" },
+  scanPack: { price: "$19", period: "one-time" },
   pro: { price: "$49", period: "/mo", highlight: true },
   apex: { price: "$149", period: "/mo" },
 } as const;
@@ -87,7 +88,7 @@ export default async function PricingPage() {
           {t.pricing.sub}
         </p>
 
-        <div className="mt-14 grid gap-6 sm:grid-cols-3">
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {PLAN_KEYS.map((key, i) => {
             const meta = PLAN_META[key];
             const copy = t.pricing[key];

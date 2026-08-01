@@ -92,6 +92,12 @@ export const dictionaries = {
         cta: "Start free",
         features: ["Live satellite scanning", "AI condition grading", "CSV export"],
       },
+      scanPack: {
+        name: "10-Scan Pack",
+        detail: "One-time, never expires",
+        cta: "Start free, buy anytime",
+        features: ["10 extra scans", "No subscription required", "Stacks on top of any plan"],
+      },
       pro: {
         name: "Pro",
         detail: "50 scans a month",
@@ -105,7 +111,7 @@ export const dictionaries = {
         features: ["Everything in Pro", "Unlimited scans", "Priority support", "Storm Tracker — target scans to active severe weather"],
       },
       footnote:
-        "Every plan includes live satellite scanning, AI condition grading, and CSV export. Upgrade or cancel anytime from your billing page. Just need a few extra scans instead of a new plan? Buy a one-time 10-scan pack from your billing page — no subscription required.",
+        "Every plan includes live satellite scanning, AI condition grading, and CSV export. Upgrade or cancel anytime from your billing page.",
     },
     login: { title: "Log in", welcome: "Welcome back to RoofScout.", noAccount: "No account?", signup: "Sign up" },
     oauth: { divider: "or", google: "Continue with Google" },
@@ -450,6 +456,12 @@ export const dictionaries = {
         cta: "Empieza gratis",
         features: ["Escaneo satelital en vivo", "Calificación de estado con IA", "Exportación a CSV"],
       },
+      scanPack: {
+        name: "Paquete de 10 escaneos",
+        detail: "Pago único, nunca caduca",
+        cta: "Empieza gratis, compra cuando quieras",
+        features: ["10 escaneos extra", "Sin suscripción", "Se suma a cualquier plan"],
+      },
       pro: {
         name: "Pro",
         detail: "50 escaneos al mes",
@@ -463,7 +475,7 @@ export const dictionaries = {
         features: ["Todo lo de Pro", "Escaneos ilimitados", "Soporte prioritario", "Rastreador de tormentas — enfoca escaneos en clima severo activo"],
       },
       footnote:
-        "Todos los planes incluyen escaneo satelital en vivo, calificación de estado con IA y exportación a CSV. Mejora o cancela cuando quieras desde tu página de facturación. ¿Solo necesitas unos escaneos extra en vez de un nuevo plan? Compra un paquete único de 10 escaneos desde tu página de facturación — sin suscripción.",
+        "Todos los planes incluyen escaneo satelital en vivo, calificación de estado con IA y exportación a CSV. Mejora o cancela cuando quieras desde tu página de facturación.",
     },
     login: { title: "Iniciar sesión", welcome: "Bienvenido de nuevo a RoofScout.", noAccount: "¿No tienes cuenta?", signup: "Regístrate" },
     oauth: { divider: "o", google: "Continuar con Google" },
