@@ -35,7 +35,17 @@ const webhook = await stripe.webhookEndpoints.create({
 });
 console.log(`webhook: id=${webhook.id} secret=${webhook.secret}`);
 
+// "Give a month, get a month" referral reward — 100% off, applies once (i.e.
+// one free billing cycle). See src/lib/referral.ts for how it's applied.
+const referralCoupon = await stripe.coupons.create({
+  name: "RoofScout referral reward — 1 free month",
+  percent_off: 100,
+  duration: "once",
+});
+console.log(`referral coupon: id=${referralCoupon.id}`);
+
 console.log("\nSet these environment variables:");
 console.log(`STRIPE_PRICE_PRO=${proPriceId}`);
 console.log(`STRIPE_PRICE_APEX=${apexPriceId}`);
 console.log(`STRIPE_WEBHOOK_SECRET=${webhook.secret}`);
+console.log(`REFERRAL_FREE_MONTH_COUPON_ID=${referralCoupon.id}`);

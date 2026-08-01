@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { prisma } from "@/lib/db";
 import { stripe, STRIPE_PRICE_IDS } from "@/lib/stripe";
+import { applyReferralRewardOnFirstConversion } from "@/lib/referral";
 
 function planForPriceId(priceId: string | undefined): "pro" | "apex" | null {
   if (priceId === STRIPE_PRICE_IDS.pro) return "pro";
@@ -44,6 +45,12 @@ export async function POST(request: Request) {
           stripeSubscriptionId: subscription.id,
         },
       });
+
+      // "Give a month, get a month": this is the org's first confirmed paid
+      // conversion via Checkout — the moment the referral reward (if any)
+      // fires for both this org and whoever referred them. Idempotent, so a
+      // duplicate/retried webhook delivery never double-grants it.
+      await applyReferralRewardOnFirstConversion(orgId);
       break;
     }
 

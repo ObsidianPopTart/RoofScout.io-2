@@ -18,6 +18,22 @@ model Organization {
   monthlyScanLimit     Int      @default(25)
   createdAt            DateTime @default(now())
 
+  // "Give a month, get a month" referral program (see src/lib/referral.ts).
+  // referralCode: this org's own shareable code (roof-scout.org/r/<code>).
+  // referredByOrgId: set at signup if this org used someone else's link.
+  // referralRewardAppliedAt: null until the referred org's first paid
+  // conversion — the moment BOTH orgs get their free month. Non-null makes
+  // the reward idempotent against webhook retries/races.
+  // pendingFreeMonthCredits: a free month owed to this org that couldn't be
+  // applied yet because it had no active Stripe subscription at reward time
+  // (e.g. the referrer is still on Free) — consumed at next checkout.
+  referralCode            String    @unique
+  referredByOrgId         String?
+  referredBy              Organization?  @relation("Referrals", fields: [referredByOrgId], references: [id])
+  referrals               Organization[] @relation("Referrals")
+  referralRewardAppliedAt DateTime?
+  pendingFreeMonthCredits Int       @default(0)
+
   memberships Membership[]
   leads       Lead[]
   scans       ScanRecord[]

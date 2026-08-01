@@ -117,6 +117,7 @@ export const dictionaries = {
       cta: "Create account",
       haveAccount: "Already have an account?",
       login: "Log in",
+      referralNotice: "You were invited by another RoofScout company — you'll both get a free month when you subscribe.",
     },
     appNav: { dashboard: "Dashboard", newScan: "New Scan", leads: "Leads", billing: "Billing", signOut: "Sign out" },
     onboarding: {
@@ -301,6 +302,12 @@ export const dictionaries = {
       upgradeTo: "Upgrade to {plan}",
       redirecting: "Redirecting…",
       somethingWrong: "Something went wrong",
+      referralTitle: "Give a month, get a month",
+      referralBody: "Share your link with another roofing company. When they subscribe, you both get a free month — automatically, no limit on how many times it stacks.",
+      referralCopy: "Copy link",
+      referralCopied: "Copied!",
+      referralPending: "{count} pending",
+      referralConverted: "{count} converted",
     },
     supportChat: {
       launcherLabel: "Chat with support",
@@ -454,6 +461,7 @@ export const dictionaries = {
       cta: "Crear cuenta",
       haveAccount: "¿Ya tienes una cuenta?",
       login: "Iniciar sesión",
+      referralNotice: "Te invitó otra empresa de RoofScout — ambos recibirán un mes gratis cuando te suscribas.",
     },
     appNav: { dashboard: "Panel", newScan: "Nuevo escaneo", leads: "Clientes potenciales", billing: "Facturación", signOut: "Cerrar sesión" },
     onboarding: {
@@ -638,6 +646,12 @@ export const dictionaries = {
       upgradeTo: "Mejorar a {plan}",
       redirecting: "Redirigiendo…",
       somethingWrong: "Algo salió mal",
+      referralTitle: "Da un mes, recibe un mes",
+      referralBody: "Comparte tu enlace con otra empresa de techado. Cuando se suscriban, ambos reciben un mes gratis — automáticamente, sin límite de veces.",
+      referralCopy: "Copiar enlace",
+      referralCopied: "¡Copiado!",
+      referralPending: "{count} pendientes",
+      referralConverted: "{count} convertidos",
     },
     supportChat: {
       launcherLabel: "Chatea con soporte",

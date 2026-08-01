@@ -1,8 +1,10 @@
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { PLAN_LIMITS, normalizePlanTier } from "@/lib/usage";
-import { UpgradeButton, ManageBillingButton } from "@/components/BillingActions";
+import { getReferralStats } from "@/lib/referral";
+import { UpgradeButton, ManageBillingButton, CopyReferralLink } from "@/components/BillingActions";
 import { getDictionary } from "@/lib/i18n/getLocale";
 import { tf } from "@/lib/i18n/format";
 
@@ -26,6 +28,11 @@ export default async function BillingPage({
   const org = await prisma.organization.findUniqueOrThrow({ where: { id: session.user.orgId } });
   const plan = normalizePlanTier(org.planTier);
   const limits = PLAN_LIMITS[plan];
+
+  const requestHeaders = await headers();
+  const host = requestHeaders.get("host") ?? "roof-scout.org";
+  const proto = requestHeaders.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
+  const referral = await getReferralStats(org.id, `${proto}://${host}`);
 
   let usageLine: string = d.unlimitedScans;
   if (limits.lifetimeScans !== null) {
@@ -77,6 +84,18 @@ export default async function BillingPage({
               </div>
             </div>
           ))}
+      </div>
+
+      <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="text-lg font-semibold text-slate-900 dark:text-white">{d.referralTitle}</div>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{d.referralBody}</p>
+        <div className="mt-4">
+          <CopyReferralLink link={referral.link} locale={locale} />
+        </div>
+        <div className="mt-3 flex gap-4 text-xs text-slate-500 dark:text-slate-400">
+          <span>{tf(d.referralPending, { count: referral.pending })}</span>
+          <span>{tf(d.referralConverted, { count: referral.converted })}</span>
+        </div>
       </div>
     </div>
   );

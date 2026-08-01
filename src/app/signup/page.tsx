@@ -5,15 +5,21 @@ import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import { prisma } from "@/lib/db";
 import { signIn } from "@/lib/auth";
+import { generateUniqueReferralCode, resolveReferrerOrgId } from "@/lib/referral";
 import { getDictionary } from "@/lib/i18n/getLocale";
 import Logo from "@/components/Logo";
 
-export const metadata = { title: "Sign up — RoofScout" };
+export const metadata = {
+  title: "Sign Up",
+  description: "Start free with 3 satellite roof scans — no card required.",
+  alternates: { canonical: "/signup" },
+};
 
 const signupSchema = z.object({
   companyName: z.string().trim().min(1, "Company name is required"),
   email: z.string().trim().toLowerCase().email("Enter a valid email"),
   password: z.string().min(8, "Password must be at least 8 characters"),
+  ref: z.string().trim().optional(),
 });
 
 async function signupAction(formData: FormData) {
@@ -23,11 +29,13 @@ async function signupAction(formData: FormData) {
     companyName: formData.get("companyName"),
     email: formData.get("email"),
     password: formData.get("password"),
+    ref: formData.get("ref") || undefined,
   });
   if (!parsed.success) {
-    redirect(`/signup?error=${encodeURIComponent(parsed.error.issues[0]?.message ?? "Invalid input")}`);
+    const refParam = typeof formData.get("ref") === "string" ? `&ref=${encodeURIComponent(String(formData.get("ref")))}` : "";
+    redirect(`/signup?error=${encodeURIComponent(parsed.error.issues[0]?.message ?? "Invalid input")}${refParam}`);
   }
-  const { companyName, email, password } = parsed.data;
+  const { companyName, email, password, ref } = parsed.data;
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
@@ -35,9 +43,13 @@ async function signupAction(formData: FormData) {
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
+  // Resolved outside the transaction — a bad/unknown ref code should never
+  // block signup, so this just falls back to null (no referrer).
+  const referredByOrgId = await resolveReferrerOrgId(ref);
 
   await prisma.$transaction(async (tx) => {
-    const org = await tx.organization.create({ data: { name: companyName } });
+    const referralCode = await generateUniqueReferralCode(tx);
+    const org = await tx.organization.create({ data: { name: companyName, referralCode, referredByOrgId } });
     const user = await tx.user.create({ data: { email, passwordHash } });
     await tx.membership.create({ data: { userId: user.id, orgId: org.id, role: "Owner" } });
   });
@@ -57,9 +69,9 @@ async function signupAction(formData: FormData) {
 export default async function SignupPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; ref?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, ref } = await searchParams;
   const { t } = await getDictionary();
 
   return (
@@ -78,7 +90,14 @@ export default async function SignupPage({
           </p>
         )}
 
+        {ref && (
+          <p className="mt-4 rounded-lg border border-[var(--rs-amber)]/30 bg-[var(--rs-amber)]/10 px-3 py-2 text-sm text-[var(--rs-amber)]">
+            {t.signup.referralNotice}
+          </p>
+        )}
+
         <form action={signupAction} className="mt-5 space-y-4">
+          {ref && <input type="hidden" name="ref" value={ref} />}
           <div>
             <label className="mb-1 block font-mono text-xs tracking-wide text-[var(--rs-paper)]/50">
               {t.signup.companyName}

@@ -69,3 +69,33 @@ export function ManageBillingButton({ locale = "en" }: { locale?: Locale }) {
     </div>
   );
 }
+
+export function CopyReferralLink({ link, locale = "en" }: { link: string; locale?: Locale }) {
+  const t = dictionaries[locale].billingPage;
+  const [copied, setCopied] = useState(false);
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(link);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard API can be unavailable (e.g. non-HTTPS, permissions) —
+      // the link text is still selectable/visible, so this fails quietly.
+    }
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <code className="rounded-md border border-slate-200 bg-slate-50 px-2 py-1.5 text-xs text-slate-700 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300">
+        {link}
+      </code>
+      <button
+        onClick={copy}
+        className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:border-slate-400 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-500"
+      >
+        {copied ? t.referralCopied : t.referralCopy}
+      </button>
+    </div>
+  );
+}

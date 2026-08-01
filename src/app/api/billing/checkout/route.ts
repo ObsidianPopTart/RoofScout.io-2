@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { stripe, STRIPE_PRICE_IDS } from "@/lib/stripe";
+import { consumePendingFreeMonthForCheckout } from "@/lib/referral";
 
 export async function POST(request: Request) {
   const session = await auth();
@@ -23,6 +24,11 @@ export async function POST(request: Request) {
   const org = await prisma.organization.findUniqueOrThrow({ where: { id: session.user.orgId } });
   const origin = request.headers.get("origin") ?? new URL(request.url).origin;
 
+  // If this org is owed a banked referral free-month (see src/lib/referral.ts
+  // — banked because they had no active subscription when the reward was
+  // granted), spend it now so it applies to this subscription's first invoice.
+  const referralCoupon = await consumePendingFreeMonthForCheckout(org.id);
+
   const checkoutSession = await stripe.checkout.sessions.create({
     mode: "subscription",
     line_items: [{ price: priceId, quantity: 1 }],
@@ -31,6 +37,7 @@ export async function POST(request: Request) {
     client_reference_id: org.id,
     metadata: { orgId: org.id, plan },
     subscription_data: { metadata: { orgId: org.id, plan } },
+    ...(referralCoupon ? { discounts: [{ coupon: referralCoupon }] } : {}),
     success_url: `${origin}/app/billing?checkout=success`,
     cancel_url: `${origin}/app/billing?checkout=cancelled`,
   });
