@@ -42,7 +42,7 @@ model Organization {
 model User {
   id           String    @id @default(cuid())
   email        String    @unique
-  passwordHash String
+  passwordHash String? // null for OAuth-only accounts (Google/Apple sign-in)
   name         String?
   createdAt    DateTime  @default(now())
   onboardedAt  DateTime?

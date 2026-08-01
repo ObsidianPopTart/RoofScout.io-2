@@ -108,6 +108,7 @@ export const dictionaries = {
         "Every plan includes live satellite scanning, AI condition grading, and CSV export. Upgrade or cancel anytime from your billing page.",
     },
     login: { title: "Log in", welcome: "Welcome back to RoofScout.", noAccount: "No account?", signup: "Sign up" },
+    oauth: { divider: "or", google: "Continue with Google" },
     signup: {
       title: "Start free",
       sub: "Set up your company's RoofScout account.",
@@ -452,6 +453,7 @@ export const dictionaries = {
         "Todos los planes incluyen escaneo satelital en vivo, calificación de estado con IA y exportación a CSV. Mejora o cancela cuando quieras desde tu página de facturación.",
     },
     login: { title: "Iniciar sesión", welcome: "Bienvenido de nuevo a RoofScout.", noAccount: "¿No tienes cuenta?", signup: "Regístrate" },
+    oauth: { divider: "o", google: "Continuar con Google" },
     signup: {
       title: "Empieza gratis",
       sub: "Configura la cuenta de RoofScout de tu empresa.",

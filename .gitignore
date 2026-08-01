@@ -43,6 +43,10 @@ yarn-error.log*
 # leftover pre-Prisma JSON mock store
 /data
 
+# generated storm-alert marketing drafts (scripts/storm-alert.ts) — review
+# and post manually, don't commit the output
+/storm-alerts/drafts
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

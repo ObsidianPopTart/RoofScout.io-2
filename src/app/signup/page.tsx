@@ -8,6 +8,7 @@ import { signIn } from "@/lib/auth";
 import { generateUniqueReferralCode, resolveReferrerOrgId } from "@/lib/referral";
 import { getDictionary } from "@/lib/i18n/getLocale";
 import Logo from "@/components/Logo";
+import OAuthButtons from "@/components/OAuthButtons";
 
 export const metadata = {
   title: "Sign Up",
@@ -139,6 +140,8 @@ export default async function SignupPage({
             {t.signup.cta}
           </button>
         </form>
+
+        <OAuthButtons divider={t.oauth.divider} googleLabel={t.oauth.google} />
 
         <p className="mt-4 text-center text-sm text-[var(--rs-paper)]/60">
           {t.signup.haveAccount}{" "}

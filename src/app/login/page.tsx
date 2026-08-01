@@ -5,6 +5,7 @@ import { signIn } from "@/lib/auth";
 import { getDictionary } from "@/lib/i18n/getLocale";
 import { checkLoginRateLimit, getClientIp, recordFailedLogin } from "@/lib/rateLimit";
 import Logo from "@/components/Logo";
+import OAuthButtons from "@/components/OAuthButtons";
 
 export const metadata = {
   title: "Log In",
@@ -97,6 +98,8 @@ export default async function LoginPage({
             {t.login.title}
           </button>
         </form>
+
+        <OAuthButtons divider={t.oauth.divider} googleLabel={t.oauth.google} />
 
         <p className="mt-4 text-center text-sm text-[var(--rs-paper)]/60">
           {t.login.noAccount}{" "}

@@ -23,7 +23,9 @@ export default function PrivacyPolicyPage() {
           <ul className="mt-2 list-disc space-y-1 pl-5">
             <li>
               <strong>Account information:</strong> company name, email address, and password (stored as
-              a salted hash, never in plain text) when you sign up.
+              a salted hash, never in plain text) when you sign up. If you choose to sign up or log in
+              with Google instead, we receive your name and email address from Google — we never see or
+              store your Google password.
             </li>
             <li>
               <strong>Scan data:</strong> the map areas you scan, and the resulting rooftop addresses,
@@ -55,6 +57,7 @@ export default function PrivacyPolicyPage() {
           <h2 className="text-lg font-semibold text-slate-900">Third-party services we use</h2>
           <ul className="mt-2 list-disc space-y-1 pl-5">
             <li>Google Maps Platform (satellite imagery, geocoding, and roof measurement data)</li>
+            <li>Google Sign-In (optional login method, if you choose to use it)</li>
             <li>Anthropic (Claude AI, for analyzing satellite roof imagery)</li>
             <li>OpenStreetMap (building footprint data)</li>
             <li>Stripe (subscription billing)</li>

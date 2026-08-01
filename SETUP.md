@@ -47,6 +47,26 @@ Zoom the scan map to a real neighborhood (works best in areas with Google Solar 
 most US metro areas) and click **Scan visible area**. Live scans take longer than demo scans
 (~5–30 seconds) because each rooftop is measured, photographed, and graded.
 
+## Step 5 — Google login (optional)
+
+Email/password login always works. Adding a "Continue with Google" button requires an OAuth
+client from your own Google Cloud account — it can't be created for you, since it requires
+agreeing to Google's developer terms. Leave the variables blank and the button simply won't
+render.
+
+1. In the same Google Cloud project (or a new one), go to **APIs & Services → OAuth consent
+   screen** and configure it (External user type, app name, your support email).
+2. Go to **APIs & Services → Credentials → Create credentials → OAuth client ID**.
+3. Application type: **Web application**.
+4. Under **Authorized redirect URIs**, add:
+   - `http://localhost:3000/api/auth/callback/google` (local dev)
+   - `https://<your-production-domain>/api/auth/callback/google` (production)
+5. Copy the **Client ID** and **Client secret** into `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`
+   (both locally in `.env.local` and in Netlify's environment variables for production).
+
+(Apple sign-in was considered and deliberately skipped — it requires a paid $99/year Apple
+Developer Program membership just to offer a login button, which isn't worth it here.)
+
 ## Cost control
 
 - `ROOFSCOUT_MAX_BUILDINGS` caps rooftops per scan (default 15).
