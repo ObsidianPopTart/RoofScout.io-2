@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Logo from "@/components/Logo";
 import LunchboxBadge from "@/components/LunchboxBadge";
-import ThemeToggle from "@/components/ThemeToggle";
 import LocaleToggle from "@/components/LocaleToggle";
 import Reveal from "@/components/Reveal";
 import { getDictionary } from "@/lib/i18n/getLocale";
@@ -170,7 +169,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               locale={locale}
               className="hidden rounded-md border border-white/15 px-2 py-1 font-mono text-xs text-[var(--rs-paper)]/60 hover:border-white/30 sm:inline-block"
             />
-            <ThemeToggle className="hidden text-[var(--rs-paper)]/60 hover:text-[var(--rs-paper)] sm:inline-block" />
           </div>
         </div>
       </nav>
