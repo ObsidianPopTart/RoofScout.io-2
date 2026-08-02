@@ -493,6 +493,221 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: "roofing-leads-dallas-fort-worth",
+    title: "Dallas-Fort Worth Roofing Leads: Working the Country's Biggest Storm Market",
+    description:
+      "Dallas-Fort Worth is the largest storm restoration market in North America — roughly $5B in local roofing revenue and thousands of contractors competing for the same roofs every hail season. Here's how to find the right ones first.",
+    publishedAt: "2026-08-02",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Dallas-Fort Worth isn't just a big roofing market — recent industry analysis puts it as the largest storm restoration ecosystem in North America, with the local roofing industry valued at roughly $5 billion and close to 4,000 contracting entities employing over 13,500 people across the metroplex. Suburbs like McKinney, Plano, Arlington, and Fort Worth proper each generate tens of thousands of individual hail claims per storm cycle — a recent three-year window put the combined DFW sub-market total north of 127,000 claims.",
+      },
+      { type: "h2", text: "Why DFW floods with roofing companies every spring" },
+      {
+        type: "p",
+        text: "Texas leads the nation in hail activity outright — an estimated 23-28% of all national hail damage claims, roughly 195 severe hail days a year statewide, and over 900 major hail events logged across the state in 2025 alone. That's not a one-storm market; DFW gets hit repeatedly through the March-to-June window, which is exactly why the metroplex supports thousands of competing contractors instead of a handful.",
+      },
+      { type: "h2", text: "Two very different companies are chasing the same roofs" },
+      {
+        type: "p",
+        text: "DFW's contractor base splits into two operational profiles that show up after every major hailstorm. Established local restoration roofers run permanent offices, chase insurance-supplement value, and lean on CRM platforms built for job costing and supplier ordering. Mobile storm-chase crews do the opposite — they deploy into a hit neighborhood within 24-48 hours of an event like the April 2021 Tarrant County hailstorm, canvass hard for a week or two, then move to the next city. Both are staring at the same street trying to answer the same question: which of these roofs actually needs work?",
+      },
+      {
+        type: "quote",
+        text: "A CRM tells you what to do with a lead you already have. Neither a CRM nor a canvassing route planner tells you which house on the block is actually worth knocking on — that's the gap before the gap.",
+      },
+      { type: "h2", text: "Where RoofScout fits — and why it beats a generic CRM or canvassing app" },
+      {
+        type: "p",
+        text: "Traditional restoration CRMs and door-to-door routing tools organize leads you already have; they don't tell you which roof is damaged before you knock. RoofScout scans an entire DFW suburb in one pass — real satellite imagery, Google Solar measurement data, and an AI vision read of each rooftop that writes an actual condition assessment (staining, moss, missing shingles, sagging lines) instead of a generic \"damage detected\" flag. Whether you're running a permanent DFW office or a storm crew that just landed, you know which streets are worth the drive before you leave the parking lot.",
+      },
+      { type: "h2", text: "Priced for how storm crews actually staff up" },
+      {
+        type: "p",
+        text: "Storm season means temporary canvassers — a crew doubling its door-knocking headcount for six weeks around a major DFW hailstorm. RoofScout is priced by scan volume, not by seat, so adding canvassers for a surge doesn't multiply your software bill the way a per-user CRM plan does.",
+      },
+      { type: "h2", text: "Storm Tracker: pointed at the next DFW hailstorm" },
+      {
+        type: "p",
+        text: "RoofScout's Apex plan includes Storm Tracker — a live severe-weather overlay on the scan map, so the moment a hail warning is issued for Tarrant or Collin County, you can point a scan at the hit area the same day instead of finding out secondhand once competitors have already worked half the neighborhood.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-san-antonio",
+    title: "San Antonio Roofing Leads: Working South Texas's Hail Corridor",
+    description:
+      "San Antonio sits in one of South Texas's most consistent hail corridors — recent claims data puts the metro over 75,000 hail claims in a three-year window. Here's how to find the roofs worth a knock before the rest of the market does.",
+    publishedAt: "2026-08-02",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "San Antonio doesn't get the same national attention as Dallas-Fort Worth, but it's a serious storm restoration market in its own right — recent claims analysis puts the metro at roughly 75,187 hail claims in a three-year window, concentrated in a dense urban residential footprint that sits squarely inside South Texas's hail corridor.",
+      },
+      { type: "h2", text: "A concentrated market, not a sprawling one" },
+      {
+        type: "p",
+        text: "Where DFW's claim volume spreads across a dozen distinct suburbs, San Antonio's hail exposure is more geographically concentrated — which cuts both ways. It means less territory to cover per storm event, but it also means more contractors converging on the same neighborhoods when a hailstorm hits, since Texas as a whole logs roughly 195 severe hail days a year and hundreds of major hail events statewide.",
+      },
+      { type: "h2", text: "Established firms and independent shops, competing for the same block" },
+      {
+        type: "p",
+        text: "San Antonio's contractor base is a mix of established regional restoration firms and a high volume of smaller independent insurance-restoration shops — both fighting for the same claim dollars in a tighter geographic radius than DFW's sprawl allows. Speed and accuracy matter more here precisely because there's less ground to spread out over.",
+      },
+      { type: "h2", text: "Why a ranked list beats a canvassing map alone" },
+      {
+        type: "p",
+        text: "Most sales tools built for this market — canvassing route planners, instant measurement apps — assume you already know which houses to target. RoofScout answers the question underneath that: it scans a San Antonio neighborhood by satellite, grades every rooftop's condition with AI (a written read of staining, moss, missing shingles, and sagging lines, not a generic damage flag), and hands back a ranked, priced list before your team ever knocks on a door.",
+      },
+      {
+        type: "quote",
+        text: "In a concentrated market, the company that covers the neighborhood accurately in one pass has an edge over the company still driving block by block.",
+      },
+      { type: "h2", text: "No per-seat penalty for a busy storm week" },
+      {
+        type: "p",
+        text: "Independent shops and small regional firms are exactly who per-seat CRM pricing hurts most during a surge — adding a couple of temporary canvassers for two weeks shouldn't mean a permanent jump in your monthly software bill. RoofScout is priced by scan volume, not seats, so it scales with the storm, not against it.",
+      },
+      {
+        type: "link",
+        text: "→ See how RoofScout compares to Roofr and EagleView",
+        href: "/blog/roofscout-vs-roofr-vs-eagleview",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-denver",
+    title: "Denver Roofing Leads: Why Front Range Roofs Fail Faster",
+    description:
+      "Denver's freeze-thaw cycles and intense UV exposure age roofs faster than most U.S. markets — recent claims data shows nearly 52,000 hail claims in a three-year window and a single 2017 storm that caused over $3.6 billion in local damage.",
+    publishedAt: "2026-08-02",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Denver anchors what the industry calls \"Hail Alley,\" and the numbers back up the nickname — recent analysis puts the Denver-Aurora-Lakewood metro at roughly 51,887 hail claims in a three-year window, with a single severe storm pass in May 2017 causing more than $3.6 billion in localized hail damage across the metro.",
+      },
+      { type: "h2", text: "It's not just hail — it's the freeze-thaw cycle" },
+      {
+        type: "p",
+        text: "What makes Denver distinct from a lot of high-hail markets is the combination: frequent severe hail alongside sharp freeze-thaw cycles and intense high-altitude UV radiation. Roofs in this climate deteriorate faster than the national average, which means homeowners turn to insurance restoration more frequently — and it means a roof that looked fine last season can be genuinely failing this one.",
+      },
+      { type: "h2", text: "High property values, strict codes, careful buyers" },
+      {
+        type: "p",
+        text: "Denver's contractor landscape leans toward a dense network of mid-sized regional restoration firms working in a market with higher-than-average property values and rigid municipal building codes. Homeowners here tend to vet contractors more carefully before signing — which raises the bar for showing up with real evidence, not just a pitch.",
+      },
+      {
+        type: "quote",
+        text: "Bringing an aerial photo and a specific, AI-graded condition read to the door does more to establish credibility in the first thirty seconds than any amount of company-history small talk.",
+      },
+      { type: "h2", text: "Where RoofScout fits into a market that deteriorates fast" },
+      {
+        type: "p",
+        text: "Because Front Range roofs age faster than a visual drive-by might suggest, a condition-focused scan is more valuable in Denver than in a market where roofs simply sit until the next big hailstorm. RoofScout's AI actually examines each rooftop's satellite image and writes a specific assessment — not a generic score — so a rep can walk up with real evidence of deterioration a homeowner might not have noticed yet themselves.",
+      },
+      { type: "h2", text: "Storm Tracker for the next Front Range hit" },
+      {
+        type: "p",
+        text: "RoofScout's Apex plan includes Storm Tracker, a live severe-weather overlay that lets you point a scan directly at whichever part of the Front Range corridor just took a hail hit — instead of waiting for word to travel and finding the neighborhood already worked over.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-colorado-springs",
+    title: "Colorado Springs Roofing Leads: Beating the Storm Chasers to the Job",
+    description:
+      "Colorado Springs sees some of the highest hail frequency in the country, with recent claims data ranging from roughly 38,000 to nearly 68,000 claims in a three-year window across its military and suburban housing stock.",
+    publishedAt: "2026-08-02",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Colorado Springs sits inside the same Front Range corridor as Denver, and it carries its own serious hail exposure — recent estimates put the metro anywhere from roughly 38,044 to nearly 67,920 hail claims in a three-year window depending on the storm cycle measured, with high hail frequency hitting a housing stock that mixes military-family neighborhoods with dense suburban development.",
+      },
+      { type: "h2", text: "A market local operators and traveling crews both know well" },
+      {
+        type: "p",
+        text: "Colorado Springs' contractor base is a blend of local operators and regional Front Range companies that also work Denver — meaning a lot of the same crews cover both metros depending on where the storm hits hardest that season. That overlap raises the bar: whoever gets an accurate read on a neighborhood first has a real head start over a competitor still deciding which suburb to prioritize.",
+      },
+      { type: "h2", text: "Rapid door-to-door routing only works if you're routing to the right doors" },
+      {
+        type: "p",
+        text: "Sales tools built for this market emphasize fast door-to-door routing and claim-supplement tracking — useful once you know where to send a rep. RoofScout answers the question that comes before that: scanning a Colorado Springs neighborhood by satellite, grading every roof's condition with AI, and handing back a ranked, priced list so your routing tool has somewhere accurate to point.",
+      },
+      {
+        type: "quote",
+        text: "The fastest canvassing app in the world still just routes you efficiently to houses that might not need a roof. Accuracy has to come first.",
+      },
+      { type: "h2", text: "Built to scale with a seasonal crew, not against it" },
+      {
+        type: "p",
+        text: "Whether you're a Colorado Springs-based operator or a regional crew that just rolled in from Denver, storm season usually means temporary canvassers. RoofScout charges by scan volume, not by seat, so scaling a crew up for a few weeks doesn't mean a permanent jump in your software bill once the storm passes.",
+      },
+      {
+        type: "link",
+        text: "→ See how RoofScout compares to Roofr and EagleView",
+        href: "/blog/roofscout-vs-roofr-vs-eagleview",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-omaha",
+    title: "Omaha Roofing Leads: Targeting the Highest Hail-Claim Density in the Country",
+    description:
+      "Omaha was recently ranked the single highest U.S. city for hail loss claims in a three-year window — over 54,000 claims packed into a metro far smaller than Dallas-Fort Worth or Denver. Here's how to work that density efficiently.",
+    publishedAt: "2026-08-02",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Omaha doesn't have the population of Dallas-Fort Worth or Denver, but recent industry analysis ranked it the single highest-volume U.S. city for hail loss claims in a three-year window — roughly 54,153 claims, with neighboring Lincoln contributing another 28,778 during peak storm years. That's an extraordinary concentration of claims packed into a relatively compact metro footprint.",
+      },
+      { type: "h2", text: "Density changes the math" },
+      {
+        type: "p",
+        text: "A smaller metro with the country's highest claim density means less driving between damaged neighborhoods and more contractors converging on the same handful of hard-hit areas after any given storm. In a market like this, the advantage goes to whoever can accurately cover the most ground fastest — not whoever has the biggest sales team.",
+      },
+      { type: "h2", text: "Local and regional Midwest operators, working close together" },
+      {
+        type: "p",
+        text: "Omaha's contractor base leans toward local operators and regional Midwest restoration companies rather than the coast-to-coast storm-chase crews that dominate Texas. That means reputation and speed both matter — you're likely to run into the same competitors storm after storm, so being first to an accurate read on a neighborhood compounds over multiple seasons, not just one.",
+      },
+      {
+        type: "quote",
+        text: "In the highest hail-density city in the country, covering a neighborhood accurately in one satellite pass beats covering it block by block — every single storm season.",
+      },
+      { type: "h2", text: "Where RoofScout fits Omaha's density" },
+      {
+        type: "p",
+        text: "RoofScout scans an entire Omaha or Lincoln neighborhood in one pass — real satellite imagery, Google Solar measurement data, and an AI vision read that writes an actual condition assessment for each roof, not a generic score — and hands back a ranked, priced lead list. In a market this dense, that's the difference between covering three neighborhoods a week and covering three streets.",
+      },
+      { type: "h2", text: "Storm Tracker for Nebraska's May-through-July window" },
+      {
+        type: "p",
+        text: "RoofScout's Apex plan includes Storm Tracker, a live severe-weather overlay on the scan map — built for exactly the kind of tight, repeated storm windows Omaha and Lincoln see through peak season, so you can point a scan at the hit area the same day a warning is issued.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
 ];
 
 export function getBlogPost(slug: string): BlogPost | undefined {
