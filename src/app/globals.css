@@ -134,4 +134,7 @@ body {
     transform: none !important;
     transition: none !important;
   }
+  .hero-bg-video {
+    display: none !important;
+  }
 }

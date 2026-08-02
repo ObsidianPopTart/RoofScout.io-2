@@ -80,7 +80,27 @@ export default async function MarketingHomePage() {
       </nav>
 
       {/* Hero — a live-scan viewport, not a stock photo with text next to it */}
-      <section className="rs-grid relative mx-auto grid w-full max-w-6xl flex-1 items-center gap-10 px-4 pt-8 pb-20 lg:grid-cols-[1.15fr_1fr] lg:pt-14 lg:pb-24">
+      <section className="relative isolate mx-auto grid w-full max-w-6xl flex-1 items-center gap-10 px-4 pt-8 pb-20 lg:grid-cols-[1.15fr_1fr] lg:pt-14 lg:pb-24">
+        {/* Background: real aerial neighborhood footage (Pexels, royalty-free,
+            no attribution required) — dimmed so foreground text stays
+            legible, and skipped entirely for prefers-reduced-motion. */}
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: "url(/images/hero-neighborhood-video-poster.jpg)" }}
+          />
+          <video
+            className="hero-bg-video absolute inset-0 hidden h-full w-full object-cover md:block"
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster="/images/hero-neighborhood-video-poster.jpg"
+          >
+            <source src="/videos/hero-neighborhood.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/60 to-[var(--rs-ink)]" />
+        </div>
         <div>
           <div
             className="rs-fade-up mb-5 inline-flex items-center gap-2 font-mono text-xs tracking-widest text-[var(--rs-scan)]"
