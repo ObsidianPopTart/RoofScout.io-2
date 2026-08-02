@@ -503,17 +503,17 @@ export const BLOG_POSTS: BlogPost[] = [
     body: [
       {
         type: "p",
-        text: "Dallas-Fort Worth isn't just a big roofing market — recent industry analysis puts it as the largest storm restoration ecosystem in North America, with the local roofing industry valued at roughly $5 billion and close to 4,000 contracting entities employing over 13,500 people across the metroplex. Suburbs like McKinney, Plano, Arlington, and Fort Worth proper each generate tens of thousands of individual hail claims per storm cycle — a recent three-year window put the combined DFW sub-market total north of 127,000 claims.",
+        text: "Dallas-Fort Worth isn't just a big roofing market — a 2021 industry analysis put it as the largest storm restoration ecosystem in North America, with the local roofing industry valued at roughly $5 billion, close to 4,000 contracting entities, and over 13,500 people employed across the metroplex. The metroplex's own suburbs regularly place among the highest hail-claim cities in the country: NICB's national hail-claims data ranked Plano the No. 5 U.S. city for hail claims in its 2016-2018 report (42,659 claims), and McKinney and Dallas both placed in the top 5 nationally in the following 2017-2019 report (34,134 and 25,262 claims respectively).",
       },
       { type: "h2", text: "Why DFW floods with roofing companies every spring" },
       {
         type: "p",
-        text: "Texas leads the nation in hail activity outright — an estimated 23-28% of all national hail damage claims, roughly 195 severe hail days a year statewide, and over 900 major hail events logged across the state in 2025 alone. That's not a one-storm market; DFW gets hit repeatedly through the March-to-June window, which is exactly why the metroplex supports thousands of competing contractors instead of a handful.",
+        text: "Texas leads the nation in hail activity outright — 23-28% of all national hail damage claims across NICB's two most recent three-year reporting windows, and 902 major hail events logged across the state in 2025 alone, the most of any state that year. Tarrant County itself has logged 126 severe hail days since 2000. That's not a one-storm market; DFW gets hit repeatedly through the March-to-June window, which is exactly why the metroplex supports thousands of competing contractors instead of a handful.",
       },
       { type: "h2", text: "Two very different companies are chasing the same roofs" },
       {
         type: "p",
-        text: "DFW's contractor base splits into two operational profiles that show up after every major hailstorm. Established local restoration roofers run permanent offices, chase insurance-supplement value, and lean on CRM platforms built for job costing and supplier ordering. Mobile storm-chase crews do the opposite — they deploy into a hit neighborhood within 24-48 hours of an event like the April 2021 Tarrant County hailstorm, canvass hard for a week or two, then move to the next city. Both are staring at the same street trying to answer the same question: which of these roofs actually needs work?",
+        text: "DFW's contractor base splits into two operational profiles that show up after every major hailstorm. Established local restoration roofers run permanent offices, chase insurance-supplement value, and lean on CRM platforms built for job costing and supplier ordering. Mobile storm-chase crews do the opposite — they deploy into a hit neighborhood within a day or two of an event like the April 28, 2021 Tarrant County hailstorm (a record-breaking 6.4-inch hailstone, roughly $500 million in insured damage, and 32,000 claims filed statewide, most of them in Tarrant County), canvass hard for a week or two, then move to the next city. Both are staring at the same street trying to answer the same question: which of these roofs actually needs work?",
       },
       {
         type: "quote",
@@ -551,12 +551,12 @@ export const BLOG_POSTS: BlogPost[] = [
     body: [
       {
         type: "p",
-        text: "San Antonio doesn't get the same national attention as Dallas-Fort Worth, but it's a serious storm restoration market in its own right — recent claims analysis puts the metro at roughly 75,187 hail claims in a three-year window, concentrated in a dense urban residential footprint that sits squarely inside South Texas's hail corridor.",
+        text: "San Antonio doesn't get the same national attention as Dallas-Fort Worth, but it's a serious storm restoration market in its own right — NICB's national hail-claims report for 2016-2018 ranked San Antonio the single highest-claim-volume city in the entire country, with 75,187 hail claims in that three-year window, concentrated in a dense urban residential footprint that sits squarely inside South Texas's hail corridor.",
       },
       { type: "h2", text: "A concentrated market, not a sprawling one" },
       {
         type: "p",
-        text: "Where DFW's claim volume spreads across a dozen distinct suburbs, San Antonio's hail exposure is more geographically concentrated — which cuts both ways. It means less territory to cover per storm event, but it also means more contractors converging on the same neighborhoods when a hailstorm hits, since Texas as a whole logs roughly 195 severe hail days a year and hundreds of major hail events statewide.",
+        text: "Where DFW's claim volume spreads across a dozen distinct suburbs, San Antonio's hail exposure is more geographically concentrated — which cuts both ways. It means less territory to cover per storm event, but it also means more contractors converging on the same neighborhoods when a hailstorm hits, since Texas as a whole logged 902 major hail events in 2025 alone, the most of any state that year.",
       },
       { type: "h2", text: "Established firms and independent shops, competing for the same block" },
       {
@@ -588,13 +588,13 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "roofing-leads-denver",
     title: "Denver Roofing Leads: Why Front Range Roofs Fail Faster",
     description:
-      "Denver's freeze-thaw cycles and intense UV exposure age roofs faster than most U.S. markets — recent claims data shows nearly 52,000 hail claims in a three-year window and a single 2017 storm that caused over $3.6 billion in local damage.",
+      "Denver's freeze-thaw cycles and intense UV exposure age roofs faster than most U.S. markets — NICB data shows nearly 52,000 hail claims in a three-year window, and the May 2017 hailstorm remains the costliest catastrophe in Colorado history at $2.3 billion in insured losses.",
     publishedAt: "2026-08-02",
     readingMinutes: 6,
     body: [
       {
         type: "p",
-        text: "Denver anchors what the industry calls \"Hail Alley,\" and the numbers back up the nickname — recent analysis puts the Denver-Aurora-Lakewood metro at roughly 51,887 hail claims in a three-year window, with a single severe storm pass in May 2017 causing more than $3.6 billion in localized hail damage across the metro.",
+        text: "Denver anchors what the industry calls \"Hail Alley,\" and the numbers back up the nickname — NICB's 2017-2019 hail-claims report placed Denver as the No. 2 U.S. city for hail claims, with 51,887 in that three-year window, and the May 8, 2017 storm alone caused $2.3 billion in insured losses — the costliest catastrophe in Colorado's history, and the third-costliest hailstorm in U.S. history.",
       },
       { type: "h2", text: "It's not just hail — it's the freeze-thaw cycle" },
       {
@@ -637,7 +637,7 @@ export const BLOG_POSTS: BlogPost[] = [
     body: [
       {
         type: "p",
-        text: "Colorado Springs sits inside the same Front Range corridor as Denver, and it carries its own serious hail exposure — recent estimates put the metro anywhere from roughly 38,044 to nearly 67,920 hail claims in a three-year window depending on the storm cycle measured, with high hail frequency hitting a housing stock that mixes military-family neighborhoods with dense suburban development.",
+        text: "Colorado Springs sits inside the same Front Range corridor as Denver, and it carries its own serious hail exposure — NICB ranked it the No. 2 U.S. city for hail claims in its 2016-2018 report (67,920 claims) and No. 3 in the following 2017-2019 report (38,044 claims), placing it in the national top 3 in back-to-back reporting periods, with high hail frequency hitting a housing stock that mixes military-family neighborhoods with dense suburban development.",
       },
       { type: "h2", text: "A market local operators and traveling crews both know well" },
       {
@@ -675,7 +675,7 @@ export const BLOG_POSTS: BlogPost[] = [
     body: [
       {
         type: "p",
-        text: "Omaha doesn't have the population of Dallas-Fort Worth or Denver, but recent industry analysis ranked it the single highest-volume U.S. city for hail loss claims in a three-year window — roughly 54,153 claims, with neighboring Lincoln contributing another 28,778 during peak storm years. That's an extraordinary concentration of claims packed into a relatively compact metro footprint.",
+        text: "Omaha doesn't have the population of Dallas-Fort Worth or Denver, but NICB's national hail-claims data ranked it the single highest-volume U.S. city for hail loss claims in its 2017-2019 report — 54,153 claims — and it placed No. 3 nationally in the prior 2016-2018 report too, with 52,803 claims. That's the country's top hail-claim city landing in the national top 3 in back-to-back three-year reporting windows, in a metro far smaller than Dallas-Fort Worth or Denver.",
       },
       { type: "h2", text: "Density changes the math" },
       {
