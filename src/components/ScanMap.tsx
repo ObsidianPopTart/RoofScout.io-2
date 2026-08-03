@@ -478,18 +478,6 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
       </div>
 
       <div className="flex max-h-[68vh] flex-col gap-3">
-        <button
-          onClick={runScan}
-          disabled={scanning || !mapReady}
-          className="rounded-lg bg-amber-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-700 disabled:cursor-wait disabled:bg-amber-400"
-        >
-          {scanning ? t.scanning : t.scanButton}
-        </button>
-        <p className={`text-xs ${areaTooLarge ? "font-medium text-red-600 dark:text-red-400" : "text-slate-500 dark:text-slate-400"}`}>
-          {areaKm2 !== null ? tf(t.visibleArea, { area: areaKm2.toFixed(1) }) : "…"} ·{" "}
-          {tf(t.largerAreasTakeLonger, { max: MAX_SCAN_AREA_KM2 })}
-        </p>
-
         {planTier === "apex" ? (
           <div className="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
             <div className="flex items-center justify-between gap-2 border-b border-slate-100 px-3 py-2.5 dark:border-slate-800">
@@ -590,6 +578,18 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
             </button>
           </div>
         )}
+
+        <button
+          onClick={runScan}
+          disabled={scanning || !mapReady}
+          className="rounded-lg bg-amber-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-700 disabled:cursor-wait disabled:bg-amber-400"
+        >
+          {scanning ? t.scanning : t.scanButton}
+        </button>
+        <p className={`text-xs ${areaTooLarge ? "font-medium text-red-600 dark:text-red-400" : "text-slate-500 dark:text-slate-400"}`}>
+          {areaKm2 !== null ? tf(t.visibleArea, { area: areaKm2.toFixed(1) }) : "…"} ·{" "}
+          {tf(t.largerAreasTakeLonger, { max: MAX_SCAN_AREA_KM2 })}
+        </p>
 
         {error && (
           <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-300">
