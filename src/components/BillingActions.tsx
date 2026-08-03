@@ -32,10 +32,12 @@ export function UpgradeButton({
   plan,
   label,
   locale = "en",
+  highlight = false,
 }: {
   plan: "pro" | "apex";
   label: string;
   locale?: Locale;
+  highlight?: boolean;
 }) {
   const t = dictionaries[locale].billingPage;
   const { run, loading, error } = useRedirectAction("/api/billing/checkout", { plan });
@@ -44,11 +46,15 @@ export function UpgradeButton({
       <button
         onClick={() => run(t.somethingWrong)}
         disabled={loading}
-        className="w-full rounded-lg bg-amber-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-amber-700 disabled:cursor-wait disabled:bg-amber-400"
+        className={`w-full rounded-full px-4 py-2.5 text-sm font-bold shadow-sm transition-transform hover:-translate-y-0.5 disabled:cursor-wait ${
+          highlight
+            ? "bg-[#1a1206] text-[var(--rs-paper)] disabled:opacity-60"
+            : "bg-[var(--rs-amber)] text-[#1a1206] disabled:opacity-60"
+        }`}
       >
         {loading ? t.redirecting : label}
       </button>
-      {error && <p className="mt-2 text-xs text-red-600 dark:text-red-400">{error}</p>}
+      {error && <p className="mt-2 text-xs text-red-400">{error}</p>}
     </div>
   );
 }
@@ -61,11 +67,11 @@ export function BuyScanPackButton({ locale = "en" }: { locale?: Locale }) {
       <button
         onClick={() => run(t.somethingWrong)}
         disabled={loading}
-        className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-400 disabled:cursor-wait dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-500"
+        className="rounded-full border border-white/20 px-4 py-2 text-sm font-bold text-[var(--rs-paper)] transition-colors hover:border-white/45 disabled:cursor-wait disabled:opacity-60"
       >
         {loading ? t.redirecting : t.scanPackBuy}
       </button>
-      {error && <p className="mt-2 text-xs text-red-600 dark:text-red-400">{error}</p>}
+      {error && <p className="mt-2 text-xs text-red-400">{error}</p>}
     </div>
   );
 }
@@ -78,11 +84,11 @@ export function ManageBillingButton({ locale = "en" }: { locale?: Locale }) {
       <button
         onClick={() => run(t.somethingWrong)}
         disabled={loading}
-        className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-400 disabled:cursor-wait dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-500"
+        className="rounded-full border border-[#1a1206]/25 px-4 py-2 text-sm font-bold text-[#1a1206] transition-colors hover:border-[#1a1206]/50 disabled:cursor-wait disabled:opacity-60"
       >
         {loading ? t.redirecting : t.manageBilling}
       </button>
-      {error && <p className="mt-2 text-xs text-red-600 dark:text-red-400">{error}</p>}
+      {error && <p className="mt-2 text-xs text-red-700">{error}</p>}
     </div>
   );
 }
@@ -104,12 +110,12 @@ export function CopyReferralLink({ link, locale = "en" }: { link: string; locale
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <code className="rounded-md border border-slate-200 bg-slate-50 px-2 py-1.5 text-xs text-slate-700 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300">
+      <code className="rounded-md border border-white/15 bg-black/30 px-2 py-1.5 text-xs text-[var(--rs-paper)]">
         {link}
       </code>
       <button
         onClick={copy}
-        className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:border-slate-400 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-500"
+        className="rounded-full border border-white/20 px-3 py-1.5 text-xs font-bold text-[var(--rs-paper)] transition-colors hover:border-white/45"
       >
         {copied ? t.referralCopied : t.referralCopy}
       </button>

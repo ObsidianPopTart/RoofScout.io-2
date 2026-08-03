@@ -71,30 +71,30 @@ export default function TerritoryManager({
           value={zip}
           onChange={(e) => setZip(e.target.value)}
           placeholder={t.territoryPlaceholder}
-          className="w-32 rounded-lg border border-slate-300 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+          className="w-32 rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-sm text-[var(--rs-paper)] focus:border-[var(--rs-amber)] focus:outline-none focus:ring-2 focus:ring-[var(--rs-amber)]/25"
         />
         <button
           onClick={addClaim}
           disabled={loading || zip.trim().length !== 5}
-          className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-700 disabled:cursor-not-allowed disabled:bg-amber-300"
+          className="rounded-full bg-[var(--rs-amber)] px-4 py-2 text-sm font-bold text-[#1a1206] transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {t.territoryAdd}
         </button>
       </div>
-      {error && <p className="mt-2 text-xs text-red-600 dark:text-red-400">{error}</p>}
+      {error && <p className="mt-2 text-xs font-medium text-red-400">{error}</p>}
 
       <ul className="mt-4 space-y-2">
-        {claims.length === 0 && <li className="text-sm text-slate-500 dark:text-slate-400">{t.territoryEmpty}</li>}
+        {claims.length === 0 && <li className="text-sm text-[var(--rs-paper)]/50">{t.territoryEmpty}</li>}
         {claims.map((claim) => (
           <li
             key={claim.id}
-            className="flex items-center justify-between rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-slate-800"
+            className="flex items-center justify-between rounded-lg border border-white/10 px-3 py-2 text-sm"
           >
-            <span className="font-mono text-slate-700 dark:text-slate-200">{claim.zipCode}</span>
+            <span className="font-mono text-[var(--rs-paper)]/80">{claim.zipCode}</span>
             <button
               onClick={() => removeClaim(claim.id)}
               disabled={loading}
-              className="text-xs font-medium text-slate-500 hover:text-red-600 dark:text-slate-400 dark:hover:text-red-400"
+              className="text-xs font-medium text-[var(--rs-paper)]/50 hover:text-red-400"
             >
               {t.territoryRemove}
             </button>
