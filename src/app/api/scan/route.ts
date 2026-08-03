@@ -15,8 +15,9 @@ export async function POST(request: Request) {
   const orgId = session.user.orgId;
 
   let bounds: ScanBounds;
+  let stormSourceLabel: string | undefined;
   try {
-    const body = (await request.json()) as Partial<ScanBounds>;
+    const body = (await request.json()) as Partial<ScanBounds> & { stormSourceLabel?: unknown };
     const { north, south, east, west } = body;
     if (
       typeof north !== "number" ||
@@ -29,6 +30,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid scan bounds" }, { status: 400 });
     }
     bounds = { north, south, east, west };
+    // Optional label from the Storm Feed (e.g. "Dallas Hail 1.75in") — capped
+    // and type-checked since it ends up in a stored ScanRecord field.
+    if (typeof body.stormSourceLabel === "string" && body.stormSourceLabel.trim()) {
+      stormSourceLabel = body.stormSourceLabel.trim().slice(0, 80);
+    }
   } catch {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
@@ -61,13 +67,13 @@ export async function POST(request: Request) {
 
   try {
     if (isLiveMode()) {
-      const result = await runLiveScan(orgId, bounds);
+      const result = await runLiveScan(orgId, bounds, stormSourceLabel);
       return NextResponse.json(result);
     }
 
     // Demo mode: simulate imagery-analysis latency so the scanning state is visible.
     await new Promise((r) => setTimeout(r, 1200));
-    const result = await runMockScan(orgId, bounds);
+    const result = await runMockScan(orgId, bounds, stormSourceLabel);
     return NextResponse.json(result);
   } catch (err) {
     console.error("Scan failed:", err);

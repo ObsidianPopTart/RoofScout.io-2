@@ -80,7 +80,8 @@ function chunk<T>(arr: T[], size: number): T[][] {
 
 export async function runLiveScan(
   orgId: string,
-  bounds: ScanBounds
+  bounds: ScanBounds,
+  labelPrefix = "Live scan"
 ): Promise<{ scan: ScanRecord; leads: Lead[] }> {
   // Oversample: grading filters out healthy roofs, so scan more buildings than
   // we expect to keep as leads.
@@ -96,5 +97,5 @@ export async function runLiveScan(
     }
   }
 
-  return createScanWithLeads(orgId, bounds, "Live scan", drafts);
+  return createScanWithLeads(orgId, bounds, labelPrefix, drafts);
 }

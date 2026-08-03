@@ -27,7 +27,6 @@ type BaseLayer = "satellite" | "streets";
 const SATELLITE_SOURCE_ID = "satellite";
 const STREETS_SOURCE_ID = "streets";
 const STORMS_SOURCE_ID = "storms";
-const REPORTS_SOURCE_ID = "storm-reports";
 
 // GeoJSON with no features — used to initialize the storms source before any
 // fetch has happened, and to clear it when the layer is toggled off.
@@ -54,26 +53,51 @@ function alertsToFeatureCollection(alerts: StormAlert[]) {
   };
 }
 
-// Recent hail/wind ground-truth reports (SPC) — plotted as points, styled by
-// severity, distinct from the active-warning polygons above.
-function reportsToFeatureCollection(reports: StormReport[]) {
-  return {
-    type: "FeatureCollection" as const,
-    features: reports.map((r) => ({
-      type: "Feature" as const,
-      geometry: { type: "Point" as const, coordinates: [r.lng, r.lat] },
-      properties: {
-        reportType: r.type,
-        hailInches: r.type === "hail" ? r.magnitudeValue : null,
-        magnitudeLabel: r.magnitudeLabel,
-        location: r.location,
-        county: r.county,
-        state: r.state,
-        date: r.date,
-        time: r.time,
-      },
-    })),
-  };
+// A single ranked, clickable feed combining active NWS warnings and
+// significant (>= 1 in) SPC hail reports — the point of this is that a user
+// never has to go looking for storm activity on the map themselves; they
+// read a list and click the item they want to target.
+interface StormFeedItem {
+  id: string;
+  kind: "alert" | "hail";
+  title: string;
+  subtitle: string;
+  lat: number;
+  lng: number;
+  sortValue: number;
+  label: string; // saved onto the resulting ScanRecord when this item is scanned
+}
+
+const HAIL_THRESHOLD_INCHES = 1; // below this, hail is unlikely to threaten a roof
+
+function buildStormFeed(alerts: StormAlert[], reports: StormReport[]): StormFeedItem[] {
+  const alertItems: StormFeedItem[] = alerts
+    .filter((a) => a.centroid)
+    .map((a) => ({
+      id: `alert-${a.id}`,
+      kind: "alert",
+      title: a.event,
+      subtitle: `${a.areaDesc} — ${a.hazard}`,
+      lat: a.centroid!.lat,
+      lng: a.centroid!.lng,
+      sortValue: a.event.includes("Tornado") ? 1000 : 900,
+      label: `${a.event} — ${a.areaDesc}`.slice(0, 80),
+    }));
+
+  const hailItems: StormFeedItem[] = reports
+    .filter((r) => r.type === "hail" && (r.magnitudeValue ?? 0) >= HAIL_THRESHOLD_INCHES)
+    .map((r) => ({
+      id: `report-${r.date}-${r.time}-${r.lat}-${r.lng}`,
+      kind: "hail",
+      title: r.magnitudeLabel,
+      subtitle: `${r.location}, ${r.county} ${r.state} — ${r.date}`,
+      lat: r.lat,
+      lng: r.lng,
+      sortValue: (r.magnitudeValue ?? 1) * 10,
+      label: `${r.magnitudeLabel} — ${r.location}, ${r.state}`.slice(0, 80),
+    }));
+
+  return [...alertItems, ...hailItems].sort((a, b) => b.sortValue - a.sortValue).slice(0, 30);
 }
 
 export default function ScanMap({ locale = "en", planTier = "free" }: { locale?: Locale; planTier?: PlanTier }) {
@@ -82,6 +106,7 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
   const mapDivRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const leadMarkersRef = useRef<Marker[]>([]);
+  const feedMarkerRef = useRef<Marker | null>(null);
 
   const [mapReady, setMapReady] = useState(false);
   const [baseLayer, setBaseLayer] = useState<BaseLayer>("satellite");
@@ -93,12 +118,12 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
   const [addressQuery, setAddressQuery] = useState("");
   const [searchingAddress, setSearchingAddress] = useState(false);
   const [addressError, setAddressError] = useState<string | null>(null);
-  const [stormsOn, setStormsOn] = useState(false);
   const [stormsLoading, setStormsLoading] = useState(false);
   const [stormError, setStormError] = useState<string | null>(null);
   const [stormAlerts, setStormAlerts] = useState<StormAlert[] | null>(null);
   const [stormReports, setStormReports] = useState<StormReport[] | null>(null);
   const [stormDays, setStormDays] = useState(3);
+  const [activeStormLabel, setActiveStormLabel] = useState<string | null>(null);
 
   useEffect(() => {
     if (!mapDivRef.current || mapRef.current) return;
@@ -192,57 +217,6 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
         }
       });
 
-      // Recent hail/wind reports (SPC) — points, color/size-coded by
-      // severity: hail is stepped yellow → orange → red by inch size, wind
-      // reports are a distinct blue so the two hazard types read apart at a
-      // glance.
-      map.addSource(REPORTS_SOURCE_ID, { type: "geojson", data: EMPTY_FEATURE_COLLECTION });
-      map.addLayer({
-        id: "storm-reports-points",
-        type: "circle",
-        source: REPORTS_SOURCE_ID,
-        layout: { visibility: "none" },
-        paint: {
-          "circle-radius": [
-            "case",
-            ["==", ["get", "reportType"], "hail"],
-            ["interpolate", ["linear"], ["coalesce", ["get", "hailInches"], 0.75], 0.75, 5, 1, 6, 2, 9, 4, 13],
-            5,
-          ],
-          "circle-color": [
-            "case",
-            ["==", ["get", "reportType"], "hail"],
-            ["step", ["coalesce", ["get", "hailInches"], 0], "#facc15", 1, "#f97316", 2, "#dc2626"],
-            "#38bdf8",
-          ],
-          "circle-opacity": 0.85,
-          "circle-stroke-color": "#ffffff",
-          "circle-stroke-width": 1,
-        },
-      });
-
-      map.on("mouseenter", "storm-reports-points", () => {
-        map.getCanvas().style.cursor = "pointer";
-      });
-      map.on("mouseleave", "storm-reports-points", () => {
-        map.getCanvas().style.cursor = "";
-      });
-      map.on("click", "storm-reports-points", (e) => {
-        const feature = e.features?.[0];
-        if (!feature) return;
-        const props = feature.properties as Record<string, string | number | null>;
-        const coords = (feature.geometry as { type: "Point"; coordinates: [number, number] }).coordinates;
-        new Popup({ offset: 12 })
-          .setLngLat(e.lngLat)
-          .setHTML(
-            `<strong>${props.magnitudeLabel}</strong><br/>${props.location}, ${props.county} ${props.state}` +
-              `<br/><span style="font-size:11px;color:#666">${props.date} ${props.time} local</span>` +
-              `<br/><span style="font-size:11px;color:#666">${t.stormClickToJump}</span>`
-          )
-          .addTo(map);
-        map.flyTo({ center: coords, zoom: 16 });
-      });
-
       const updateArea = () => {
         const b = map.getBounds();
         setAreaKm2(
@@ -313,11 +287,8 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
       setStormAlerts(alerts);
       setStormReports(reports);
       (map.getSource(STORMS_SOURCE_ID) as GeoJSONSource).setData(alertsToFeatureCollection(alerts));
-      (map.getSource(REPORTS_SOURCE_ID) as GeoJSONSource).setData(reportsToFeatureCollection(reports));
       map.setLayoutProperty("storms-fill", "visibility", "visible");
       map.setLayoutProperty("storms-line", "visibility", "visible");
-      map.setLayoutProperty("storm-reports-points", "visibility", "visible");
-      setStormsOn(true);
     } catch (e) {
       setStormError(e instanceof Error ? e.message : t.stormError);
     } finally {
@@ -325,24 +296,38 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
     }
   }
 
-  async function toggleStorms() {
+  function changeStormDays(days: number) {
+    setStormDays(days);
+    fetchStormData(days);
+  }
+
+  // Apex users get the feed automatically the moment the map's ready — no
+  // toggle to find, no map to go hunting around on.
+  useEffect(() => {
+    if (planTier === "apex" && mapReady && stormAlerts === null) {
+      fetchStormData(stormDays);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only re-run on planTier/mapReady changing; fetchStormData/stormDays/stormAlerts are read fresh each call
+  }, [planTier, mapReady]);
+
+  function viewAndScanStorm(item: StormFeedItem) {
     const map = mapRef.current;
     if (!map) return;
 
-    if (stormsOn) {
-      map.setLayoutProperty("storms-fill", "visibility", "none");
-      map.setLayoutProperty("storms-line", "visibility", "none");
-      map.setLayoutProperty("storm-reports-points", "visibility", "none");
-      setStormsOn(false);
-      return;
-    }
+    map.flyTo({ center: [item.lng, item.lat], zoom: 16 });
 
-    await fetchStormData(stormDays);
-  }
+    feedMarkerRef.current?.remove();
+    const el = document.createElement("div");
+    el.style.width = "20px";
+    el.style.height = "20px";
+    el.style.borderRadius = "50%";
+    el.style.border = "3px solid #fff";
+    const color = item.kind === "alert" ? "#dc2626" : "#f97316";
+    el.style.background = color;
+    el.style.boxShadow = `0 0 0 3px ${color}55, 0 2px 6px rgba(0,0,0,0.45)`;
+    feedMarkerRef.current = new Marker({ element: el }).setLngLat([item.lng, item.lat]).addTo(map);
 
-  function changeStormDays(days: number) {
-    setStormDays(days);
-    if (stormsOn) fetchStormData(days);
+    setActiveStormLabel(item.label);
   }
 
   async function runScan() {
@@ -368,7 +353,7 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
       const res = await fetch("/api/scan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(bounds),
+        body: JSON.stringify(activeStormLabel ? { ...bounds, stormSourceLabel: activeStormLabel } : bounds),
       });
       if (!res.ok) {
         const body = await res.json().catch(() => null);
@@ -376,6 +361,7 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
         throw new Error(body?.message ?? body?.error ?? `Scan failed (HTTP ${res.status})`);
       }
       const data = (await res.json()) as ScanResponse;
+      setActiveStormLabel(null); // one-shot tag — the label is now saved on the ScanRecord itself
 
       leadMarkersRef.current.forEach((m) => m.remove());
       leadMarkersRef.current = [];
@@ -505,18 +491,89 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
         </p>
 
         {planTier === "apex" ? (
-          <button
-            type="button"
-            onClick={toggleStorms}
-            disabled={stormsLoading || !mapReady}
-            className={`rounded-lg border px-4 py-2 text-sm font-semibold shadow-sm transition disabled:cursor-wait ${
-              stormsOn
-                ? "border-orange-300 bg-orange-50 text-orange-800 hover:bg-orange-100 dark:border-orange-900 dark:bg-orange-950 dark:text-orange-300"
-                : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
-            }`}
-          >
-            {stormsLoading ? t.stormLoading : stormsOn ? t.stormHide : t.stormShow}
-          </button>
+          <div className="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div className="flex items-center justify-between gap-2 border-b border-slate-100 px-3 py-2.5 dark:border-slate-800">
+              <div>
+                <div className="text-sm font-semibold text-slate-800 dark:text-slate-100">{t.stormFeedTitle}</div>
+                <div className="text-[11px] text-slate-500 dark:text-slate-400">{t.stormFeedSubtitle}</div>
+              </div>
+              <button
+                type="button"
+                onClick={() => fetchStormData(stormDays)}
+                disabled={stormsLoading}
+                className="shrink-0 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-50 disabled:cursor-wait dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+              >
+                {t.stormFeedRefresh}
+              </button>
+            </div>
+
+            <div className="flex items-center gap-1.5 border-b border-slate-100 px-3 py-2 text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400">
+              <span>{t.stormDayRangeLabel}</span>
+              {[1, 3, 7].map((d) => (
+                <button
+                  key={d}
+                  type="button"
+                  onClick={() => changeStormDays(d)}
+                  disabled={stormsLoading}
+                  className={`rounded-md border px-2 py-1 font-semibold transition disabled:cursor-wait ${
+                    stormDays === d
+                      ? "border-orange-300 bg-orange-50 text-orange-800 dark:border-orange-900 dark:bg-orange-950 dark:text-orange-300"
+                      : "border-slate-300 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+                  }`}
+                >
+                  {tf(t.stormDayCount, { count: d })}
+                </button>
+              ))}
+            </div>
+
+            {stormError && (
+              <p className="px-3 py-2 text-xs font-medium text-red-600 dark:text-red-400">{stormError}</p>
+            )}
+
+            {stormsLoading && stormAlerts === null && (
+              <p className="px-3 py-3 text-xs text-slate-500 dark:text-slate-400">{t.stormFeedLoading}</p>
+            )}
+
+            {stormAlerts !== null && stormReports !== null && (
+              <>
+                {(() => {
+                  const feed = buildStormFeed(stormAlerts, stormReports);
+                  return feed.length === 0 ? (
+                    <p className="px-3 py-3 text-xs text-slate-500 dark:text-slate-400">{t.stormFeedEmpty}</p>
+                  ) : (
+                    <ul className="max-h-48 divide-y divide-slate-100 overflow-y-auto dark:divide-slate-800">
+                      {feed.map((item) => (
+                        <li key={item.id} className="flex items-center justify-between gap-2 px-3 py-2">
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1.5">
+                              <span
+                                className="h-2 w-2 shrink-0 rounded-full"
+                                style={{ background: item.kind === "alert" ? "#dc2626" : "#f97316" }}
+                                aria-hidden
+                              />
+                              <span className="truncate text-xs font-semibold text-slate-800 dark:text-slate-100">
+                                {item.title}
+                              </span>
+                            </div>
+                            <div className="truncate text-[11px] text-slate-500 dark:text-slate-400">
+                              {item.subtitle}
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => viewAndScanStorm(item)}
+                            className="shrink-0 rounded-md border border-orange-300 bg-orange-50 px-2 py-1 text-[11px] font-semibold text-orange-800 hover:bg-orange-100 dark:border-orange-900 dark:bg-orange-950 dark:text-orange-300 dark:hover:bg-orange-900"
+                          >
+                            {t.stormFeedViewScan}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  );
+                })()}
+              </>
+            )}
+          </div>
         ) : (
           <Link
             href="/app/billing"
@@ -525,34 +582,13 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
             {t.stormLocked}
           </Link>
         )}
-        {planTier === "apex" && stormsOn && (
-          <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
-            <span>{t.stormDayRangeLabel}</span>
-            {[1, 3, 7].map((d) => (
-              <button
-                key={d}
-                type="button"
-                onClick={() => changeStormDays(d)}
-                disabled={stormsLoading}
-                className={`rounded-md border px-2 py-1 font-semibold transition disabled:cursor-wait ${
-                  stormDays === d
-                    ? "border-orange-300 bg-orange-50 text-orange-800 dark:border-orange-900 dark:bg-orange-950 dark:text-orange-300"
-                    : "border-slate-300 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
-                }`}
-              >
-                {tf(t.stormDayCount, { count: d })}
-              </button>
-            ))}
+        {activeStormLabel && (
+          <div className="flex items-center justify-between gap-2 rounded-lg border border-orange-200 bg-orange-50 px-3 py-2 text-xs text-orange-800 dark:border-orange-900 dark:bg-orange-950 dark:text-orange-300">
+            <span className="truncate">{tf(t.stormFeedActiveLabel, { label: activeStormLabel })}</span>
+            <button type="button" onClick={() => setActiveStormLabel(null)} className="shrink-0 font-semibold underline">
+              {t.stormFeedClear}
+            </button>
           </div>
-        )}
-        {stormError && <p className="text-xs font-medium text-red-600 dark:text-red-400">{stormError}</p>}
-        {stormsOn && stormAlerts?.length === 0 && (
-          <p className="text-xs text-slate-500 dark:text-slate-400">{t.stormNoAlerts}</p>
-        )}
-        {stormsOn && stormReports && (
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            {tf(t.stormReportsFound, { count: stormReports.length })}
-          </p>
         )}
 
         {error && (
@@ -573,6 +609,11 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
                 {tf(t.neglectedRoofsFound, { count: result.scan.leadCount })}
               </div>
               <div className="text-xs text-slate-500 dark:text-slate-400">{t.worstFirstHealthy}</div>
+              {!result.scan.label.startsWith("Area scan") && !result.scan.label.startsWith("Live scan") && (
+                <div className="mt-1 text-xs font-medium text-orange-700 dark:text-orange-400">
+                  {tf(t.scanSourceLabel, { label: result.scan.label })}
+                </div>
+              )}
             </div>
             <ul className="min-h-0 flex-1 divide-y divide-slate-100 overflow-y-auto dark:divide-slate-800">
               {sortedLeads.map((lead) => (

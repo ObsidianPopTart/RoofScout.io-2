@@ -124,14 +124,22 @@ export async function updateLeadStatuses(orgId: string, ids: string[], status: L
   return getLeadsByIds(orgId, ids);
 }
 
+// The two generic prefixes get a running number ("Area scan 5") so repeat
+// scans stay distinguishable; a custom label (e.g. from the Storm Feed) is
+// already a complete, distinct description and is used as-is.
+const GENERIC_LABEL_PREFIXES = new Set(["Area scan", "Live scan"]);
+
 export async function createScanWithLeads(
   orgId: string,
   bounds: ScanBounds,
   labelPrefix: string,
   drafts: LeadDraft[]
 ): Promise<{ scan: ScanRecord; leads: Lead[] }> {
-  const existingCount = await prisma.scanRecord.count({ where: { orgId } });
-  const label = `${labelPrefix} ${existingCount + 1}`;
+  let label = labelPrefix;
+  if (GENERIC_LABEL_PREFIXES.has(labelPrefix)) {
+    const existingCount = await prisma.scanRecord.count({ where: { orgId } });
+    label = `${labelPrefix} ${existingCount + 1}`;
+  }
 
   const scanRow = await prisma.scanRecord.create({
     data: {
@@ -152,7 +160,11 @@ export async function createScanWithLeads(
   return { scan: toScanRecord(scanRow), leads: scanRow.leads.map(toLead) };
 }
 
-export async function runMockScan(orgId: string, bounds: ScanBounds): Promise<{ scan: ScanRecord; leads: Lead[] }> {
+export async function runMockScan(
+  orgId: string,
+  bounds: ScanBounds,
+  labelPrefix = "Area scan"
+): Promise<{ scan: ScanRecord; leads: Lead[] }> {
   // Simulates the real pipeline: scan more candidates than we keep, drop any
   // that grade as healthy/new, so the result is neglected roofs only.
   const rand = mulberry32(Date.now() % 2147483647);
@@ -167,5 +179,5 @@ export async function runMockScan(orgId: string, bounds: ScanBounds): Promise<{ 
     if (isNeglected(draft.condition)) drafts.push(draft);
   }
 
-  return createScanWithLeads(orgId, bounds, "Area scan", drafts);
+  return createScanWithLeads(orgId, bounds, labelPrefix, drafts);
 }
