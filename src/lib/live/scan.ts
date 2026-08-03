@@ -72,12 +72,6 @@ async function analyzeBuilding(b: BuildingCandidate): Promise<LeadDraft | null> 
   return draft;
 }
 
-function chunk<T>(arr: T[], size: number): T[][] {
-  const out: T[][] = [];
-  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
-  return out;
-}
-
 export async function runLiveScan(
   orgId: string,
   bounds: ScanBounds,
@@ -87,15 +81,19 @@ export async function runLiveScan(
   // we expect to keep as leads.
   const buildings = await findBuildings(bounds, liveConfig.maxBuildingsPerScan * 2);
 
+  // Every candidate is analyzed concurrently rather than in sequential
+  // batches — with an oversample this small (<=30 buildings), running them
+  // all at once is well within provider rate limits and keeps total wall
+  // time close to a single building's latency instead of multiplying it by
+  // the number of batches, which matters for staying under the platform's
+  // function execution limit (see `maxDuration` on the /api/scan route).
+  const results = await Promise.allSettled(buildings.map((b) => analyzeBuilding(b)));
   const drafts: LeadDraft[] = [];
-  for (const group of chunk(buildings, 6)) {
-    if (drafts.length >= liveConfig.maxBuildingsPerScan) break;
-    const results = await Promise.allSettled(group.map((b) => analyzeBuilding(b)));
-    for (const r of results) {
-      if (r.status === "fulfilled" && r.value) drafts.push(r.value);
-      if (r.status === "rejected") console.error("Building analysis failed:", r.reason);
-    }
+  for (const r of results) {
+    if (r.status === "fulfilled" && r.value) drafts.push(r.value);
+    if (r.status === "rejected") console.error("Building analysis failed:", r.reason);
   }
+  drafts.length = Math.min(drafts.length, liveConfig.maxBuildingsPerScan);
 
   return createScanWithLeads(orgId, bounds, labelPrefix, drafts);
 }
