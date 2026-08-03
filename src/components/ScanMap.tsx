@@ -27,6 +27,7 @@ type BaseLayer = "satellite" | "streets";
 const SATELLITE_SOURCE_ID = "satellite";
 const STREETS_SOURCE_ID = "streets";
 const STORMS_SOURCE_ID = "storms";
+const RADAR_SOURCE_ID = "radar";
 
 // GeoJSON with no features — used to initialize the storms source before any
 // fetch has happened, and to clear it when the layer is toggled off.
@@ -110,6 +111,7 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
 
   const [mapReady, setMapReady] = useState(false);
   const [baseLayer, setBaseLayer] = useState<BaseLayer>("satellite");
+  const [radarOn, setRadarOn] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [limitReached, setLimitReached] = useState(false);
@@ -178,6 +180,24 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
         layout: { visibility: "none" },
       });
 
+      // Live weather radar (NEXRAD composite reflectivity) — free, public,
+      // no API key, from Iowa Environmental Mesonet. Refreshes every ~5min
+      // server-side; drawn semi-transparent over the base map.
+      map.addSource(RADAR_SOURCE_ID, {
+        type: "raster",
+        tiles: ["https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/{z}/{x}/{y}.png"],
+        tileSize: 256,
+        maxzoom: 12,
+        attribution: "Radar &copy; Iowa Environmental Mesonet",
+      });
+      map.addLayer({
+        id: "radar-layer",
+        type: "raster",
+        source: RADAR_SOURCE_ID,
+        layout: { visibility: "none" },
+        paint: { "raster-opacity": 0.65 },
+      });
+
       map.addSource(STORMS_SOURCE_ID, { type: "geojson", data: EMPTY_FEATURE_COLLECTION });
       map.addLayer({
         id: "storms-fill",
@@ -243,6 +263,14 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
     map.setLayoutProperty("satellite-layer", "visibility", next === "satellite" ? "visible" : "none");
     map.setLayoutProperty("streets-layer", "visibility", next === "streets" ? "visible" : "none");
     setBaseLayer(next);
+  }
+
+  function toggleRadar() {
+    const map = mapRef.current;
+    if (!map) return;
+    const next = !radarOn;
+    map.setLayoutProperty("radar-layer", "visibility", next ? "visible" : "none");
+    setRadarOn(next);
   }
 
   async function searchAddress(e: React.FormEvent) {
@@ -427,13 +455,28 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
             className="h-[68vh] w-full overflow-hidden rounded-xl border border-slate-200 shadow-sm dark:border-slate-800"
           />
           {mapReady && (
-            <button
-              type="button"
-              onClick={toggleBaseLayer}
-              className="absolute top-3 right-3 z-[1000] rounded-md bg-white/90 px-2.5 py-1.5 text-xs font-semibold text-slate-700 shadow hover:bg-white dark:bg-slate-800/90 dark:text-slate-200 dark:hover:bg-slate-800"
-            >
-              {baseLayer === "satellite" ? t.showStreets : t.showSatellite}
-            </button>
+            <div className="absolute top-3 right-3 z-[1000] flex gap-1.5">
+              {planTier === "apex" && (
+                <button
+                  type="button"
+                  onClick={toggleRadar}
+                  className={`rounded-md px-2.5 py-1.5 text-xs font-semibold shadow transition ${
+                    radarOn
+                      ? "bg-orange-500 text-white hover:bg-orange-600"
+                      : "bg-white/90 text-slate-700 hover:bg-white dark:bg-slate-800/90 dark:text-slate-200 dark:hover:bg-slate-800"
+                  }`}
+                >
+                  {radarOn ? t.radarHide : t.radarShow}
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={toggleBaseLayer}
+                className="rounded-md bg-white/90 px-2.5 py-1.5 text-xs font-semibold text-slate-700 shadow hover:bg-white dark:bg-slate-800/90 dark:text-slate-200 dark:hover:bg-slate-800"
+              >
+                {baseLayer === "satellite" ? t.showStreets : t.showSatellite}
+              </button>
+            </div>
           )}
           {/* Pan controls — precise, discoverable directional control (useful
               on touch/trackpad and for fine-tuning right before a scan),

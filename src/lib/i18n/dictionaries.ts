@@ -250,6 +250,8 @@ export const dictionaries = {
       scanSourceLabel: "Source: {label}",
       showStreets: "Streets",
       showSatellite: "Satellite",
+      radarShow: "🌧 Radar",
+      radarHide: "Hide radar",
     },
     leadsPage: {
       title: "Leads",
@@ -621,6 +623,8 @@ export const dictionaries = {
       scanSourceLabel: "Origen: {label}",
       showStreets: "Calles",
       showSatellite: "Satélite",
+      radarShow: "🌧 Radar",
+      radarHide: "Ocultar radar",
     },
     leadsPage: {
       title: "Clientes potenciales",
