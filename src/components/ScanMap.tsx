@@ -13,6 +13,7 @@ import {
 } from "maplibre-gl";
 import type { Lead, ScanRecord } from "@/lib/types";
 import type { StormAlert } from "@/lib/weather/nws";
+import type { StormReport } from "@/lib/weather/spc";
 import { urgencyRank } from "@/lib/leadFilter";
 import { CONDITION_COLORS } from "@/components/ConditionBadge";
 import { boundsAreaKm2, isScanAreaTooLarge, MAX_SCAN_AREA_KM2 } from "@/lib/scanBounds";
@@ -26,6 +27,7 @@ type BaseLayer = "satellite" | "streets";
 const SATELLITE_SOURCE_ID = "satellite";
 const STREETS_SOURCE_ID = "streets";
 const STORMS_SOURCE_ID = "storms";
+const REPORTS_SOURCE_ID = "storm-reports";
 
 // GeoJSON with no features — used to initialize the storms source before any
 // fetch has happened, and to clear it when the layer is toggled off.
@@ -52,6 +54,28 @@ function alertsToFeatureCollection(alerts: StormAlert[]) {
   };
 }
 
+// Recent hail/wind ground-truth reports (SPC) — plotted as points, styled by
+// severity, distinct from the active-warning polygons above.
+function reportsToFeatureCollection(reports: StormReport[]) {
+  return {
+    type: "FeatureCollection" as const,
+    features: reports.map((r) => ({
+      type: "Feature" as const,
+      geometry: { type: "Point" as const, coordinates: [r.lng, r.lat] },
+      properties: {
+        reportType: r.type,
+        hailInches: r.type === "hail" ? r.magnitudeValue : null,
+        magnitudeLabel: r.magnitudeLabel,
+        location: r.location,
+        county: r.county,
+        state: r.state,
+        date: r.date,
+        time: r.time,
+      },
+    })),
+  };
+}
+
 export default function ScanMap({ locale = "en", planTier = "free" }: { locale?: Locale; planTier?: PlanTier }) {
   const t = dictionaries[locale].scanMap;
   const tCondition = dictionaries[locale].condition;
@@ -73,6 +97,8 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
   const [stormsLoading, setStormsLoading] = useState(false);
   const [stormError, setStormError] = useState<string | null>(null);
   const [stormAlerts, setStormAlerts] = useState<StormAlert[] | null>(null);
+  const [stormReports, setStormReports] = useState<StormReport[] | null>(null);
+  const [stormDays, setStormDays] = useState(3);
 
   useEffect(() => {
     if (!mapDivRef.current || mapRef.current) return;
@@ -166,6 +192,57 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
         }
       });
 
+      // Recent hail/wind reports (SPC) — points, color/size-coded by
+      // severity: hail is stepped yellow → orange → red by inch size, wind
+      // reports are a distinct blue so the two hazard types read apart at a
+      // glance.
+      map.addSource(REPORTS_SOURCE_ID, { type: "geojson", data: EMPTY_FEATURE_COLLECTION });
+      map.addLayer({
+        id: "storm-reports-points",
+        type: "circle",
+        source: REPORTS_SOURCE_ID,
+        layout: { visibility: "none" },
+        paint: {
+          "circle-radius": [
+            "case",
+            ["==", ["get", "reportType"], "hail"],
+            ["interpolate", ["linear"], ["coalesce", ["get", "hailInches"], 0.75], 0.75, 5, 1, 6, 2, 9, 4, 13],
+            5,
+          ],
+          "circle-color": [
+            "case",
+            ["==", ["get", "reportType"], "hail"],
+            ["step", ["coalesce", ["get", "hailInches"], 0], "#facc15", 1, "#f97316", 2, "#dc2626"],
+            "#38bdf8",
+          ],
+          "circle-opacity": 0.85,
+          "circle-stroke-color": "#ffffff",
+          "circle-stroke-width": 1,
+        },
+      });
+
+      map.on("mouseenter", "storm-reports-points", () => {
+        map.getCanvas().style.cursor = "pointer";
+      });
+      map.on("mouseleave", "storm-reports-points", () => {
+        map.getCanvas().style.cursor = "";
+      });
+      map.on("click", "storm-reports-points", (e) => {
+        const feature = e.features?.[0];
+        if (!feature) return;
+        const props = feature.properties as Record<string, string | number | null>;
+        const coords = (feature.geometry as { type: "Point"; coordinates: [number, number] }).coordinates;
+        new Popup({ offset: 12 })
+          .setLngLat(e.lngLat)
+          .setHTML(
+            `<strong>${props.magnitudeLabel}</strong><br/>${props.location}, ${props.county} ${props.state}` +
+              `<br/><span style="font-size:11px;color:#666">${props.date} ${props.time} local</span>` +
+              `<br/><span style="font-size:11px;color:#666">${t.stormClickToJump}</span>`
+          )
+          .addTo(map);
+        map.flyTo({ center: coords, zoom: 16 });
+      });
+
       const updateArea = () => {
         const b = map.getBounds();
         setAreaKm2(
@@ -221,6 +298,33 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
     map.panBy([dx * el.clientWidth * 0.35, dy * el.clientHeight * 0.35]);
   }
 
+  async function fetchStormData(days: number) {
+    const map = mapRef.current;
+    if (!map) return;
+
+    setStormsLoading(true);
+    setStormError(null);
+    try {
+      const res = await fetch(`/api/storm-alerts?days=${days}`);
+      const data = await res.json().catch(() => null);
+      if (!res.ok) throw new Error(data?.error ?? t.stormError);
+      const alerts = data.alerts as StormAlert[];
+      const reports = data.reports as StormReport[];
+      setStormAlerts(alerts);
+      setStormReports(reports);
+      (map.getSource(STORMS_SOURCE_ID) as GeoJSONSource).setData(alertsToFeatureCollection(alerts));
+      (map.getSource(REPORTS_SOURCE_ID) as GeoJSONSource).setData(reportsToFeatureCollection(reports));
+      map.setLayoutProperty("storms-fill", "visibility", "visible");
+      map.setLayoutProperty("storms-line", "visibility", "visible");
+      map.setLayoutProperty("storm-reports-points", "visibility", "visible");
+      setStormsOn(true);
+    } catch (e) {
+      setStormError(e instanceof Error ? e.message : t.stormError);
+    } finally {
+      setStormsLoading(false);
+    }
+  }
+
   async function toggleStorms() {
     const map = mapRef.current;
     if (!map) return;
@@ -228,27 +332,17 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
     if (stormsOn) {
       map.setLayoutProperty("storms-fill", "visibility", "none");
       map.setLayoutProperty("storms-line", "visibility", "none");
+      map.setLayoutProperty("storm-reports-points", "visibility", "none");
       setStormsOn(false);
       return;
     }
 
-    setStormsLoading(true);
-    setStormError(null);
-    try {
-      const res = await fetch("/api/storm-alerts");
-      const data = await res.json().catch(() => null);
-      if (!res.ok) throw new Error(data?.error ?? t.stormError);
-      const alerts = data.alerts as StormAlert[];
-      setStormAlerts(alerts);
-      (map.getSource(STORMS_SOURCE_ID) as GeoJSONSource).setData(alertsToFeatureCollection(alerts));
-      map.setLayoutProperty("storms-fill", "visibility", "visible");
-      map.setLayoutProperty("storms-line", "visibility", "visible");
-      setStormsOn(true);
-    } catch (e) {
-      setStormError(e instanceof Error ? e.message : t.stormError);
-    } finally {
-      setStormsLoading(false);
-    }
+    await fetchStormData(stormDays);
+  }
+
+  function changeStormDays(days: number) {
+    setStormDays(days);
+    if (stormsOn) fetchStormData(days);
   }
 
   async function runScan() {
@@ -431,9 +525,34 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
             {t.stormLocked}
           </Link>
         )}
+        {planTier === "apex" && stormsOn && (
+          <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+            <span>{t.stormDayRangeLabel}</span>
+            {[1, 3, 7].map((d) => (
+              <button
+                key={d}
+                type="button"
+                onClick={() => changeStormDays(d)}
+                disabled={stormsLoading}
+                className={`rounded-md border px-2 py-1 font-semibold transition disabled:cursor-wait ${
+                  stormDays === d
+                    ? "border-orange-300 bg-orange-50 text-orange-800 dark:border-orange-900 dark:bg-orange-950 dark:text-orange-300"
+                    : "border-slate-300 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+                }`}
+              >
+                {tf(t.stormDayCount, { count: d })}
+              </button>
+            ))}
+          </div>
+        )}
         {stormError && <p className="text-xs font-medium text-red-600 dark:text-red-400">{stormError}</p>}
         {stormsOn && stormAlerts?.length === 0 && (
           <p className="text-xs text-slate-500 dark:text-slate-400">{t.stormNoAlerts}</p>
+        )}
+        {stormsOn && stormReports && (
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            {tf(t.stormReportsFound, { count: stormReports.length })}
+          </p>
         )}
 
         {error && (
