@@ -11,6 +11,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/app/", "/api/"],
       },
     ],
-    sitemap: "https://roof-scout.org/sitemap.xml",
+    sitemap: "https://roofscout.io/sitemap.xml",
   };
 }

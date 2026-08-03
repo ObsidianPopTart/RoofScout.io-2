@@ -19,7 +19,7 @@ const PLAN_META = {
   apex: { price: "$149", period: "/mo" },
 } as const;
 
-const SITE_URL = "https://roof-scout.org";
+const SITE_URL = "https://roofscout.io";
 
 export default async function PricingPage() {
   const { locale, t } = await getDictionary();

@@ -67,7 +67,7 @@ export function BuyScanPackButton({ locale = "en" }: { locale?: Locale }) {
       <button
         onClick={() => run(t.somethingWrong)}
         disabled={loading}
-        className="rounded-full border border-white/20 px-4 py-2 text-sm font-bold text-[var(--rs-paper)] transition-colors hover:border-white/45 disabled:cursor-wait disabled:opacity-60"
+        className="w-full rounded-full border border-white/20 px-4 py-2.5 text-center text-sm font-bold text-[var(--rs-paper)] transition-colors hover:border-white/45 disabled:cursor-wait disabled:opacity-60"
       >
         {loading ? t.redirecting : t.scanPackBuy}
       </button>

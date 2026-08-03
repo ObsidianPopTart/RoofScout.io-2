@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/blog" },
 };
 
-const SITE_URL = "https://roof-scout.org";
+const SITE_URL = "https://roofscout.io";
 
 const breadcrumbJsonLd = {
   "@context": "https://schema.org",

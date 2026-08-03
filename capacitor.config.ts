@@ -8,7 +8,7 @@ const config: CapacitorConfig = {
   // folder — this app has server components, API routes, and a database,
   // so it can't be statically bundled.
   server: {
-    url: 'https://roof-scout.org',
+    url: 'https://roofscout.io',
     cleartext: false,
   },
 };

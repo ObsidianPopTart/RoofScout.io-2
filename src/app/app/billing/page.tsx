@@ -12,10 +12,11 @@ import { listTerritoryClaims } from "@/lib/territory";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "Billing — RoofScout" };
+export const metadata = { title: "Pricing — RoofScout" };
 
 const PLAN_META = {
   free: { price: "$0" },
+  scanPack: { price: "$19", period: "one-time" },
   pro: { price: "$49", period: "/mo" },
   apex: { price: "$149", period: "/mo" },
 } as const;
@@ -36,7 +37,7 @@ export default async function BillingPage({
   const limits = PLAN_LIMITS[plan];
 
   const requestHeaders = await headers();
-  const host = requestHeaders.get("host") ?? "roof-scout.org";
+  const host = requestHeaders.get("host") ?? "roofscout.io";
   const proto = requestHeaders.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
   const referral = await getReferralStats(org.id, `${proto}://${host}`);
 
@@ -94,10 +95,11 @@ export default async function BillingPage({
           </div>
         </div>
 
-        {/* Full plan lineup, same tile format as /pricing */}
-        <div className="mt-10 grid gap-6 sm:grid-cols-3">
-          {(["free", "pro", "apex"] as const).map((p, i) => {
-            const isCurrent = p === plan;
+        {/* Full lineup — plans plus the one-time scan pack, same tile format
+            and ordering as the public /pricing page. */}
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {(["free", "scanPack", "pro", "apex"] as const).map((p) => {
+            const isCurrent = p !== "scanPack" && p === plan;
             const meta = PLAN_META[p];
             const copy = t.pricing[p];
             return (
@@ -129,7 +131,9 @@ export default async function BillingPage({
                   ))}
                 </ul>
                 <div className="mt-5">
-                  {isCurrent ? (
+                  {p === "scanPack" ? (
+                    <BuyScanPackButton locale={locale} />
+                  ) : isCurrent ? (
                     <div className="rounded-full border border-white/15 px-4 py-2.5 text-center text-sm font-bold text-[var(--rs-paper)]/50">
                       {d.currentPlan}
                     </div>
@@ -138,22 +142,13 @@ export default async function BillingPage({
                       plan={p as "pro" | "apex"}
                       label={tf(d.upgradeTo, { plan: copy.name })}
                       locale={locale}
-                      highlight={i === 1}
+                      highlight={p === "pro"}
                     />
                   )}
                 </div>
               </div>
             );
           })}
-        </div>
-
-        {/* Scan pack */}
-        <div className="mt-10 rounded-2xl border border-white/10 bg-[var(--rs-ink-2)] p-6">
-          <div className="text-lg font-bold">{d.scanPackTitle}</div>
-          <p className="mt-1 text-[var(--rs-paper)]/60">{d.scanPackBody}</p>
-          <div className="mt-4">
-            <BuyScanPackButton locale={locale} />
-          </div>
         </div>
 
         {/* Territory exclusivity */}

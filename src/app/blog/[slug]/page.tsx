@@ -8,7 +8,7 @@ import { getDictionary } from "@/lib/i18n/getLocale";
 import { BLOG_POSTS, getBlogPost, type BlogBlock } from "@/lib/blog/posts";
 import type { Metadata } from "next";
 
-const SITE_URL = "https://roof-scout.org";
+const SITE_URL = "https://roofscout.io";
 
 export function generateStaticParams() {
   return BLOG_POSTS.map((post) => ({ slug: post.slug }));

@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { BLOG_POSTS } from "@/lib/blog/posts";
 
-const BASE_URL = "https://roof-scout.org";
+const BASE_URL = "https://roofscout.io";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

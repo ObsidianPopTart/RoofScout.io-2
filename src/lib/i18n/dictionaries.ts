@@ -126,7 +126,7 @@ export const dictionaries = {
       login: "Log in",
       referralNotice: "You were invited by another RoofScout company — you'll both get a free month when you subscribe.",
     },
-    appNav: { dashboard: "Dashboard", newScan: "New Scan", leads: "Leads", billing: "Billing", signOut: "Sign out" },
+    appNav: { dashboard: "Dashboard", newScan: "New Scan", leads: "Leads", billing: "Pricing", signOut: "Sign out" },
     onboarding: {
       skip: "Skip",
       back: "Back",
@@ -306,8 +306,8 @@ export const dictionaries = {
       salesIntelSub: "Talking points built from this profile — the doorstep cheat sheet.",
     },
     billingPage: {
-      title: "Billing",
-      subtitle: "Manage your RoofScout plan.",
+      title: "Pricing",
+      subtitle: "Manage your RoofScout plan, buy scans, and see what's included.",
       checkoutSuccess: "Subscription updated — thanks!",
       checkoutCancelled: "Checkout cancelled — no changes were made.",
       currentPlan: "Current plan",
@@ -499,7 +499,7 @@ export const dictionaries = {
       login: "Iniciar sesión",
       referralNotice: "Te invitó otra empresa de RoofScout — ambos recibirán un mes gratis cuando te suscribas.",
     },
-    appNav: { dashboard: "Panel", newScan: "Nuevo escaneo", leads: "Clientes potenciales", billing: "Facturación", signOut: "Cerrar sesión" },
+    appNav: { dashboard: "Panel", newScan: "Nuevo escaneo", leads: "Clientes potenciales", billing: "Precios", signOut: "Cerrar sesión" },
     onboarding: {
       skip: "Omitir",
       back: "Atrás",
@@ -679,8 +679,8 @@ export const dictionaries = {
       salesIntelSub: "Puntos clave construidos a partir de este perfil — la chuleta para la puerta.",
     },
     billingPage: {
-      title: "Facturación",
-      subtitle: "Administra tu plan de RoofScout.",
+      title: "Precios",
+      subtitle: "Administra tu plan de RoofScout, compra escaneos y mira qué incluye cada uno.",
       checkoutSuccess: "Suscripción actualizada — ¡gracias!",
       checkoutCancelled: "Pago cancelado — no se hicieron cambios.",
       currentPlan: "Plan actual",

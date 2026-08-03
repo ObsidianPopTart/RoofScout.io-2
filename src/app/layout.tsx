@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const SITE_URL = "https://roof-scout.org";
+const SITE_URL = "https://roofscout.io";
 const DEFAULT_DESCRIPTION =
   "RoofScout scans a neighborhood by satellite, grades every roof's condition with AI, and hands your sales team a ranked, priced lead list — automatically.";
 

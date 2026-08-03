@@ -23,7 +23,7 @@ const jsonLd = {
   operatingSystem: "Web, Android",
   description:
     "AI-powered roofing lead generation: scans neighborhoods via satellite imagery, grades roof condition, and builds a ranked, priced lead list for roofing sales teams.",
-  url: "https://roof-scout.org",
+  url: "https://roofscout.io",
   offers: [
     { "@type": "Offer", name: "Free", price: "0", priceCurrency: "USD" },
     { "@type": "Offer", name: "Pro", price: "49", priceCurrency: "USD" },
