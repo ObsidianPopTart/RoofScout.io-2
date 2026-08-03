@@ -172,7 +172,7 @@ interface ScannedRoof {
 }
 
 async function scanArea(bounds: ScanBounds): Promise<ScannedRoof[]> {
-  const buildings = await findBuildings(bounds, MAX_BUILDINGS * 2);
+  const buildings = await findBuildings(bounds);
   const results: ScannedRoof[] = [];
 
   for (const b of buildings) {

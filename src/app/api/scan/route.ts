@@ -7,10 +7,11 @@ import { checkAndIncrementScanUsage, ScanLimitExceededError } from "@/lib/usage"
 import { isScanAreaTooLarge, MAX_SCAN_AREA_KM2 } from "@/lib/scanBounds";
 import type { ScanBounds } from "@/lib/types";
 
-// A full scan chains Solar API + image fetch + Claude vision grading across
-// every candidate building; well past the platform's default ~10s function
-// limit for larger scans, so this route needs an explicit longer budget.
-export const maxDuration = 60;
+// A scan chains Solar API + image fetch + Claude vision grading across every
+// building in the visible area — for a large, dense area that's hundreds of
+// buildings, well past the platform's default ~10s function limit. Set to
+// the practical ceiling; Netlify clamps to whatever the plan actually allows.
+export const maxDuration = 800;
 
 export async function POST(request: Request) {
   const session = await auth();
