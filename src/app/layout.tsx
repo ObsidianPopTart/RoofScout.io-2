@@ -42,6 +42,9 @@ export const metadata: Metadata = {
     description: DEFAULT_DESCRIPTION,
     images: ["/images/hero-neighborhood-aerial.jpg"],
   },
+  verification: {
+    google: "1FgaL3Lp2ITNwnhC0-ZsugVbRDX1PRESRbhtk0FCENA",
+  },
 };
 
 export default async function RootLayout({
