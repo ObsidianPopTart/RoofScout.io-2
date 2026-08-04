@@ -4,3 +4,14 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+# The site moved from roof-scout.org to roofscout.io. This rule is scoped to
+# the old hostname, so it only fires for traffic still arriving at
+# roof-scout.org — roofscout.io itself never matches "from" and is
+# unaffected, which is what makes it safe to ship in the shared netlify.toml
+# both sites deploy from.
+[[redirects]]
+  from = "https://roof-scout.org/*"
+  to = "https://roofscout.io/:splat"
+  status = 301
+  force = true
