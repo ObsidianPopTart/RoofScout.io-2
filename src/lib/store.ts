@@ -58,6 +58,7 @@ function toScanRecord(row: PrismaScanRow): ScanRecord {
     label: row.label,
     bounds: { north: row.north, south: row.south, east: row.east, west: row.west },
     leadCount: row.leadCount,
+    status: (row.status as ScanRecord["status"]) ?? "complete",
   };
 }
 
@@ -129,17 +130,19 @@ export async function updateLeadStatuses(orgId: string, ids: string[], status: L
 // already a complete, distinct description and is used as-is.
 const GENERIC_LABEL_PREFIXES = new Set(["Area scan", "Live scan"]);
 
+async function resolveScanLabel(orgId: string, labelPrefix: string): Promise<string> {
+  if (!GENERIC_LABEL_PREFIXES.has(labelPrefix)) return labelPrefix;
+  const existingCount = await prisma.scanRecord.count({ where: { orgId } });
+  return `${labelPrefix} ${existingCount + 1}`;
+}
+
 export async function createScanWithLeads(
   orgId: string,
   bounds: ScanBounds,
   labelPrefix: string,
   drafts: LeadDraft[]
 ): Promise<{ scan: ScanRecord; leads: Lead[] }> {
-  let label = labelPrefix;
-  if (GENERIC_LABEL_PREFIXES.has(labelPrefix)) {
-    const existingCount = await prisma.scanRecord.count({ where: { orgId } });
-    label = `${labelPrefix} ${existingCount + 1}`;
-  }
+  const label = await resolveScanLabel(orgId, labelPrefix);
 
   const scanRow = await prisma.scanRecord.create({
     data: {
@@ -157,6 +160,65 @@ export async function createScanWithLeads(
     include: { leads: true },
   });
 
+  return { scan: toScanRecord(scanRow), leads: scanRow.leads.map(toLead) };
+}
+
+// Live scans cover every building in the area, which can take well past a
+// single request's lifetime — the route creates a "processing" scan
+// immediately and returns it, then runs the actual analysis in the
+// background (see /api/scan) before calling finalizeScan/failScan.
+export async function createProcessingScan(
+  orgId: string,
+  bounds: ScanBounds,
+  labelPrefix: string
+): Promise<ScanRecord> {
+  const label = await resolveScanLabel(orgId, labelPrefix);
+  const scanRow = await prisma.scanRecord.create({
+    data: {
+      orgId,
+      label,
+      north: bounds.north,
+      south: bounds.south,
+      east: bounds.east,
+      west: bounds.west,
+      leadCount: 0,
+      status: "processing",
+    },
+  });
+  return toScanRecord(scanRow);
+}
+
+export async function finalizeScan(
+  orgId: string,
+  scanId: string,
+  drafts: LeadDraft[]
+): Promise<void> {
+  await prisma.scanRecord.update({
+    where: { id: scanId, orgId },
+    data: {
+      leadCount: drafts.length,
+      status: "complete",
+      leads: { create: drafts.map((d) => ({ orgId, ...draftToCreateInput(d) })) },
+    },
+  });
+}
+
+export async function failScan(orgId: string, scanId: string): Promise<void> {
+  await prisma.scanRecord.update({
+    where: { id: scanId, orgId },
+    data: { status: "failed" },
+  });
+}
+
+export async function getScanWithLeads(
+  orgId: string,
+  scanId: string
+): Promise<{ scan: ScanRecord; leads: Lead[] } | null> {
+  const scanRow = await prisma.scanRecord.findUnique({
+    where: { id: scanId, orgId },
+    include: { leads: true },
+  });
+  if (!scanRow) return null;
   return { scan: toScanRecord(scanRow), leads: scanRow.leads.map(toLead) };
 }
 

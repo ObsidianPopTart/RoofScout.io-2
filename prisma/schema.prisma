@@ -93,6 +93,10 @@ model ScanRecord {
   east      Float
   west      Float
   leadCount Int      @default(0)
+  // "processing" | "complete" | "failed" — live scans run in the background
+  // (see /api/scan) and start "processing"; demo/mock scans are created
+  // already "complete" since they resolve synchronously.
+  status    String   @default("complete")
 
   org   Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
   leads Lead[]

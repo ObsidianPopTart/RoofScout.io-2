@@ -358,6 +358,59 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
     setActiveStormLabel(item.label);
   }
 
+  function renderLeads(data: ScanResponse) {
+    const map = mapRef.current;
+    if (!map) return;
+    leadMarkersRef.current.forEach((m) => m.remove());
+    leadMarkersRef.current = [];
+    for (const lead of data.leads) {
+      const el = document.createElement("div");
+      el.style.width = "18px";
+      el.style.height = "18px";
+      el.style.borderRadius = "50%";
+      el.style.border = "2px solid #fff";
+      el.style.boxShadow = "0 0 4px rgba(0,0,0,0.5)";
+      el.style.background = CONDITION_COLORS[lead.condition.label] ?? "#64748b";
+      el.style.cursor = "pointer";
+
+      const popup = new Popup({ offset: 14 }).setHTML(
+        `<strong>${lead.address}</strong><br/>` +
+          (lead.condition.graded
+            ? `${tCondition[lead.condition.label]} — score ${lead.condition.score}/100<br/>`
+            : `${tCondition.Ungraded} — condition not verified<br/>`) +
+          `<a href="/app/leads/${lead.id}">Open profile →</a>`
+      );
+      const marker = new Marker({ element: el }).setLngLat([lead.lng, lead.lat]).setPopup(popup).addTo(map);
+      leadMarkersRef.current.push(marker);
+    }
+    setResult(data);
+  }
+
+  // Large scans run in the background on the server (see /api/scan) — this
+  // polls the scan's status until it's done instead of holding one long
+  // request open, which the platform would eventually time out.
+  async function pollUntilDone(scanId: string) {
+    const POLL_INTERVAL_MS = 3000;
+    const MAX_WAIT_MS = 10 * 60 * 1000;
+    const deadline = Date.now() + MAX_WAIT_MS;
+
+    while (Date.now() < deadline) {
+      await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
+      const res = await fetch(`/api/scan/${scanId}`);
+      if (!res.ok) throw new Error(`Scan status check failed (HTTP ${res.status})`);
+      const data = (await res.json()) as ScanResponse;
+      if (data.scan.status === "complete") {
+        renderLeads(data);
+        return;
+      }
+      if (data.scan.status === "failed") {
+        throw new Error("Scan failed while analyzing rooftops.");
+      }
+      // still "processing" — keep polling
+    }
+    throw new Error("Scan is taking longer than expected. Check the Leads page shortly.");
+  }
+
   async function runScan() {
     const map = mapRef.current;
     if (!map) return;
@@ -391,29 +444,11 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
       const data = (await res.json()) as ScanResponse;
       setActiveStormLabel(null); // one-shot tag — the label is now saved on the ScanRecord itself
 
-      leadMarkersRef.current.forEach((m) => m.remove());
-      leadMarkersRef.current = [];
-      for (const lead of data.leads) {
-        const el = document.createElement("div");
-        el.style.width = "18px";
-        el.style.height = "18px";
-        el.style.borderRadius = "50%";
-        el.style.border = "2px solid #fff";
-        el.style.boxShadow = "0 0 4px rgba(0,0,0,0.5)";
-        el.style.background = CONDITION_COLORS[lead.condition.label] ?? "#64748b";
-        el.style.cursor = "pointer";
-
-        const popup = new Popup({ offset: 14 }).setHTML(
-          `<strong>${lead.address}</strong><br/>` +
-            (lead.condition.graded
-              ? `${tCondition[lead.condition.label]} — score ${lead.condition.score}/100<br/>`
-              : `${tCondition.Ungraded} — condition not verified<br/>`) +
-            `<a href="/app/leads/${lead.id}">Open profile →</a>`
-        );
-        const marker = new Marker({ element: el }).setLngLat([lead.lng, lead.lat]).setPopup(popup).addTo(map);
-        leadMarkersRef.current.push(marker);
+      if (data.scan.status === "processing") {
+        await pollUntilDone(data.scan.id);
+      } else {
+        renderLeads(data);
       }
-      setResult(data);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Scan failed");
     } finally {

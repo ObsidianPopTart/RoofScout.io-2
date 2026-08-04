@@ -1,5 +1,4 @@
-import type { LeadDraft, ScanBounds, ScanRecord, Lead, Condition } from "../types";
-import { createScanWithLeads } from "../store";
+import type { LeadDraft, ScanBounds, Condition } from "../types";
 import { isNeglected } from "../leadFilter";
 import { liveConfig } from "./config";
 import { findBuildings, reverseGeocode, solarInsights, type BuildingCandidate } from "./providers";
@@ -85,11 +84,11 @@ function chunk<T>(arr: T[], size: number): T[][] {
 // and trip provider rate limits.
 const CONCURRENCY = liveConfig.scanConcurrency;
 
-export async function runLiveScan(
-  orgId: string,
-  bounds: ScanBounds,
-  labelPrefix = "Live scan"
-): Promise<{ scan: ScanRecord; leads: Lead[] }> {
+// Pure analysis — no DB writes. Runs in the background after /api/scan
+// responds (see runLiveScanInBackground / the "after()" call in the route),
+// since covering every building in the area can take well past a request's
+// lifetime for a large scan.
+export async function analyzeArea(bounds: ScanBounds): Promise<LeadDraft[]> {
   const buildings = await findBuildings(bounds);
 
   const drafts: LeadDraft[] = [];
@@ -101,5 +100,5 @@ export async function runLiveScan(
     }
   }
 
-  return createScanWithLeads(orgId, bounds, labelPrefix, drafts);
+  return drafts;
 }

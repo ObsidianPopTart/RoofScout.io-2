@@ -1,16 +1,19 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { auth } from "@/lib/auth";
-import { runMockScan } from "@/lib/store";
-import { runLiveScan } from "@/lib/live/scan";
+import { runMockScan, createProcessingScan, finalizeScan, failScan } from "@/lib/store";
+import { analyzeArea } from "@/lib/live/scan";
 import { isLiveMode } from "@/lib/live/config";
 import { checkAndIncrementScanUsage, ScanLimitExceededError } from "@/lib/usage";
 import { isScanAreaTooLarge, MAX_SCAN_AREA_KM2 } from "@/lib/scanBounds";
 import type { ScanBounds } from "@/lib/types";
 
-// A scan chains Solar API + image fetch + Claude vision grading across every
-// building in the visible area — for a large, dense area that's hundreds of
-// buildings, well past the platform's default ~10s function limit. Set to
-// the practical ceiling; Netlify clamps to whatever the plan actually allows.
+// A live scan chains Solar API + image fetch + Claude vision grading across
+// every building in the visible area — for a large, dense area that's
+// hundreds of buildings, far past any request/response round trip should
+// take. The route below returns a "processing" scan immediately and runs
+// the actual analysis in `after()`, which keeps executing past the response;
+// `maxDuration` gives that background work a long budget to finish in
+// (Netlify clamps to whatever the plan actually allows).
 export const maxDuration = 800;
 
 export async function POST(request: Request) {
@@ -73,8 +76,17 @@ export async function POST(request: Request) {
 
   try {
     if (isLiveMode()) {
-      const result = await runLiveScan(orgId, bounds, stormSourceLabel);
-      return NextResponse.json(result);
+      const scan = await createProcessingScan(orgId, bounds, stormSourceLabel ?? "Live scan");
+      after(async () => {
+        try {
+          const drafts = await analyzeArea(bounds);
+          await finalizeScan(orgId, scan.id, drafts);
+        } catch (err) {
+          console.error("Background scan failed:", err);
+          await failScan(orgId, scan.id);
+        }
+      });
+      return NextResponse.json({ scan, leads: [] });
     }
 
     // Demo mode: simulate imagery-analysis latency so the scanning state is visible.

@@ -57,12 +57,15 @@ export interface ScanBounds {
   west: number;
 }
 
+export type ScanStatus = "processing" | "complete" | "failed";
+
 export interface ScanRecord {
   id: string;
   createdAt: string;
   label: string;
   bounds: ScanBounds;
   leadCount: number;
+  status: ScanStatus;
 }
 
 export interface Db {
