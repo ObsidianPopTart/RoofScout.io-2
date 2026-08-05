@@ -1321,6 +1321,120 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: "roofing-leads-st-louis",
+    title: "St. Louis Roofing Leads: Working a Market With No Roofing License Requirement",
+    description:
+      "Missouri doesn't require a state roofing license, and St. Louis sees storm chasers flood in after every major hail event as a result. Here's how established local contractors compete on more than just speed.",
+    publishedAt: "2026-08-07",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "St. Louis sits in one of the most active hail corridors in the country, with hailstorms, straight-line winds, and severe weather outbreaks a regular driver of roofing demand. One factor makes this market distinct from most of the others in this series: Missouri doesn't require a state roofing license, which means storm chasers can flood into the St. Louis market after major hail events with essentially no barrier to entry.",
+      },
+      { type: "h2", text: "A market built for door-knockers" },
+      {
+        type: "p",
+        text: "With no state licensing requirement, out-of-town contractors can set up shop in St. Louis after a hailstorm just as easily as an established local company can. That makes reputation and documentation — not just speed — the real differentiator for a contractor trying to stand out from a wave of unlicensed competitors.",
+      },
+      { type: "h2", text: "Documentation matters more here" },
+      {
+        type: "p",
+        text: "Missouri homeowners generally have up to two years to file a storm claim, but waiting even 30 days to document damage can give an insurer grounds to dispute it — and many Missouri wind/hail deductibles are now percentage-based (roughly 1-2% of the home's insured value) rather than a flat dollar figure, which raises the stakes on getting the initial assessment right.",
+      },
+      {
+        type: "quote",
+        text: "In a market anyone can enter overnight, a specific, evidenced condition read is what separates a real assessment from a door-knocker's guess.",
+      },
+      { type: "h2", text: "Where RoofScout fits St. Louis" },
+      {
+        type: "p",
+        text: "RoofScout scans a St. Louis neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — giving an established local contractor real evidence to bring to the door instead of competing purely on who knocked first.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-springfield-mo",
+    title: "Springfield, MO Roofing Leads: Southwest Missouri's Severe Weather Corridor",
+    description:
+      "Southwest Missouri sees roughly 10 tornadoes a year and regular large hail through spring storm season, with a 2026 storm setting a new local hail-size record. Here's how to work the market efficiently.",
+    publishedAt: "2026-08-07",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Springfield sits in one of the most active severe-weather corridors in the country — National Weather Service climatology for the area averages roughly 10 tornadoes a year, with hail events concentrated in April and May and a secondary peak in September. A late-April 2026 storm complex dropped hail up to 4.75 inches in diameter over the metro, setting a new local benchmark for severity in the region.",
+      },
+      { type: "h2", text: "A tightening insurance market raises the stakes" },
+      {
+        type: "p",
+        text: "Missouri's frequent severe weather has pushed insurers toward percentage-based wind/hail deductibles and more ACV (actual cash value) policies at renewal, rather than flat-dollar deductibles or full replacement-cost coverage. That makes an accurate, well-documented condition read more valuable to a homeowner than it would be in a market with looser coverage.",
+      },
+      { type: "h2", text: "Storms this size don't leave room for guessing" },
+      {
+        type: "p",
+        text: "A storm that drops hail approaching five inches in diameter doesn't produce subtle damage — but it also doesn't hit every roof in an area equally. Knowing which specific roofs took the worst of it, rather than treating an entire neighborhood as uniformly damaged, is what separates an efficient storm-season response from a scattershot one.",
+      },
+      {
+        type: "quote",
+        text: "A record-setting hailstorm still doesn't damage every roof the same — the roofs worth the visit are the ones that actually show it.",
+      },
+      { type: "h2", text: "Where RoofScout fits Springfield" },
+      {
+        type: "p",
+        text: "RoofScout scans a Springfield neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — and hands back a ranked, priced lead list, so a crew working a major storm's aftermath knows exactly which roofs took the worst of it.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-chicago",
+    title: "Chicago Roofing Leads: The Metro With the Country's Highest Combined Storm Risk",
+    description:
+      "Cotality's 2025 severe convective storm report ranked Chicago the No. 1 U.S. metro for combined hail, tornado, and straight-line wind risk — nearly 3 million homes exposed to hail damage alone. Here's how to work a market this large efficiently.",
+    publishedAt: "2026-08-07",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Chicago doesn't get the \"Hail Alley\" branding that Texas and Colorado do, but Cotality's (formerly CoreLogic) 2025 Severe Convective Storm Risk Report ranked the Chicago metro the No. 1 U.S. metro area for combined hail, tornado, and straight-line wind risk concentration — nearly 3 million homes at risk of hail damage and over 3 million at risk of tornado or straight-line wind damage, with a combined $1.4 trillion in reconstruction value on the line.",
+      },
+      { type: "h2", text: "Scale changes the strategy" },
+      {
+        type: "p",
+        text: "A market with millions of homes at risk isn't one a contractor can canvass block by block and expect to cover meaningfully. At Chicago's scale, the advantage goes to whoever can accurately triage which neighborhoods actually took damage after a given storm, not whoever can drive the most streets in a week.",
+      },
+      { type: "h2", text: "Three hazard types, not just one" },
+      {
+        type: "p",
+        text: "Because Chicago's risk concentration spans hail, tornado, and straight-line wind — not hail alone — a target list built only around hail reports can miss real roofing demand from wind damage that never generated a hail-specific headline.",
+      },
+      {
+        type: "quote",
+        text: "In the metro with the country's highest combined storm risk, the constraint isn't finding damaged roofs — it's finding them fast enough to matter.",
+      },
+      { type: "h2", text: "Where RoofScout fits Chicago" },
+      {
+        type: "p",
+        text: "RoofScout scans a Chicago-area neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — and hands back a ranked, priced lead list. In a metro this large, that's the difference between covering a handful of neighborhoods a week and covering a genuinely representative slice of the risk.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
 ];
 
 export function getBlogPost(slug: string): BlogPost | undefined {
