@@ -677,6 +677,11 @@ export const BLOG_POSTS: BlogPost[] = [
         type: "p",
         text: "Omaha doesn't have the population of Dallas-Fort Worth or Denver, but NICB's national hail-claims data ranked it the single highest-volume U.S. city for hail loss claims in its 2017-2019 report — 54,153 claims — and it placed No. 3 nationally in the prior 2016-2018 report too, with 52,803 claims. That's the country's top hail-claim city landing in the national top 3 in back-to-back three-year reporting windows, in a metro far smaller than Dallas-Fort Worth or Denver.",
       },
+      {
+        type: "link",
+        text: "→ See the full national hail-claims data and sources",
+        href: "/hail-damage-statistics",
+      },
       { type: "h2", text: "Density changes the math" },
       {
         type: "p",

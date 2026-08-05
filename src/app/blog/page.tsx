@@ -72,7 +72,21 @@ export default async function BlogIndexPage() {
           before you knock.
         </p>
 
-        <div className="mt-14 space-y-4">
+        <Link
+          href="/hail-damage-statistics"
+          className="mt-10 flex items-center justify-between gap-3 rounded-2xl border border-[var(--rs-amber)]/40 bg-[var(--rs-amber)]/10 px-6 py-4 transition-colors hover:border-[var(--rs-amber)]/70"
+        >
+          <div>
+            <div className="font-mono text-xs tracking-widest text-[var(--rs-amber)]">DATA</div>
+            <div className="mt-1 text-lg font-bold">US Hail Damage Statistics (2026)</div>
+            <p className="mt-1 text-sm text-[var(--rs-paper)]/60">
+              Every major hail-claim figure we cite in this blog, sourced and linked in one reference page.
+            </p>
+          </div>
+          <span className="shrink-0 text-2xl text-[var(--rs-amber)]">→</span>
+        </Link>
+
+        <div className="mt-8 space-y-4">
           {posts.map((post, i) => (
             <Reveal key={post.slug} delay={i * 60}>
               <Link
