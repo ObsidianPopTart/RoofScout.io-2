@@ -83,7 +83,7 @@ const OVERPASS_ENDPOINTS = [
 ];
 const OVERPASS_HEADERS = {
   "Content-Type": "application/x-www-form-urlencoded",
-  "User-Agent": "RoofScout/1.0 (roofing lead-generation tool; building-footprint lookup)",
+  "User-Agent": "RoofScout.io/1.0 (roofing lead-generation tool; building-footprint lookup)",
   Accept: "application/json",
 };
 

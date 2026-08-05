@@ -73,7 +73,7 @@ export async function fetchActiveStormAlerts(): Promise<StormAlert[]> {
 
   const res = await fetch(`https://api.weather.gov/alerts/active?${params.toString()}`, {
     headers: {
-      "User-Agent": "RoofScout/1.0 (Storm Tracker feature; contact via roofscout.io)",
+      "User-Agent": "RoofScout.io/1.0 (Storm Tracker feature; contact via roofscout.io)",
       Accept: "application/geo+json",
     },
     // Alerts update frequently; avoid Next.js caching a stale severe-weather feed.

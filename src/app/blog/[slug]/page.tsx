@@ -108,8 +108,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     headline: post.title,
     description: post.description,
     datePublished: post.publishedAt,
-    author: { "@type": "Organization", name: "RoofScout" },
-    publisher: { "@type": "Organization", name: "RoofScout" },
+    author: { "@type": "Organization", name: "RoofScout.io" },
+    publisher: { "@type": "Organization", name: "RoofScout.io" },
     mainEntityOfPage: `${SITE_URL}/blog/${post.slug}`,
   };
 
@@ -147,7 +147,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4">
           <Link href="/" className="flex shrink-0 items-center gap-2 text-lg font-semibold">
             <Logo />
-            <span className="hidden sm:inline">RoofScout</span>
+            <span className="hidden sm:inline">RoofScout.io</span>
           </Link>
           <div className="flex items-center gap-2 text-sm sm:gap-5">
             <Link href="/blog" className="hidden text-[var(--rs-paper)]/70 hover:text-[var(--rs-paper)] sm:inline">
@@ -194,7 +194,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <div className="mt-14 rounded-2xl border border-white/10 bg-[var(--rs-ink-2)] p-6">
           <p className="text-lg font-bold">Ready to stop guessing which roofs need work?</p>
           <p className="mt-2 text-[var(--rs-paper)]/60">
-            RoofScout scans a neighborhood by satellite and hands your team a ranked, priced lead list. Free to try,
+            RoofScout.io scans a neighborhood by satellite and hands your team a ranked, priced lead list. Free to try,
             3 scans included.
           </p>
           <Link
@@ -207,7 +207,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       </article>
 
       <footer className="mt-auto border-t border-white/10 py-6 text-center font-mono text-xs text-[var(--rs-paper)]/40">
-        RoofScout ·{" "}
+        RoofScout.io ·{" "}
         <Link href="/privacy" className="underline hover:text-[var(--rs-paper)]/70">
           Privacy Policy
         </Link>

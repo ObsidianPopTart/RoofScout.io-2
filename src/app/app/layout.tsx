@@ -34,7 +34,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-8 px-4">
           <Link href="/app" className="flex items-center gap-2 text-lg font-semibold">
             <Logo />
-            RoofScout
+            RoofScout.io
           </Link>
           <div className="flex gap-6 text-sm text-slate-300">
             <Link href="/app" className="hover:text-white">

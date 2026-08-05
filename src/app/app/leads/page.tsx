@@ -9,7 +9,7 @@ import { getDictionary } from "@/lib/i18n/getLocale";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Leads — RoofScout",
+  title: "Leads — RoofScout.io",
 };
 
 const FILTER_KEYS = ["all", "critical", "poor", "fair", "ungraded"] as const;

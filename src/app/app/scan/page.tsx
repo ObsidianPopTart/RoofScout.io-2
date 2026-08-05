@@ -6,7 +6,7 @@ import ScanMap from "@/components/ScanMap";
 import { getDictionary } from "@/lib/i18n/getLocale";
 
 export const metadata = {
-  title: "New Scan — RoofScout",
+  title: "New Scan — RoofScout.io",
 };
 
 export default async function ScanPage() {

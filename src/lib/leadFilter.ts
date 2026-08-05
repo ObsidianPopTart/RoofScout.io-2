@@ -1,7 +1,7 @@
 import type { Condition } from "./types";
 
 // A GRADED roof scores 70+ ("Good") when it looks new or well-maintained —
-// see the scoring legend on the dashboard. RoofScout is a neglected-roof
+// see the scoring legend on the dashboard. RoofScout.io is a neglected-roof
 // finder, so scans drop anything at or above this line rather than
 // surfacing it as a lead.
 export const NEGLECT_SCORE_THRESHOLD = 70;

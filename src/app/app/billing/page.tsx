@@ -12,7 +12,7 @@ import { listTerritoryClaims } from "@/lib/territory";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "Pricing — RoofScout" };
+export const metadata = { title: "Pricing — RoofScout.io" };
 
 const PLAN_META = {
   free: { price: "$0" },

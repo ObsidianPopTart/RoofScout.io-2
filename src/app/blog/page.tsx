@@ -10,7 +10,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Practical guides on finding roofing leads, canvassing, and spotting a neglected roof — from the team building RoofScout.",
+    "Practical guides on finding roofing leads, canvassing, and spotting a neglected roof — from the team building RoofScout.io.",
   alternates: { canonical: "/blog" },
 };
 
@@ -36,7 +36,7 @@ export default async function BlogIndexPage() {
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4">
           <Link href="/" className="flex shrink-0 items-center gap-2 text-lg font-semibold">
             <Logo />
-            <span className="hidden sm:inline">RoofScout</span>
+            <span className="hidden sm:inline">RoofScout.io</span>
           </Link>
           <div className="flex items-center gap-2 text-sm sm:gap-5">
             <Link href="/pricing" className="hidden text-[var(--rs-paper)]/70 hover:text-[var(--rs-paper)] sm:inline">
@@ -112,7 +112,7 @@ export default async function BlogIndexPage() {
       </section>
 
       <footer className="mt-auto border-t border-white/10 py-6 text-center font-mono text-xs text-[var(--rs-paper)]/40">
-        RoofScout ·{" "}
+        RoofScout.io ·{" "}
         <Link href="/privacy" className="underline hover:text-[var(--rs-paper)]/70">
           Privacy Policy
         </Link>

@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-// Parent-company credit — Lunchbox owns and operates RoofScout. Shown in the
+// Parent-company credit — Lunchbox owns and operates RoofScout.io. Shown in the
 // footer of every public marketing/blog page, below the existing nav links.
 export default function LunchboxBadge() {
   return (

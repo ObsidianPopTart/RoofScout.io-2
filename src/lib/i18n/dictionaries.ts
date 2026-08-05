@@ -3,7 +3,7 @@ export const dictionaries = {
     nav: { pricing: "Pricing", login: "Log in", signup: "Sign up" },
     home: {
       headline: "Find the neglected roofs before your competitors do.",
-      sub: "Most roofing tools just flag \"damage detected.\" RoofScout has AI actually look at every rooftop, write a real condition assessment, and hand your sales team a ranked, priced lead list — automatically.",
+      sub: "Most roofing tools just flag \"damage detected.\" RoofScout.io has AI actually look at every rooftop, write a real condition assessment, and hand your sales team a ranked, priced lead list — automatically.",
       startFree: "Start free",
       login: "Log in",
       featureHeadline: "A written assessment, not just a flag",
@@ -17,7 +17,7 @@ export const dictionaries = {
       howItWorks: [
         {
           title: "Scan a neighborhood",
-          body: "Pan and zoom the map to any neighborhood, then click Scan. RoofScout pulls real satellite imagery and building outlines for every rooftop in view.",
+          body: "Pan and zoom the map to any neighborhood, then click Scan. RoofScout.io pulls real satellite imagery and building outlines for every rooftop in view.",
         },
         {
           title: "AI grades every roof",
@@ -36,22 +36,22 @@ export const dictionaries = {
         },
         {
           q: "How accurate is the AI condition grading?",
-          a: "RoofScout grades each rooftop from real satellite imagery using the same visual signals — staining, moss, missing shingles, sagging lines — an experienced inspector looks for from the street. It's a screening tool to prioritize which doors to knock on first, not a replacement for an on-roof inspection.",
+          a: "RoofScout.io grades each rooftop from real satellite imagery using the same visual signals — staining, moss, missing shingles, sagging lines — an experienced inspector looks for from the street. It's a screening tool to prioritize which doors to knock on first, not a replacement for an on-roof inspection.",
         },
         {
-          q: "Does RoofScout replace my sales team?",
-          a: "No — it replaces guesswork. Your reps still do the canvassing and the selling; RoofScout just tells them which roofs are actually worth the drive before they leave the office.",
+          q: "Does RoofScout.io replace my sales team?",
+          a: "No — it replaces guesswork. Your reps still do the canvassing and the selling; RoofScout.io just tells them which roofs are actually worth the drive before they leave the office.",
         },
         {
           q: "How is this different from a lead marketplace?",
-          a: "Marketplace leads are typically sold to three to five contractors at once. Every lead RoofScout finds is yours alone — you're not racing competitors to the same homeowner.",
+          a: "Marketplace leads are typically sold to three to five contractors at once. Every lead RoofScout.io finds is yours alone — you're not racing competitors to the same homeowner.",
         },
         {
           q: "Can I cancel or change plans anytime?",
           a: "Yes. Upgrade, downgrade, or cancel anytime from your billing page — no contracts, no cancellation fees.",
         },
         {
-          q: "What areas does RoofScout cover?",
+          q: "What areas does RoofScout.io cover?",
           a: "Anywhere with Google satellite imagery and Solar API coverage, which includes most of the US.",
         },
         {
@@ -62,7 +62,7 @@ export const dictionaries = {
     },
     pricing: {
       title: "Simple, scan-based pricing",
-      sub: "Try RoofScout free, then pay for the scan volume your team actually needs.",
+      sub: "Try RoofScout.io free, then pay for the scan volume your team actually needs.",
       faqTitle: "Billing questions",
       faq: [
         {
@@ -113,18 +113,18 @@ export const dictionaries = {
       footnote:
         "Every plan includes live satellite scanning, AI condition grading, and CSV export. Upgrade or cancel anytime from your billing page.",
     },
-    login: { title: "Log in", welcome: "Welcome back to RoofScout.", noAccount: "No account?", signup: "Sign up" },
+    login: { title: "Log in", welcome: "Welcome back to RoofScout.io.", noAccount: "No account?", signup: "Sign up" },
     oauth: { divider: "or", google: "Continue with Google" },
     signup: {
       title: "Start free",
-      sub: "Set up your company's RoofScout account.",
+      sub: "Set up your company's RoofScout.io account.",
       companyName: "Company name",
       email: "Email",
       password: "Password",
       cta: "Create account",
       haveAccount: "Already have an account?",
       login: "Log in",
-      referralNotice: "You were invited by another RoofScout company — you'll both get a free month when you subscribe.",
+      referralNotice: "You were invited by another RoofScout.io company — you'll both get a free month when you subscribe.",
     },
     appNav: { dashboard: "Dashboard", newScan: "New Scan", leads: "Leads", billing: "Pricing", signOut: "Sign out" },
     onboarding: {
@@ -135,7 +135,7 @@ export const dictionaries = {
       stepOf: "Step {n} of {total}",
       steps: [
         {
-          title: "Welcome to RoofScout",
+          title: "Welcome to RoofScout.io",
           body: "A quick tour of how scanning works before you run your first one.",
         },
         {
@@ -166,7 +166,7 @@ export const dictionaries = {
       Lost: "Lost",
     },
     offline: {
-      message: "No connection — RoofScout needs the internet to load scans and leads. Reconnect to continue.",
+      message: "No connection — RoofScout.io needs the internet to load scans and leads. Reconnect to continue.",
     },
     dashboard: {
       title: "Dashboard",
@@ -307,7 +307,7 @@ export const dictionaries = {
     },
     billingPage: {
       title: "Pricing",
-      subtitle: "Manage your RoofScout plan, buy scans, and see what's included.",
+      subtitle: "Manage your RoofScout.io plan, buy scans, and see what's included.",
       checkoutSuccess: "Subscription updated — thanks!",
       checkoutCancelled: "Checkout cancelled — no changes were made.",
       currentPlan: "Current plan",
@@ -330,9 +330,9 @@ export const dictionaries = {
       scanCreditBalance: "{count} purchased scans remaining",
       territoryTitle: "Territory exclusivity",
       territoryBodyApex:
-        "Claim a ZIP code and no other RoofScout customer can claim the same one — it's yours exclusively for as long as you're on Apex.",
+        "Claim a ZIP code and no other RoofScout.io customer can claim the same one — it's yours exclusively for as long as you're on Apex.",
       territoryBodyLocked:
-        "Claim exclusive ZIP codes so no other RoofScout customer can claim the same territory — included free with Apex.",
+        "Claim exclusive ZIP codes so no other RoofScout.io customer can claim the same territory — included free with Apex.",
       territoryPlaceholder: "ZIP code",
       territoryAdd: "Claim",
       territoryRemove: "Release",
@@ -340,7 +340,7 @@ export const dictionaries = {
     },
     supportChat: {
       launcherLabel: "Chat with support",
-      title: "RoofScout Support",
+      title: "RoofScout.io Support",
       disclaimer: "AI assistant — for account-specific help, email support directly.",
       greeting: "Hi! I can help with billing, pricing, technical, and account questions. What's up?",
       placeholder: "Ask a question…",
@@ -376,7 +376,7 @@ export const dictionaries = {
     nav: { pricing: "Precios", login: "Iniciar sesión", signup: "Regístrate" },
     home: {
       headline: "Encuentra los techos descuidados antes que tu competencia.",
-      sub: "La mayoría de las herramientas para techos solo marcan \"daño detectado\". RoofScout hace que la IA realmente observe cada techo, escriba una evaluación real de su estado, y le entregue a tu equipo de ventas una lista de clientes potenciales, ordenada y con precio — automáticamente.",
+      sub: "La mayoría de las herramientas para techos solo marcan \"daño detectado\". RoofScout.io hace que la IA realmente observe cada techo, escriba una evaluación real de su estado, y le entregue a tu equipo de ventas una lista de clientes potenciales, ordenada y con precio — automáticamente.",
       startFree: "Empieza gratis",
       login: "Iniciar sesión",
       featureHeadline: "Una evaluación escrita, no solo una marca",
@@ -390,7 +390,7 @@ export const dictionaries = {
       howItWorks: [
         {
           title: "Escanea un vecindario",
-          body: "Desplaza y acerca el mapa a cualquier vecindario y haz clic en Escanear. RoofScout obtiene imágenes satelitales reales y los contornos de cada techo visible.",
+          body: "Desplaza y acerca el mapa a cualquier vecindario y haz clic en Escanear. RoofScout.io obtiene imágenes satelitales reales y los contornos de cada techo visible.",
         },
         {
           title: "La IA califica cada techo",
@@ -409,22 +409,22 @@ export const dictionaries = {
         },
         {
           q: "¿Qué tan precisa es la calificación de la IA?",
-          a: "RoofScout califica cada techo a partir de imágenes satelitales reales, usando las mismas señales visuales — manchas, musgo, tejas faltantes, líneas hundidas — que un inspector experimentado busca desde la calle. Es una herramienta de filtrado para priorizar qué puertas tocar primero, no un reemplazo de una inspección en el techo.",
+          a: "RoofScout.io califica cada techo a partir de imágenes satelitales reales, usando las mismas señales visuales — manchas, musgo, tejas faltantes, líneas hundidas — que un inspector experimentado busca desde la calle. Es una herramienta de filtrado para priorizar qué puertas tocar primero, no un reemplazo de una inspección en el techo.",
         },
         {
-          q: "¿RoofScout reemplaza a mi equipo de ventas?",
-          a: "No — reemplaza las suposiciones. Tus vendedores siguen tocando puertas y vendiendo; RoofScout solo les dice qué techos realmente valen la vuelta antes de salir de la oficina.",
+          q: "¿RoofScout.io reemplaza a mi equipo de ventas?",
+          a: "No — reemplaza las suposiciones. Tus vendedores siguen tocando puertas y vendiendo; RoofScout.io solo les dice qué techos realmente valen la vuelta antes de salir de la oficina.",
         },
         {
           q: "¿En qué se diferencia de un marketplace de leads?",
-          a: "Los leads de marketplace normalmente se venden a tres a cinco contratistas a la vez. Cada lead que encuentra RoofScout es solo tuyo — no compites con otros por el mismo propietario.",
+          a: "Los leads de marketplace normalmente se venden a tres a cinco contratistas a la vez. Cada lead que encuentra RoofScout.io es solo tuyo — no compites con otros por el mismo propietario.",
         },
         {
           q: "¿Puedo cancelar o cambiar de plan cuando quiera?",
           a: "Sí. Mejora, baja de plan o cancela cuando quieras desde tu página de facturación — sin contratos, sin cargos por cancelación.",
         },
         {
-          q: "¿Qué áreas cubre RoofScout?",
+          q: "¿Qué áreas cubre RoofScout.io?",
           a: "Cualquier lugar con cobertura de imágenes satelitales de Google y de la API de Google Solar, lo que incluye la mayor parte de EE. UU.",
         },
         {
@@ -435,7 +435,7 @@ export const dictionaries = {
     },
     pricing: {
       title: "Precios simples, basados en escaneos",
-      sub: "Prueba RoofScout gratis y luego paga según el volumen de escaneos que tu equipo realmente necesite.",
+      sub: "Prueba RoofScout.io gratis y luego paga según el volumen de escaneos que tu equipo realmente necesite.",
       faqTitle: "Preguntas sobre facturación",
       faq: [
         {
@@ -486,18 +486,18 @@ export const dictionaries = {
       footnote:
         "Todos los planes incluyen escaneo satelital en vivo, calificación de estado con IA y exportación a CSV. Mejora o cancela cuando quieras desde tu página de facturación.",
     },
-    login: { title: "Iniciar sesión", welcome: "Bienvenido de nuevo a RoofScout.", noAccount: "¿No tienes cuenta?", signup: "Regístrate" },
+    login: { title: "Iniciar sesión", welcome: "Bienvenido de nuevo a RoofScout.io.", noAccount: "¿No tienes cuenta?", signup: "Regístrate" },
     oauth: { divider: "o", google: "Continuar con Google" },
     signup: {
       title: "Empieza gratis",
-      sub: "Configura la cuenta de RoofScout de tu empresa.",
+      sub: "Configura la cuenta de RoofScout.io de tu empresa.",
       companyName: "Nombre de la empresa",
       email: "Correo electrónico",
       password: "Contraseña",
       cta: "Crear cuenta",
       haveAccount: "¿Ya tienes una cuenta?",
       login: "Iniciar sesión",
-      referralNotice: "Te invitó otra empresa de RoofScout — ambos recibirán un mes gratis cuando te suscribas.",
+      referralNotice: "Te invitó otra empresa de RoofScout.io — ambos recibirán un mes gratis cuando te suscribas.",
     },
     appNav: { dashboard: "Panel", newScan: "Nuevo escaneo", leads: "Clientes potenciales", billing: "Precios", signOut: "Cerrar sesión" },
     onboarding: {
@@ -508,7 +508,7 @@ export const dictionaries = {
       stepOf: "Paso {n} de {total}",
       steps: [
         {
-          title: "Bienvenido a RoofScout",
+          title: "Bienvenido a RoofScout.io",
           body: "Un recorrido rápido de cómo funciona el escaneo antes de hacer el primero.",
         },
         {
@@ -539,7 +539,7 @@ export const dictionaries = {
       Lost: "Perdido",
     },
     offline: {
-      message: "Sin conexión — RoofScout necesita internet para cargar escaneos y clientes potenciales. Reconéctate para continuar.",
+      message: "Sin conexión — RoofScout.io necesita internet para cargar escaneos y clientes potenciales. Reconéctate para continuar.",
     },
     dashboard: {
       title: "Panel",
@@ -680,7 +680,7 @@ export const dictionaries = {
     },
     billingPage: {
       title: "Precios",
-      subtitle: "Administra tu plan de RoofScout, compra escaneos y mira qué incluye cada uno.",
+      subtitle: "Administra tu plan de RoofScout.io, compra escaneos y mira qué incluye cada uno.",
       checkoutSuccess: "Suscripción actualizada — ¡gracias!",
       checkoutCancelled: "Pago cancelado — no se hicieron cambios.",
       currentPlan: "Plan actual",
@@ -703,9 +703,9 @@ export const dictionaries = {
       scanCreditBalance: "{count} escaneos comprados restantes",
       territoryTitle: "Exclusividad de territorio",
       territoryBodyApex:
-        "Reclama un código postal y ningún otro cliente de RoofScout podrá reclamar el mismo — es exclusivamente tuyo mientras tengas Apex.",
+        "Reclama un código postal y ningún otro cliente de RoofScout.io podrá reclamar el mismo — es exclusivamente tuyo mientras tengas Apex.",
       territoryBodyLocked:
-        "Reclama códigos postales exclusivos para que ningún otro cliente de RoofScout pueda reclamar el mismo territorio — incluido gratis con Apex.",
+        "Reclama códigos postales exclusivos para que ningún otro cliente de RoofScout.io pueda reclamar el mismo territorio — incluido gratis con Apex.",
       territoryPlaceholder: "Código postal",
       territoryAdd: "Reclamar",
       territoryRemove: "Liberar",
@@ -713,7 +713,7 @@ export const dictionaries = {
     },
     supportChat: {
       launcherLabel: "Chatea con soporte",
-      title: "Soporte de RoofScout",
+      title: "Soporte de RoofScout.io",
       disclaimer: "Asistente de IA — para ayuda específica de tu cuenta, escribe directamente a soporte.",
       greeting: "¡Hola! Puedo ayudarte con facturación, precios, temas técnicos y de cuenta. ¿En qué te ayudo?",
       placeholder: "Escribe tu pregunta…",

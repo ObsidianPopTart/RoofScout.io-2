@@ -1,6 +1,6 @@
 export const metadata = {
   title: "Privacy Policy",
-  description: "How RoofScout collects, uses, and protects your data.",
+  description: "How RoofScout.io collects, uses, and protects your data.",
   alternates: { canonical: "/privacy" },
 };
 
@@ -12,9 +12,9 @@ export default function PrivacyPolicyPage() {
 
       <div className="prose prose-slate mt-8 max-w-none space-y-6 text-sm leading-relaxed">
         <p>
-          RoofScout is a software service published and operated by Lunchbox (&quot;Lunchbox,&quot;
-          &quot;we,&quot; &quot;us&quot;) — RoofScout itself is not a company. This policy explains what
-          information we collect through the RoofScout website and Android app, why we collect it, and
+          RoofScout.io is a software service published and operated by Lunchbox (&quot;Lunchbox,&quot;
+          &quot;we,&quot; &quot;us&quot;) — RoofScout.io itself is not a company. This policy explains what
+          information we collect through the RoofScout.io website and Android app, why we collect it, and
           how it&apos;s handled.
         </p>
 
@@ -88,7 +88,7 @@ export default function PrivacyPolicyPage() {
         <section>
           <h2 className="text-lg font-semibold text-slate-900">Children&apos;s privacy</h2>
           <p className="mt-2">
-            RoofScout is a business tool intended for roofing companies and their staff. It is not
+            RoofScout.io is a business tool intended for roofing companies and their staff. It is not
             directed at, and we do not knowingly collect information from, children under 13.
           </p>
         </section>

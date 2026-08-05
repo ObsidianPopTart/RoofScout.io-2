@@ -25,7 +25,7 @@ const jsonLd = {
     "Aggregated U.S. hail damage and insurance claims statistics, including NICB metro-level claim rankings, state-level claim totals, county hail-day records, and the costliest known hailstorm events, sourced from NICB, State Farm, Verisk, Cotality/CoreLogic, and the Insurance Federation of Minnesota.",
   url: PAGE_URL,
   dateModified: LAST_UPDATED,
-  creator: { "@type": "Organization", name: "RoofScout", url: SITE_URL },
+  creator: { "@type": "Organization", name: "RoofScout.io", url: SITE_URL },
 };
 
 const breadcrumbJsonLd = {
@@ -103,7 +103,7 @@ export default async function HailDamageStatisticsPage() {
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4">
           <Link href="/" className="flex shrink-0 items-center gap-2 text-lg font-semibold">
             <Logo />
-            <span className="hidden sm:inline">RoofScout</span>
+            <span className="hidden sm:inline">RoofScout.io</span>
           </Link>
           <div className="flex items-center gap-2 text-sm sm:gap-5">
             <Link href="/blog" className="hidden text-[var(--rs-paper)]/70 hover:text-[var(--rs-paper)] sm:inline">
@@ -140,7 +140,7 @@ export default async function HailDamageStatisticsPage() {
             (formerly CoreLogic), or a state insurance trade group — with a link to that source next to the number.
             No modeled estimates presented as fact, no numbers without attribution. Compiled and maintained by{" "}
             <Link href="/" className="text-[var(--rs-amber)] underline-offset-4 hover:underline">
-              RoofScout
+              RoofScout.io
             </Link>
             , which uses this same underlying research to target its{" "}
             <Link href="/blog" className="text-[var(--rs-amber)] underline-offset-4 hover:underline">
@@ -272,7 +272,7 @@ export default async function HailDamageStatisticsPage() {
         <div className="mt-14 rounded-2xl border border-white/10 bg-[var(--rs-ink-2)] p-6">
           <p className="text-lg font-bold">Working one of these markets?</p>
           <p className="mt-2 text-[var(--rs-paper)]/60">
-            RoofScout scans a neighborhood by satellite and hands your team a ranked, priced lead list — built for
+            RoofScout.io scans a neighborhood by satellite and hands your team a ranked, priced lead list — built for
             exactly the high-hail metros in this data. Free to try, 3 scans included.
           </p>
           <Link
@@ -285,7 +285,7 @@ export default async function HailDamageStatisticsPage() {
       </main>
 
       <footer className="mt-auto border-t border-white/10 py-6 text-center font-mono text-xs text-[var(--rs-paper)]/40">
-        RoofScout ·{" "}
+        RoofScout.io ·{" "}
         <Link href="/privacy" className="underline hover:text-[var(--rs-paper)]/70">
           Privacy Policy
         </Link>

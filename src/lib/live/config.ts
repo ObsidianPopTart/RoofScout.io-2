@@ -1,4 +1,4 @@
-// Live-mode configuration. RoofScout runs in demo (mock) mode until
+// Live-mode configuration. RoofScout.io runs in demo (mock) mode until
 // GOOGLE_MAPS_API_KEY is present in .env.local — then scans use real data.
 export const liveConfig = {
   get googleKey(): string {
