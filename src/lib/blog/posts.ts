@@ -1625,6 +1625,234 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: "roofing-leads-sioux-falls",
+    title: "Sioux Falls Roofing Leads: Beating the Out-of-Town Crews to the Job",
+    description:
+      "Sioux Falls sees a real wave of out-of-town roofing crews after every major hailstorm, offering fast, cheap fixes that often don't hold up. Here's how established local contractors compete on documentation and accuracy instead.",
+    publishedAt: "2026-08-09",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Sioux Falls sees its heaviest hail activity from April through June, with storms capable of producing hail up to 3.5 inches in diameter alongside the more common golf-ball and ping-pong-ball-size hits. After a major hailstorm, out-of-town contractors reliably flood the market offering cheap, fast fixes that often don't hold up — a pattern local operators have to actively compete against every season.",
+      },
+      { type: "h2", text: "Documentation is the differentiator" },
+      {
+        type: "p",
+        text: "Insurance companies in this market often deny claims for damage judged purely cosmetic, with no effect on structural integrity — which means a credible, specific condition assessment matters more here than a generic \"you have hail damage\" pitch. Contractors who document thoroughly and meet adjusters on-site have a real edge over crews chasing a quick sign-up.",
+      },
+      { type: "h2", text: "Speed still matters — just not instead of accuracy" },
+      {
+        type: "p",
+        text: "The out-of-town crews that show up after a storm move fast, which means a local contractor needs to match that speed while still bringing something a fly-by-night operation can't: real evidence of exactly what's wrong with a given roof.",
+      },
+      {
+        type: "quote",
+        text: "Beating storm chasers to the door only matters if you show up with a better answer than they do.",
+      },
+      { type: "h2", text: "Where RoofScout fits Sioux Falls" },
+      {
+        type: "p",
+        text: "RoofScout scans a Sioux Falls neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — giving a local contractor real, documented evidence to bring to the door the same day a storm hits.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-rapid-city",
+    title: "Rapid City Roofing Leads: Working the Black Hills Storm Corridor",
+    description:
+      "Rapid City sits at the eastern edge of the Black Hills, one of South Dakota's most hail-prone areas — and the same storm corridor covers neighboring Black Hawk on nearly every hail event. Here's how to work it efficiently.",
+    publishedAt: "2026-08-09",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Rapid City's position at the eastern edge of the Black Hills makes it one of South Dakota's most hail-prone cities, with storms capable of dropping golf-ball-size hail across neighborhoods within minutes. The same storm corridor covers neighboring communities like Black Hawk on nearly every hail event, sharing the same radar footprint.",
+      },
+      { type: "h2", text: "A climate that's hard on roofs from every direction" },
+      {
+        type: "p",
+        text: "Rapid City's roofing environment isn't just about hail — extreme temperature swings, heavy snowfall, intense summer heat, high elevation and UV exposure, and chinook wind events all add up to conditions that wear on roofing materials well beyond the spring hail season alone.",
+      },
+      { type: "h2", text: "A shared corridor means shared opportunity" },
+      {
+        type: "p",
+        text: "Because Rapid City and Black Hawk sit inside the same storm corridor, a single hail event often creates roofing demand across both communities at once. A contractor working only one side of that corridor is leaving real, nearby demand on the table.",
+      },
+      {
+        type: "quote",
+        text: "One storm, one radar footprint, two communities worth checking — not just the one you happened to start in.",
+      },
+      { type: "h2", text: "Where RoofScout fits Rapid City" },
+      {
+        type: "p",
+        text: "RoofScout scans a Rapid City or Black Hawk neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — making it realistic to check both sides of the same storm corridor after a single event.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-billings",
+    title: "Billings Roofing Leads: When Search Volume Triples Overnight",
+    description:
+      "A major hailstorm in Yellowstone County can produce more roofing search volume in 72 hours than the preceding three weeks combined. Here's how to work Montana's hail season without getting buried in undifferentiated leads.",
+    publishedAt: "2026-08-09",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Billings sits in one of Montana's most active hail corridors, with Yellowstone County's position at the base of the Rimrock escarpment placing it in a high-frequency severe weather zone. Hail season runs April through September, peaking in late May and June — and when a major storm hits, roofing search volume can triple overnight, with a single event generating more search activity in 72 hours than the previous three weeks combined.",
+      },
+      { type: "h2", text: "A flood of interest, not all of it real damage" },
+      {
+        type: "p",
+        text: "When search volume spikes that fast, a lot of the resulting calls come from homeowners who aren't sure whether they actually have damage worth claiming. Sorting real leads from anxious inquiries quickly is as much the challenge as finding the damage itself.",
+      },
+      { type: "h2", text: "Incomplete settlements are common here" },
+      {
+        type: "p",
+        text: "Initial hail-damage claim settlements in Billings are frequently incomplete — not usually from bad faith, but because standard adjuster protocols overlook line items that are standard for Montana roof replacements. A specific, well-documented condition read helps make sure a claim reflects the real scope of damage from the start.",
+      },
+      {
+        type: "quote",
+        text: "When a storm triples your call volume overnight, knowing which roofs actually need the visit is what keeps the surge from turning into chaos.",
+      },
+      { type: "h2", text: "Where RoofScout fits Billings" },
+      {
+        type: "p",
+        text: "RoofScout scans a Billings neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — cutting through the post-storm noise to show which roofs in the affected area genuinely need attention.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-milwaukee",
+    title: "Milwaukee Roofing Leads: Working the Upper Midwest's Complex Storm Mix",
+    description:
+      "Wisconsin averages roughly 15 days a summer with hail 1.5 inches or larger, and Milwaukee's storm climate mixes hail, straight-line wind, and tornado activity into some of the Upper Midwest's most complex roofing damage scenarios.",
+    publishedAt: "2026-08-09",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Wisconsin averages roughly 15 days each summer with hailstones 1.5 inches or larger, and Milwaukee has seen hail as large as 3 inches in recorded events. What makes Wisconsin's storm climate distinct is the mix — hail, straight-line winds, and tornado activity combine into some of the most complex roofing damage scenarios in the Upper Midwest, rather than hail acting alone.",
+      },
+      { type: "h2", text: "Mixed damage types are easy to under-assess" },
+      {
+        type: "p",
+        text: "A roof hit by both hail and straight-line wind in the same storm can show damage that's easy to misread if an inspection only checks for one type — cracked shingle surfaces and lost granules from hail, alongside lifted or missing shingles from wind. Treating it as a single damage type risks missing part of the picture.",
+      },
+      { type: "h2", text: "Longer claims windows mean the market moves slower" },
+      {
+        type: "p",
+        text: "Most Wisconsin insurance policies allow 1-2 years to file a storm claim, which means Milwaukee's roofing demand doesn't disappear as quickly after a storm as it does in markets with shorter windows — but claim processing can also take longer after major regional storms due to increased demand.",
+      },
+      {
+        type: "quote",
+        text: "A storm that brings hail and wind together needs an assessment that actually reads both — not just whichever one is easier to spot.",
+      },
+      { type: "h2", text: "Where RoofScout fits Milwaukee" },
+      {
+        type: "p",
+        text: "RoofScout scans a Milwaukee neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — built to catch the mixed hail-and-wind damage patterns common in this market instead of screening for one type alone.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-madison",
+    title: "Madison Roofing Leads: When One Storm Generates a Career's Worth of Calls",
+    description:
+      "One Madison-area roofer took more storm calls in a single day after an April hailstorm than in 13 years running his business. Here's how to work a market where demand surges that hard, that fast.",
+    publishedAt: "2026-08-09",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "A single April hailstorm that dropped two-, three-, and four-inch hail on the Madison area generated a genuinely extreme demand spike — one Waunakee-based roofer received at least 75 calls in a single day, more than in his entire 13 years running the business, and his team inspected more than 120 roofs afterward, most of them damaged. Wisconsin's severe-weather season has also broadened in recent years, now spreading beyond its traditional July peak into March, April, and September.",
+      },
+      { type: "h2", text: "Out-of-town crews move within hours" },
+      {
+        type: "p",
+        text: "After a significant Madison-area hail event, out-of-town contractors reliably show up knocking on doors within hours of the storm, often offering to handle the insurance claim themselves. Competing with that speed while still doing right by homeowners means having an accurate read on damage ready fast, not scrambling to canvass block by block after the fact.",
+      },
+      { type: "h2", text: "A demand spike this large needs triage, not just hustle" },
+      {
+        type: "p",
+        text: "When a single storm can generate more calls in a day than years of normal business, the real constraint isn't finding leads — it's figuring out which of the flood of calls represent roofs that genuinely need work first.",
+      },
+      {
+        type: "quote",
+        text: "When one storm can generate a career's worth of calls in a single day, the job isn't finding leads anymore — it's triaging them.",
+      },
+      { type: "h2", text: "Where RoofScout fits Madison" },
+      {
+        type: "p",
+        text: "RoofScout scans a Madison-area neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — giving a contractor a ranked, priced list to work through instead of an undifferentiated flood of calls after a major storm.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-minneapolis-st-paul",
+    title: "Minneapolis-St. Paul Roofing Leads: Where the Average Hail Claim Tops $30,000",
+    description:
+      "Minnesota has seen its average hail insurance claim climb to roughly $30,000, and the Twin Cities have been hit by repeated billion-dollar hail and wind events in recent years. Here's how to work the market efficiently.",
+    publishedAt: "2026-08-09",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "The Minneapolis-St. Paul metro has been hit by multiple billion-dollar hail and severe-storm events in recent years, including a major June 2017 storm that brought destructive hail and high winds across the metro area, and Minnesota's average hail insurance claim has climbed to roughly $30,000 — a genuinely large number that reflects both storm severity and rising repair costs.",
+      },
+      { type: "h2", text: "High claim values raise the bar for accuracy" },
+      {
+        type: "p",
+        text: "When the average claim is running around $30,000, both homeowners and insurers have real incentive to want a credible, specific condition assessment before committing — not a generic damage flag. A contractor who can show exactly what's wrong, with a written assessment to back it up, stands out in a market where the dollars at stake are this high.",
+      },
+      { type: "h2", text: "A metro large enough to reward real coverage" },
+      {
+        type: "p",
+        text: "The Twin Cities are a genuinely large metro area, and after a billion-dollar-scale storm event, the damage rarely concentrates in just one neighborhood. Covering the metro thoroughly after a major storm — rather than working whichever suburb a crew happens to start in — matters more here than in a smaller, more concentrated market.",
+      },
+      {
+        type: "quote",
+        text: "When the average claim tops $30,000, homeowners deserve a specific answer about their roof — not a generic damage flag.",
+      },
+      { type: "h2", text: "Where RoofScout fits Minneapolis-St. Paul" },
+      {
+        type: "p",
+        text: "RoofScout scans a Twin Cities neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — giving a contractor the same evidence-backed read across a metro this large, instead of a partial picture from just one suburb.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
 ];
 
 export function getBlogPost(slug: string): BlogPost | undefined {
