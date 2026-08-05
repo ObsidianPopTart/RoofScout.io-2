@@ -1131,6 +1131,196 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: "roofing-leads-mckinney",
+    title: "McKinney Roofing Leads: Working DFW's Highest-Ranked Hail Suburb",
+    description:
+      "McKinney placed in NICB's national top 5 for hail claims (34,134 claims, 2017-2019 report) — a single Collin County suburb outranking most entire metros. Here's how to work it efficiently.",
+    publishedAt: "2026-08-06",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "McKinney isn't just a DFW suburb — NICB's 2017-2019 national hail-claims report ranked it the No. 4 U.S. city for hail claims outright, with 34,134 claims in that three-year window, ahead of most entire metro areas on the list. It sits in Collin County, part of one of the most active hail corridors in North America.",
+      },
+      { type: "h2", text: "A high-value target inside a bigger metro" },
+      {
+        type: "p",
+        text: "McKinney's newer subdivisions carry some of the highest property values in the DFW Metroplex, which raises the stakes on getting the read right — a correctly documented claim on a well-built roof is a genuinely different job than a quick patch. That also makes McKinney a magnet for door-knockers working the newer neighborhoods first after any given storm.",
+      },
+      { type: "h2", text: "Working inside a suburb, not a sprawling metro" },
+      {
+        type: "p",
+        text: "Because McKinney's hail exposure is concentrated in a single high-value suburb rather than spread across a dozen DFW cities, the advantage goes to whoever can cover McKinney's own neighborhoods thoroughly and fast — not whoever has the biggest DFW-wide sales team.",
+      },
+      {
+        type: "quote",
+        text: "A suburb that ranks above most entire metros for hail claims deserves its own scan, not a leftover pass after the rest of DFW.",
+      },
+      { type: "h2", text: "Where RoofScout fits McKinney" },
+      {
+        type: "p",
+        text: "RoofScout scans a McKinney neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — and hands back a ranked, priced lead list before the door-knockers get there first.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-plano",
+    title: "Plano Roofing Leads: Getting Ahead of the Storm-Chase Crews",
+    description:
+      "Plano ranked the No. 5 U.S. city for hail claims in NICB's 2016-2018 report — and every big Collin County hailstorm since has brought a fresh wave of out-of-town storm-chase crews. Here's how local contractors get there first.",
+    publishedAt: "2026-08-06",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Plano ranked the No. 5 U.S. city for hail claims in NICB's national 2016-2018 report, with 42,659 claims in that three-year window — a single Collin County suburb landing in the national top 5. Plano sits squarely in what meteorologists call \"Hail Alley,\" with severe storms concentrated in a March-through-June window.",
+      },
+      { type: "h2", text: "Storm chasers know Plano's name too" },
+      {
+        type: "p",
+        text: "After a big Plano hailstorm, out-of-town \"storm restoration\" crews that chase weather across the country show up fast, target newer subdivisions first, and sign up as many roofs as they can before moving to the next city. That's a direct consequence of Plano's national-top-5 reputation — it's a known destination for crews following the storm map, not just a local secret.",
+      },
+      { type: "h2", text: "Speed matters, but so does covering the right streets" },
+      {
+        type: "p",
+        text: "Competing with crews that show up the day after a storm means a local contractor needs to be just as fast — but pointed at the roofs that actually took damage, not just the newest-looking subdivision a chase crew canvassed first.",
+      },
+      {
+        type: "quote",
+        text: "In a city storm-chase crews already have on their map, being first at the door only matters if you're at the right door.",
+      },
+      { type: "h2", text: "Where RoofScout fits Plano" },
+      {
+        type: "p",
+        text: "RoofScout scans a Plano neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — and hands back a ranked, priced lead list the same day a storm moves through, before out-of-town crews finish driving the block.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-lubbock",
+    title: "Lubbock Roofing Leads: Working West Texas's Hail-Battered South Plains",
+    description:
+      "Lubbock County has logged roughly 122 severe hail days since 2000 — one of the most hail-battered counties in the country. Here's how to work the South Plains without losing the storm-season rush to out-of-state crews.",
+    publishedAt: "2026-08-06",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Lubbock sits in one of the most active hail corridors in the country — Lubbock County has logged roughly 122 severe hail days since 2000, and the open Llano Estacado terrain produces winds that damage roofing systems in ways more sheltered markets rarely see. When the South Plains gets hit, demand spikes hard and fast: every roofer's phone in town tends to start ringing at the same time.",
+      },
+      { type: "h2", text: "A market that rewards same-day response" },
+      {
+        type: "p",
+        text: "Contractors who routinely work storm damage in this region schedule same-day inspections during storm season, because waiting even a week in Lubbock often means watching interior damage get worse. That urgency also means whoever can identify the actually-damaged roofs fastest — not just whoever answers the phone first — gets the head start.",
+      },
+      { type: "h2", text: "Local accountability vs. out-of-state crews" },
+      {
+        type: "p",
+        text: "Out-of-state storm-chase crews show up after every major Lubbock hailstorm, but they rarely carry the same local accountability as a contractor who's still in town handling the insurance claims process months later. That reputation gap is a real advantage for local operators, provided they can match the storm-chasers' speed.",
+      },
+      {
+        type: "quote",
+        text: "In a market where every phone rings at once, knowing which roofs actually need the visit is what turns a flood of calls into an efficient storm season.",
+      },
+      { type: "h2", text: "Where RoofScout fits Lubbock" },
+      {
+        type: "p",
+        text: "RoofScout scans a Lubbock neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — and hands back a ranked, priced lead list the same day a storm hits, instead of working through calls in whatever order they came in.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-amarillo",
+    title: "Amarillo Roofing Leads: Working the Texas Panhandle's Hail Capital",
+    description:
+      "Potter County, home to Amarillo, has logged more severe hail days since 2000 than almost any county in the country. Here's how to work a market where storms bring golf-ball-to-baseball-size hail, not a light dusting.",
+    publishedAt: "2026-08-06",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Potter County, home to Amarillo, has logged 131 severe hail days since 2000 — among the highest counts of any county in the country. The Panhandle doesn't see many small hail events; when stones fall here, they're routinely golf-ball to baseball size, capable of taking out a shingle roof in a single storm rather than gradually wearing it down.",
+      },
+      { type: "h2", text: "No real off-season" },
+      {
+        type: "p",
+        text: "Amarillo's storm activity peaks March through May with a secondary fall peak, but the Panhandle produces severe weather close to year-round — there's no long stretch where a contractor can assume the market has gone quiet.",
+      },
+      { type: "h2", text: "Severe hail on top of severe freeze-thaw" },
+      {
+        type: "p",
+        text: "Amarillo also sees an unusually high number of freeze-thaw cycles for Texas, adding thermal stress on roofing materials between hail events. A roof already weakened by that cycle tends to take more damage from the next hailstorm than a comparable roof in a milder climate — worth factoring into how urgently a given roof should be flagged.",
+      },
+      {
+        type: "quote",
+        text: "When the hail is golf-ball size and the roof underneath is already weathered by freeze-thaw stress, there's no such thing as minor damage.",
+      },
+      { type: "h2", text: "Where RoofScout fits Amarillo" },
+      {
+        type: "p",
+        text: "RoofScout scans an Amarillo neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — and hands back a ranked, priced lead list, so a crew working the Panhandle's near-constant storm activity knows which roofs are actually at the point of failure.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-wichita-falls",
+    title: "Wichita Falls Roofing Leads: A Smaller Market That Still Draws Dallas Crews",
+    description:
+      "When a serious hailstorm hits Wichita Falls, contractors from Dallas — the country's largest roofing market — show up to work it. Here's how local operators compete for the same roofs.",
+    publishedAt: "2026-08-06",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Wichita Falls is a smaller market than Dallas-Fort Worth, but a serious hailstorm here still draws real outside interest — after one of the area's more destructive recent hailstorms, out-of-town companies from Dallas, the country's largest roofing market, came in to work it, and one local insurance agency alone fielded several hundred storm-related calls.",
+      },
+      { type: "h2", text: "A smaller market means more caution about contractor scams" },
+      {
+        type: "p",
+        text: "Local officials have specifically warned Wichita Falls homeowners about contractor scams following severe weather — the classic patterns of upfront payment demands and \"we'll waive your deductible\" pitches. That backdrop means homeowners in this market are often actively looking for a reason to trust a local, credible operator over a door-knocker they've never heard of.",
+      },
+      { type: "h2", text: "Competing with contractors from a much bigger market" },
+      {
+        type: "p",
+        text: "When Dallas-based crews travel to Wichita Falls after a storm, they're bringing DFW-scale operations to a market that doesn't have DFW-scale competition day to day. Local contractors compete best by being faster and more accurate about which roofs actually need attention, not by trying to out-scale a Dallas operation.",
+      },
+      {
+        type: "quote",
+        text: "A smaller market still rewards the same thing a big one does: knowing which roofs need the visit before the out-of-town trucks arrive.",
+      },
+      { type: "h2", text: "Where RoofScout fits Wichita Falls" },
+      {
+        type: "p",
+        text: "RoofScout scans a Wichita Falls neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — and hands back a ranked, priced lead list, giving a local operator a same-day answer instead of waiting to see where the Dallas crews set up first.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
 ];
 
 export function getBlogPost(slug: string): BlogPost | undefined {
