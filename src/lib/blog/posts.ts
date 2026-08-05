@@ -1435,6 +1435,196 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: "roofing-leads-boulder",
+    title: "Boulder Roofing Leads: Where Hail Drives Half of Homeowner Premiums",
+    description:
+      "Hail accounts for roughly half of homeowner insurance premiums on Colorado's Front Range — and Boulder's May 2024 hailstorm alone caused an estimated $1.9 billion in metro-wide damage. Here's how to work the market efficiently.",
+    publishedAt: "2026-08-08",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Boulder sits on the same Front Range hail corridor as Denver, averaging roughly 7 to 9 hail days a year. Hail is the single largest driver of homeowner insurance premiums in Colorado — accounting for 26 to 54% of premiums statewide and roughly half on the Front Range specifically. The May 2024 hailstorm alone caused an estimated $1.9 billion in metro-wide damage, on top of the record $2.3 billion May 2017 storm that hit the same corridor.",
+      },
+      { type: "h2", text: "An eco-conscious homeowner base changes the pitch" },
+      {
+        type: "p",
+        text: "Boulder's homeowner base skews toward buyers who actively favor Class 4 impact-rated shingles and metal roofing for their durability and sustainability — a market that responds better to a specific, evidenced condition read than a generic storm-chase pitch.",
+      },
+      { type: "h2", text: "Strict disclosure rules favor contractors who document well" },
+      {
+        type: "p",
+        text: "Colorado requires specific disclosure language on any residential roofing contract over $1,000 tied to an insurance claim, and any contractor offering to waive or absorb the deductible is asking the homeowner to participate in insurance fraud. In a market homeowners are already primed to scrutinize contractors carefully, showing up with a real, specific condition assessment matters more than a fast pitch.",
+      },
+      {
+        type: "quote",
+        text: "Where hail drives half the insurance premium, homeowners already expect a serious conversation about roof condition — bring the evidence to match.",
+      },
+      { type: "h2", text: "Where RoofScout fits Boulder" },
+      {
+        type: "p",
+        text: "RoofScout scans a Boulder neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — giving a rep real evidence to bring to a homeowner base that expects more than a generic pitch.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-fort-collins",
+    title: "Fort Collins Roofing Leads: Where Storms Fire Off the Foothills",
+    description:
+      "Fort Collins sits at the northern edge of Colorado's Front Range hail corridor, where the foothills trigger severe storms that launch directly at the city before spreading east. Here's how to work it efficiently.",
+    publishedAt: "2026-08-08",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Fort Collins sits at the northern end of Colorado's Front Range hail corridor, close enough to the Wyoming border that storm systems can develop quickly and intensify as they track south along the mountains. The foothills west of town act as a trigger for severe thunderstorm development, launching storms directly at Fort Collins before they spread east — a pattern that hit hard in the July 18-19, 2018 storm, when Denver, Boulder, and Fort Collins were all pelted with golf-ball to baseball-size hail in the same event.",
+      },
+      { type: "h2", text: "A market storm chasers already know" },
+      {
+        type: "p",
+        text: "Storm chasers follow hail events into Fort Collins offering \"free roof inspections\" and promises to handle the insurance claim — some operate legitimately, others inflate damage reports or pressure homeowners into signing before insurance approval. That backdrop makes a documented, specific condition read a meaningful point of difference for an established local contractor.",
+      },
+      { type: "h2", text: "Foothill-triggered storms hit unevenly" },
+      {
+        type: "p",
+        text: "Because Fort Collins' storms are triggered locally by the foothills rather than arriving as one uniform system, damage tends to be patchy — some neighborhoods take a direct hit while others nearby see very little. A single pass that reads condition across the whole area catches that unevenness in a way block-by-block canvassing can miss.",
+      },
+      {
+        type: "quote",
+        text: "When storms fire off the foothills instead of rolling through as one front, the damage is patchy — which is exactly why block-by-block guessing falls short here.",
+      },
+      { type: "h2", text: "Where RoofScout fits Fort Collins" },
+      {
+        type: "p",
+        text: "RoofScout scans a Fort Collins neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — surfacing the uneven damage pattern a foothill-triggered storm leaves behind, instead of assuming an entire neighborhood was hit the same.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-pueblo",
+    title: "Pueblo Roofing Leads: Working Southern Colorado's Hard Market",
+    description:
+      "Pueblo has seen a real run-up in severe hail activity in recent years, feeding into what the industry now calls Colorado's \"hard market\" for roofing claims. Here's how to work it efficiently.",
+    publishedAt: "2026-08-08",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Pueblo and the surrounding southern Colorado counties have seen a real increase in severe hail activity in recent years, part of a broader run of storm cycles, materials inflation, and supply-chain pressure that's produced what the roofing industry now calls Colorado's current \"hard market.\" Storms producing baseball-size hail in the region aren't rare outliers anymore — they're a recurring feature of the season.",
+      },
+      { type: "h2", text: "Rural spread means real distances between damaged homes" },
+      {
+        type: "p",
+        text: "Unlike Denver or Colorado Springs' dense suburban stretches, a lot of Pueblo-area hail damage lands across a wider, more rural footprint. Covering that ground efficiently means knowing which specific properties took damage before driving out to them, not discovering it property by property.",
+      },
+      { type: "h2", text: "A hard market rewards accurate assessment" },
+      {
+        type: "p",
+        text: "With repair costs climbing and insurers tightening terms across Colorado, homeowners have more reason than ever to want a credible, specific assessment before committing to a claim — not a generic \"you have damage\" pitch.",
+      },
+      {
+        type: "quote",
+        text: "In a hard market, homeowners want to know exactly what's wrong before they file — not just that something might be.",
+      },
+      { type: "h2", text: "Where RoofScout fits Pueblo" },
+      {
+        type: "p",
+        text: "RoofScout scans a Pueblo-area neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — so a crew covering a wider rural footprint knows exactly which properties are worth the drive.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-cheyenne",
+    title: "Cheyenne Roofing Leads: Working Wyoming's Own Hail Alley",
+    description:
+      "Southeast Wyoming sits inside the Central Great Plains hail corridor, and local roofers simply call it \"a hail market\" — roofs here often last around eight years instead of the national 20-year norm. Here's how to work it efficiently.",
+    publishedAt: "2026-08-08",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Cheyenne and southeast Wyoming sit inside the Central Great Plains hail corridor, one of the most active hail zones in North America. Local roofing contractors simply refer to the region as \"a hail market\" — a place where storms capable of dropping baseball-size hail are a normal, recurring feature of late spring through summer, not a rare event.",
+      },
+      { type: "h2", text: "Roofs wear out faster here than almost anywhere" },
+      {
+        type: "p",
+        text: "The typical asphalt-shingle roof lifespan in Cheyenne runs around eight years because of the combination of wind and hail — compared to 20 years or more in much of the rest of the country. That means a much larger share of the housing stock is genuinely due for replacement at any given time than in a milder market.",
+      },
+      { type: "h2", text: "A smaller market, still worth covering thoroughly" },
+      {
+        type: "p",
+        text: "Cheyenne is a smaller city than the Front Range metros to the south, which means less competition day to day — but also less margin for wasted effort driving streets that didn't take real damage.",
+      },
+      {
+        type: "quote",
+        text: "When the average roof only lasts eight years, the question isn't whether a neighborhood has damaged roofs — it's which ones are worst right now.",
+      },
+      { type: "h2", text: "Where RoofScout fits Cheyenne" },
+      {
+        type: "p",
+        text: "RoofScout scans a Cheyenne neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — helping a smaller local team make the most of every storm season in a market where roofs simply don't last as long.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-lincoln",
+    title: "Lincoln Roofing Leads: Nebraska's Second-Largest Market in a Top Hail State",
+    description:
+      "Nebraska averages more than 40 significant hail events a year and consistently ranks among the top states for hail-related roofing claims. Here's how to work Lincoln, the state's second-largest roofing market.",
+    publishedAt: "2026-08-08",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Lincoln sits inside one of the most active hail corridors in the country — Nebraska averages more than 40 significant hail events a year, and the state consistently ranks among the top in the nation for hail-related roofing insurance claims. As Nebraska's capital and second-largest city, with over 290,000 residents in Lancaster County, Lincoln combines that high storm frequency with real market scale.",
+      },
+      { type: "h2", text: "Part of a corridor, not an isolated market" },
+      {
+        type: "p",
+        text: "Lincoln sits along the same general corridor as Omaha, with significant hail events hitting communities up and down the Platte River Valley multiple times a season. A contractor working Lincoln alone, without an eye on the broader corridor, risks missing which direction the next storm actually tracked.",
+      },
+      { type: "h2", text: "A market big enough to reward real coverage" },
+      {
+        type: "p",
+        text: "With a market this size, covering it thoroughly after a storm — rather than working whichever few streets a crew happens to canvass — makes a measurable difference in how much real damage gets found before a competitor gets there.",
+      },
+      {
+        type: "quote",
+        text: "In a market Lincoln's size, thorough coverage after a storm finds real work a quick canvass would miss entirely.",
+      },
+      { type: "h2", text: "Where RoofScout fits Lincoln" },
+      {
+        type: "p",
+        text: "RoofScout scans a Lincoln neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — and hands back a ranked, priced lead list, giving a crew full coverage of a market this size instead of a partial read.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
 ];
 
 export function getBlogPost(slug: string): BlogPost | undefined {
