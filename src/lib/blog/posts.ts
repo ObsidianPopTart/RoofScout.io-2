@@ -708,6 +708,429 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: "roofscout-vs-hover",
+    title: "RoofScout vs. Hover: Which One Do You Actually Need?",
+    description:
+      "RoofScout and Hover both use AI-assisted measurement, but they answer different questions — one tells you which roofs in an area need attention, the other turns one known address into a precise 3D model and estimate.",
+    publishedAt: "2026-08-04",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Hover and RoofScout both get filed under \"AI roofing software,\" which makes them sound like competitors. In practice they sit on opposite sides of the same job: one decides where your crew should go, the other measures the property once you're already there.",
+      },
+      { type: "h2", text: "RoofScout: deciding which roofs are worth a knock" },
+      {
+        type: "p",
+        text: "Point RoofScout at a neighborhood and it pulls satellite imagery and Google Solar measurement data for every rooftop in view, then has Claude's vision model grade each one's visible condition — staining, missing shingles, moss, sagging rooflines — the same cues a canvasser looks for from the sidewalk. You get back a ranked, priced list of the roofs actually worth a stop, before you've knocked on a single door.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Free: 3 scans total, no card required",
+          "Pro: $49/mo, 50 scans/month",
+          "Apex: $149/mo, unlimited scans + Storm Tracker (targets scans to active severe weather)",
+        ],
+      },
+      { type: "h2", text: "Hover: an exact 3D model of one property" },
+      {
+        type: "p",
+        text: "Hover works from photos of a specific home — captured on-site with a phone, either by the homeowner or the contractor — and turns them into a precise 3D exterior model with measurements for the roof, siding, gutters, and windows. It's built for accuracy on a property you've already identified, feeding straight into estimates, proposals, and material orders.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Starter: pay-as-you-go, first 3 projects free — roof-only measurements run $29–69/project, full exterior $59–139/project",
+          "Pro: $999/yr ($99/mo), the same project types drop to $9–49 (roof) and $39–119 (full exterior), plus CRM, 2D designs, and team tracking",
+          "Enterprise: custom pricing, multi-branch management and SSO",
+        ],
+      },
+      { type: "h2", text: "The honest comparison" },
+      {
+        type: "p",
+        text: "Hover assumes you already have the address and, usually, someone standing at the property to capture it. RoofScout assumes the opposite — you don't yet know which addresses in an area deserve that visit. Neither replaces the other: a lot of roofing companies use RoofScout to build the target list for a neighborhood, then reach for Hover once a specific homeowner is ready to talk numbers and needs an exact model for the proposal.",
+      },
+      {
+        type: "quote",
+        text: "If the question is \"which houses on this street need a new roof,\" that's RoofScout. If the question is \"what's the precise measurement on this one house,\" that's Hover.",
+      },
+      { type: "h2", text: "Which one should you start with?" },
+      {
+        type: "ul",
+        items: [
+          "Canvassing an area with no idea which homes are worth targeting: start with RoofScout.",
+          "Already have a homeowner ready to talk and need a bankable measurement for the proposal: start with Hover.",
+          "Running both together: RoofScout narrows the neighborhood down to a short list, Hover measures each one once a homeowner engages.",
+        ],
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofscout-vs-gaf-quickmeasure",
+    title: "RoofScout vs. GAF QuickMeasure: Prospecting vs. a Measurement Report",
+    description:
+      "GAF QuickMeasure is a manufacturer-backed aerial measurement report for one address you already have. RoofScout is how you find that address in the first place. Here's how they actually fit together.",
+    publishedAt: "2026-08-04",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "GAF QuickMeasure keeps coming up in the same searches as RoofScout because both get described as \"AI-powered\" roofing tools. They're not solving the same problem, though — QuickMeasure measures a roof you've already identified; RoofScout is how you identify it.",
+      },
+      { type: "h2", text: "RoofScout: surfacing the roofs worth measuring" },
+      {
+        type: "p",
+        text: "RoofScout scans a whole area at once — satellite imagery, Google Solar roof data, and AI-graded condition scoring for every building in view — and hands back the rooftops that actually look neglected, ranked and priced, before anyone drives the street. It's the step that happens before there's an address to run a measurement report on.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Free: 3 scans total, no card required",
+          "Pro: $49/mo, 50 scans/month",
+          "Apex: $149/mo, unlimited scans + Storm Tracker (targets scans to active severe weather)",
+        ],
+      },
+      { type: "h2", text: "GAF QuickMeasure: a manufacturer-backed report for one address" },
+      {
+        type: "p",
+        text: "QuickMeasure is GAF's own aerial measurement product — order a report on a known address and get a full roof measurement with an interactive 3D rendering and bill of materials back in under an hour for a single-family home. It runs about $18/report (up to $20 if ordered through the Home Depot channel), with no subscription and no GAF certification required. An optional $10 add-on adds up to 10 years of hail/wind history and local building-code design criteria to the report.",
+      },
+      { type: "h2", text: "The honest comparison" },
+      {
+        type: "p",
+        text: "Because it's GAF's own product, QuickMeasure pairs cleanly with a GAF material order and warranty paperwork once a job is confirmed — that's a real advantage if you're already a GAF shop. What it doesn't do is tell you which roofs to go measure in the first place; like every measurement tool, it needs an address to start from. RoofScout and QuickMeasure aren't competing for the same step in the job — one finds the lead, the other measures it.",
+      },
+      {
+        type: "quote",
+        text: "QuickMeasure answers \"how much material does this roof need.\" RoofScout answers \"which roofs on this block need material at all.\"",
+      },
+      { type: "h2", text: "Which one should you start with?" },
+      {
+        type: "ul",
+        items: [
+          "Blind-canvassing a neighborhood with no target list yet: start with RoofScout.",
+          "Already have the address and just need a fast, cheap measurement to quote GAF materials: QuickMeasure is built for exactly that.",
+          "Running both: RoofScout finds and ranks the neighborhood's worst roofs, QuickMeasure measures the ones that turn into real jobs.",
+        ],
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "best-ai-roofing-tools-2026",
+    title: "The Best AI Roofing Tools in 2026 (and What Each One Is Actually For)",
+    description:
+      "A category-by-category look at the AI and aerial-measurement tools roofing companies actually use in 2026 — what each one does, real pricing, and which step of the job it fits.",
+    publishedAt: "2026-08-04",
+    readingMinutes: 9,
+    body: [
+      {
+        type: "p",
+        text: "\"Best AI roofing tool\" is a strange thing to rank, because the tools that get lumped into that phrase aren't competing for the same job. Some find which roofs need work. Some measure a roof you've already found. Some run the paperwork after that. Here's what each actually does, by category, with real pricing — including where RoofScout fits and where it doesn't.",
+      },
+      { type: "h2", text: "Prospecting: finding which roofs need attention" },
+      {
+        type: "p",
+        text: "RoofScout is built for this specific step, which is otherwise mostly guesswork or door-to-door driving. Point it at a neighborhood and it scans satellite imagery, pulls Google Solar measurement data, and has an AI vision model grade every visible rooftop's condition — the same signals (staining, missing shingles, moss, sagging lines) an inspector looks for from the street — then hands back a ranked, priced list of the roofs actually worth a stop.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Free: 3 scans total, no card required",
+          "Pro: $49/mo, 50 scans/month",
+          "Apex: $149/mo, unlimited scans + Storm Tracker (targets scans to active severe weather)",
+        ],
+      },
+      {
+        type: "p",
+        text: "This is a genuinely different category from everything below — the others all assume you already have an address.",
+      },
+      {
+        type: "link",
+        text: "→ More on what AI roofing lead generation software actually does",
+        href: "/ai-roofing-lead-generation-software",
+      },
+      { type: "h2", text: "Aerial measurement: turning an address into a report" },
+      {
+        type: "p",
+        text: "Once you have a specific address, several tools will turn it into a measurement report for quoting and material orders.",
+      },
+      {
+        type: "ul",
+        items: [
+          "EagleView — the long-standing default for insurance restoration and complex commercial jobs. Reports range roughly $13 for a basic aerial measurement up to $87+ for premium reports with full diagrams.",
+          "GAF QuickMeasure — GAF's own manufacturer-backed report, about $18/report (up to $20 via Home Depot), under an hour turnaround for single-family homes, no subscription or GAF certification required. A $10 add-on layers in hail/wind history and local building-code data.",
+          "Hover — works from on-site photos of the property rather than pure aerial imagery, producing a precise 3D exterior model with roof, siding, gutter, and window measurements. Pay-as-you-go from $29–139/project on the Starter plan, or $9–119/project on the $999/yr Pro plan with CRM and design tools included.",
+        ],
+      },
+      { type: "h2", text: "Estimating and back-office: running the job after that" },
+      {
+        type: "p",
+        text: "Roofr sits a layer above pure measurement — instant estimates, $13 measurement reports delivered in about 2 hours, proposals, material ordering, invoicing, payments, and scheduling. It's the CRM and paperwork layer for closing and running a job once you have a lead, with one free measurement report to try it and per-seat monthly plans after that.",
+      },
+      { type: "h2", text: "So which is actually \"best\"?" },
+      {
+        type: "p",
+        text: "There isn't a single best AI roofing tool, because there isn't a single job. The honest breakdown by what you're actually trying to solve:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Don't know which houses in an area need a roof: RoofScout — it's the only one in this list built for area-wide, address-less prospecting.",
+          "Have the address, need a fast and cheap measurement: GAF QuickMeasure (if you're a GAF shop) or Hover (if you want a full 3D exterior model, not just the roof).",
+          "Doing insurance restoration or complex commercial work: EagleView's report format is what adjusters already expect.",
+          "Need the estimate, proposal, and payment handled after the measurement: Roofr.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Most roofing companies that scale past word-of-mouth end up running at least two of these together — RoofScout to build the target list, and one of the measurement/estimating tools to close the job once a homeowner says yes.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-oklahoma-city",
+    title: "Oklahoma City Roofing Leads: Working the Nation's Second-Highest Hail State",
+    description:
+      "Oklahoma averaged 138 severe hail days a year from 2017-2019 — second nationally behind only Texas. Here's how to work Oklahoma City's roofing market efficiently instead of waiting for the next storm to drive the neighborhood.",
+    publishedAt: "2026-08-05",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Verisk's severe-weather analysis put Oklahoma at 138 severe hail days a year from 2017 through 2019 — second nationally, behind only Texas. Oklahoma City sits at the center of that exposure, with hail activity swinging hard year to year: some seasons bring only a handful of reports near the metro, others bring several dozen. That volatility is exactly why a fixed target list stops working here — the neighborhoods worth working shift every season.",
+      },
+      { type: "h2", text: "A market that resets every storm" },
+      {
+        type: "p",
+        text: "Because OKC's hail activity is so year-to-year uneven, last season's hot ZIP codes tell you very little about this season's. Crews that rely on the same routes they worked in a heavy year end up covering ground that's already been picked over, while genuinely damaged neighborhoods a few miles over go untouched.",
+      },
+      { type: "h2", text: "Local shops alongside seasonal storm crews" },
+      {
+        type: "p",
+        text: "OKC's roofing market runs a mix of established local contractors and out-of-town storm crews that show up after the bigger hail events. In that mix, speed to an accurate read on a new neighborhood — not just speed to the door — is what separates a contractor working real leads from one re-covering ground three other crews already hit.",
+      },
+      {
+        type: "quote",
+        text: "In a market where the hot ZIP codes change every season, a fresh satellite read beats last year's route every time.",
+      },
+      { type: "h2", text: "Where RoofScout fits Oklahoma City" },
+      {
+        type: "p",
+        text: "RoofScout scans a whole OKC neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment for each roof — and hands back a ranked, priced lead list. That means a fresh area can be evaluated the same week storm activity picks up, instead of relying on which streets got worked last season.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-tulsa",
+    title: "Tulsa Roofing Leads: Working Oklahoma's Other Hail Corridor",
+    description:
+      "Tulsa sits inside the same U.S. hail and tornado corridor as Oklahoma City, with a roofing market shaped by both established local shops and out-of-town storm crews. Here's how to work it efficiently.",
+    publishedAt: "2026-08-05",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Tulsa sits inside the U.S. hail and tornado corridor alongside the rest of Oklahoma, and — like Oklahoma City — sees a real mix of established local roofing companies and out-of-town storm crews that arrive after a major hail event and move on once the work dries up.",
+      },
+      { type: "h2", text: "Reputation matters more when crews keep reappearing" },
+      {
+        type: "p",
+        text: "Homeowner guidance in Tulsa consistently points toward picking a contractor who is locally based, licensed in Oklahoma, and still around after the season ends — a direct response to the storm-chaser pattern the market sees after bigger hail events. For an established local operator, that means the payoff for being first with an accurate, professional read on a neighborhood compounds over multiple seasons, not just one storm.",
+      },
+      { type: "h2", text: "Working ahead of the storm crews" },
+      {
+        type: "p",
+        text: "The gap between a hailstorm and the wave of inspection requests that follows is short, and it's the window where out-of-town crews do a lot of their door-knocking. A local contractor who can scan and rank a hit neighborhood immediately after a storm — rather than canvassing block by block — gets in front of homeowners before a storm-chaser crew ever reaches the street.",
+      },
+      {
+        type: "quote",
+        text: "The advantage in a storm-chaser market isn't being loudest at the door — it's being the local company that already knows which roofs on the block actually need the visit.",
+      },
+      { type: "h2", text: "Where RoofScout fits Tulsa" },
+      {
+        type: "p",
+        text: "RoofScout scans a Tulsa neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes an actual condition assessment per roof — and returns a ranked, priced lead list. For a local contractor competing against seasonal storm crews, that's a same-day head start on knowing exactly which houses are worth the visit.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-wichita",
+    title: "Wichita Roofing Leads: Working the Kansas Hail Corridor",
+    description:
+      "The stretch from Wichita to Kansas City sits in one of the country's most active hail corridors. Here's how to work that density without wasting a storm season driving streets that already got covered.",
+    publishedAt: "2026-08-05",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "The corridor running from Wichita up to the Kansas City metro sees more large hail events per year than almost anywhere else in the country, with hail-bearing storm tracks routinely sweeping through neighborhoods across the metro as storms roll in from central and western Kansas. Hail is consistently one of the leading causes of roof damage claims statewide.",
+      },
+      { type: "h2", text: "A corridor, not a single hot spot" },
+      {
+        type: "p",
+        text: "Because the exposure runs the length of the Wichita-to-Kansas City corridor rather than sitting in one neighborhood, a contractor working off last storm's route risks missing entire sections of town that took a hit from a different storm track. Coverage across the whole corridor matters more here than depth in any one part of it.",
+      },
+      { type: "h2", text: "Where local reputation still wins" },
+      {
+        type: "p",
+        text: "Wichita's roofing market includes a strong base of contractors who specialize specifically in hail damage claims and storm restoration — companies homeowners already associate with insurance-claim expertise. Standing out in that market means being fast and accurate about which roofs actually need attention, not just fast to the door.",
+      },
+      {
+        type: "quote",
+        text: "In a corridor this wide, covering the whole thing in one pass beats covering one neighborhood really well.",
+      },
+      { type: "h2", text: "Where RoofScout fits the Wichita corridor" },
+      {
+        type: "p",
+        text: "RoofScout scans a Wichita neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment for each roof — and hands back a ranked, priced lead list. That makes it realistic to check multiple parts of the corridor after a storm instead of picking one area and hoping it was the hardest-hit.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-kansas-city",
+    title: "Kansas City Roofing Leads: A Five-Month Storm Season Across Two States",
+    description:
+      "Kansas City's hail season runs roughly March through August and spans both sides of the state line. Here's how to work a metro that straddles Missouri and Kansas without missing half of it.",
+    publishedAt: "2026-08-05",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Kansas City sits inside the active central-plains hail and severe-storm corridor, with counties on both the Missouri side and the Kansas side seeing multiple significant hail events most springs. The metro's storm season runs roughly March through August — five to six months of repeated severe-weather exposure — and often brings straight-line winds strong enough to tear shingles loose on their own, independent of any hail.",
+      },
+      { type: "h2", text: "A two-state metro, one target list" },
+      {
+        type: "p",
+        text: "Kansas City is unusual among storm markets in that it genuinely straddles a state line — a single storm system can hit counties on both sides in the same pass. Contractors who only track damage on their side of the metro line are working with an incomplete picture of where a given storm actually did the most damage.",
+      },
+      { type: "h2", text: "A long season means the list keeps changing" },
+      {
+        type: "p",
+        text: "A five- to six-month storm season means the neighborhoods worth targeting shift multiple times a year, not once. A target list built after the first spring storm is stale by midsummer, once two or three more systems have moved through.",
+      },
+      {
+        type: "quote",
+        text: "A storm season this long rewards whoever can re-scan the metro quickly, not whoever built the best list back in April.",
+      },
+      { type: "h2", text: "Where RoofScout fits Kansas City" },
+      {
+        type: "p",
+        text: "RoofScout scans a Kansas City neighborhood in one pass — regardless of which side of the state line it's on — using satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof. That makes it realistic to re-scan hit areas each time a new system moves through the metro's long storm season, instead of running on a list from three storms ago.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-austin",
+    title: "Austin Roofing Leads: Staying Ahead of the Storm Chasers",
+    description:
+      "Austin sits in Hail Alley's Texas stretch and sees a steady wave of out-of-town storm-chase crews after every major hail event. Here's how established local contractors stay ahead of them.",
+    publishedAt: "2026-08-05",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Austin sits inside \"Hail Alley,\" the band of Central and North Texas that produces some of the most frequent and severe hail events in the country, averaging roughly 7 to 10 significant hail events a year. Spring thunderstorm season regularly brings wind gusts over 60 mph with little warning on top of that.",
+      },
+      { type: "h2", text: "A market that fills up with storm chasers fast" },
+      {
+        type: "p",
+        text: "After every major hail event, Austin neighborhoods see an influx of out-of-town contractors who travel market to market chasing storm activity, work fast, and are usually gone again before the next season. Some of the metro's established contractors — companies that have operated continuously in Central Texas for decades — build their reputation specifically on still being there after the storm-chase crews leave.",
+      },
+      { type: "h2", text: "Speed matters, but so does being first through the right door" },
+      {
+        type: "p",
+        text: "Storm-chase crews win by being fast and loud immediately after a hailstorm. A local contractor competing with that needs to be just as fast, but pointed at the right houses — the ones that actually took damage, not whichever block a chase crew happened to canvass first.",
+      },
+      {
+        type: "quote",
+        text: "Against a storm-chase crew, being first at the door only works if it's the right door.",
+      },
+      { type: "h2", text: "Where RoofScout fits Austin" },
+      {
+        type: "p",
+        text: "RoofScout scans an Austin neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment for each roof — and hands back a ranked, priced lead list the same day a storm moves through. That's a real edge against out-of-town crews still relying on driving the block.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
+  {
+    slug: "roofing-leads-houston",
+    title: "Houston Roofing Leads: Working a Market With Two Storm Seasons",
+    description:
+      "Houston ranks among the top U.S. metros for hail frequency and sits directly in hurricane season's path — meaning roofing demand here comes from two separate kinds of storms, not one.",
+    publishedAt: "2026-08-05",
+    readingMinutes: 6,
+    body: [
+      {
+        type: "p",
+        text: "Houston ranks among the top U.S. metros for hail frequency, with Harris and Fort Bend counties seeing roughly 9 to 12 significant hail events a year, mostly through a peak thunderstorm window from April to June. On top of that, hurricane season runs June through November — Hurricane Beryl alone drove an estimated $2.5–4.5 billion in Harris County property damage in 2024, much of it roofing. Houston is one of the few metros in this market dealing with two genuinely separate storm threats in the same calendar year.",
+      },
+      { type: "h2", text: "Two seasons, two different damage patterns" },
+      {
+        type: "p",
+        text: "Hail damage and hurricane wind damage don't look the same from the air, and they don't hit the same houses. A target list built around spring hail activity can miss entirely different neighborhoods that took the worst of a fall hurricane's wind field — treating Houston as a single storm season means missing half of what actually drives roofing demand here.",
+      },
+      { type: "h2", text: "A market that draws storm chasers after both kinds of storms" },
+      {
+        type: "p",
+        text: "Houston's storm seasons bring the same traveling-contractor pattern seen elsewhere in Texas — companies that arrive after a big hail or hurricane event and move on once the volume dries up. Texas regulators have documented real fraud in that pattern, from inflated damage reports to crews disappearing after receiving insurance payment. Established local contractors compete on being verifiably still there once the storm-chase wave leaves.",
+      },
+      {
+        type: "quote",
+        text: "A metro with two storm seasons needs two target lists, refreshed after each one — not one list built in spring and reused through hurricane season.",
+      },
+      { type: "h2", text: "Where RoofScout fits Houston" },
+      {
+        type: "p",
+        text: "RoofScout scans a Houston neighborhood in one pass — satellite imagery, Google Solar measurement data, and an AI vision read that writes a specific condition assessment per roof — whether the damage came from spring hail or a fall hurricane's wind field. That makes it realistic to re-scan the same neighborhoods after each distinct storm event instead of running on a list that's only ever current for one season.",
+      },
+      {
+        type: "link",
+        text: "→ See RoofScout plans and pricing",
+        href: "/pricing",
+      },
+    ],
+  },
 ];
 
 export function getBlogPost(slug: string): BlogPost | undefined {
