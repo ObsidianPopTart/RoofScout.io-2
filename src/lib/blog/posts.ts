@@ -461,12 +461,12 @@ export const BLOG_POSTS: BlogPost[] = [
       { type: "h2", text: "Roofr: running the deal once you have an address" },
       {
         type: "p",
-        text: "Roofr is a full back-office platform built around a specific address you already have: instant estimates, $13 measurement reports delivered in about 2 hours, proposals, material ordering, invoicing, payments, and scheduling — the CRM and paperwork layer of actually closing and running a job. It offers one free measurement report to try it, then per-seat monthly plans.",
+        text: "Roofr is a full back-office platform built around a specific address you already have: instant estimates, measurement reports starting around $13-19 (2-hour expedited delivery available for an added fee), proposals, material ordering, invoicing, payments, and scheduling — the CRM and paperwork layer of actually closing and running a job. It has a free starter tier with limited trial proposals, then paid plans from around $109/mo.",
       },
       { type: "h2", text: "EagleView: the insurance-grade measurement standard" },
       {
         type: "p",
-        text: "EagleView remains the industry default for insurance restoration work and complex commercial measurement — reports range roughly $13 for a basic aerial measurement up to $87+ for premium reports with full diagrams. It's not a lead-gen or prospecting tool; it's the measurement report insurance adjusters and complex jobs are used to seeing.",
+        text: "EagleView remains the industry default for insurance restoration work and complex commercial measurement — residential reports range roughly $24 for a basic small-property aerial measurement up to $105 for a premium Full House report with full diagrams. It's not a lead-gen or prospecting tool; it's the measurement report insurance adjusters and complex jobs are used to seeing.",
       },
       { type: "h2", text: "The honest comparison" },
       {
@@ -503,7 +503,7 @@ export const BLOG_POSTS: BlogPost[] = [
     body: [
       {
         type: "p",
-        text: "Dallas-Fort Worth isn't just a big roofing market — a 2021 industry analysis put it as the largest storm restoration ecosystem in North America, with the local roofing industry valued at roughly $5 billion, close to 4,000 contracting entities, and over 13,500 people employed across the metroplex. The metroplex's own suburbs regularly place among the highest hail-claim cities in the country: NICB's national hail-claims data ranked Plano the No. 5 U.S. city for hail claims in its 2016-2018 report (42,659 claims), and McKinney and Dallas both placed in the top 5 nationally in the following 2017-2019 report (34,134 and 25,262 claims respectively).",
+        text: "Dallas-Fort Worth isn't just a big roofing market — its own suburbs regularly place among the highest hail-claim cities in the country. NICB's national hail-claims data ranked Plano the No. 5 U.S. city for hail claims in its 2016-2018 report (42,659 claims), and McKinney and Dallas both placed in the top 5 nationally in the following 2017-2019 report (34,134 and 25,262 claims respectively) — three distinct DFW suburbs landing in the national top 5 across two different reporting windows.",
       },
       { type: "h2", text: "Why DFW floods with roofing companies every spring" },
       {
@@ -513,7 +513,7 @@ export const BLOG_POSTS: BlogPost[] = [
       { type: "h2", text: "Two very different companies are chasing the same roofs" },
       {
         type: "p",
-        text: "DFW's contractor base splits into two operational profiles that show up after every major hailstorm. Established local restoration roofers run permanent offices, chase insurance-supplement value, and lean on CRM platforms built for job costing and supplier ordering. Mobile storm-chase crews do the opposite — they deploy into a hit neighborhood within a day or two of an event like the April 28, 2021 Tarrant County hailstorm (a record-breaking 6.4-inch hailstone, roughly $500 million in insured damage, and 32,000 claims filed statewide, most of them in Tarrant County), canvass hard for a week or two, then move to the next city. Both are staring at the same street trying to answer the same question: which of these roofs actually needs work?",
+        text: "DFW's contractor base splits into two operational profiles that show up after every major hailstorm. Established local restoration roofers run permanent offices, chase insurance-supplement value, and lean on CRM platforms built for job costing and supplier ordering. Mobile storm-chase crews do the opposite — they deploy into a hit neighborhood within a day or two of an event like the April 28, 2021 Tarrant County hailstorm (roughly $500 million in insured damage statewide and 32,000 claims filed, most of them in Tarrant County — the same day a separate storm near Hondo, TX produced a state-record 6.4-inch hailstone), canvass hard for a week or two, then move to the next city. Both are staring at the same street trying to answer the same question: which of these roofs actually needs work?",
       },
       {
         type: "quote",
@@ -868,7 +868,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         type: "ul",
         items: [
-          "EagleView — the long-standing default for insurance restoration and complex commercial jobs. Reports range roughly $13 for a basic aerial measurement up to $87+ for premium reports with full diagrams.",
+          "EagleView — the long-standing default for insurance restoration and complex commercial jobs. Residential reports range roughly $24 for a basic small-property aerial measurement up to $105 for a premium Full House report with full diagrams.",
           "GAF QuickMeasure — GAF's own manufacturer-backed report, about $18/report (up to $20 via Home Depot), under an hour turnaround for single-family homes, no subscription or GAF certification required. A $10 add-on layers in hail/wind history and local building-code data.",
           "Hover — works from on-site photos of the property rather than pure aerial imagery, producing a precise 3D exterior model with roof, siding, gutter, and window measurements. Pay-as-you-go from $29–139/project on the Starter plan, or $9–119/project on the $999/yr Pro plan with CRM and design tools included.",
         ],
@@ -876,7 +876,7 @@ export const BLOG_POSTS: BlogPost[] = [
       { type: "h2", text: "Estimating and back-office: running the job after that" },
       {
         type: "p",
-        text: "Roofr sits a layer above pure measurement — instant estimates, $13 measurement reports delivered in about 2 hours, proposals, material ordering, invoicing, payments, and scheduling. It's the CRM and paperwork layer for closing and running a job once you have a lead, with one free measurement report to try it and per-seat monthly plans after that.",
+        text: "Roofr sits a layer above pure measurement — instant estimates, measurement reports starting around $13-19 (2-hour expedited delivery available for an added fee), proposals, material ordering, invoicing, payments, and scheduling. It's the CRM and paperwork layer for closing and running a job once you have a lead, with a free starter tier and paid plans from around $109/mo after that.",
       },
       { type: "h2", text: "So which is actually \"best\"?" },
       {
@@ -1103,7 +1103,7 @@ export const BLOG_POSTS: BlogPost[] = [
     body: [
       {
         type: "p",
-        text: "Houston ranks among the top U.S. metros for hail frequency, with Harris and Fort Bend counties seeing roughly 9 to 12 significant hail events a year, mostly through a peak thunderstorm window from April to June. On top of that, hurricane season runs June through November — Hurricane Beryl alone drove an estimated $2.5–4.5 billion in Harris County property damage in 2024, much of it roofing. Houston is one of the few metros in this market dealing with two genuinely separate storm threats in the same calendar year.",
+        text: "Houston ranks among the top U.S. metros for hail frequency, with Harris and Fort Bend counties seeing roughly 9 to 12 significant hail events a year, mostly through a peak thunderstorm window from April to June. On top of that, hurricane season runs June through November — Hurricane Beryl alone, which made landfall near Houston in July 2024, drove estimated insured losses of $2.5–4.5 billion, with wind and water damage to homes (including roofs) making up a substantial share. Houston is one of the few metros in this market dealing with two genuinely separate storm threats in the same calendar year.",
       },
       { type: "h2", text: "Two seasons, two different damage patterns" },
       {
