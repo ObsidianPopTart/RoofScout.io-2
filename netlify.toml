@@ -1,10 +1,5 @@
 [build]
-  # --webpack: Turbopack-built middleware chunks aren't resolved correctly
-  # by the Netlify Next.js plugin's edge-function bundler on Windows (hit a
-  # "Cannot find module './chunks/[turbopack]_runtime.js'" failure during a
-  # `netlify deploy --prod` run from Windows) — webpack output doesn't hit
-  # this bug.
-  command = "prisma generate && prisma migrate deploy && next build --webpack"
+  command = "prisma generate && prisma migrate deploy && next build"
   publish = ".next"
 
 [[plugins]]
