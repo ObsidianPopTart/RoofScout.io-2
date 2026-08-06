@@ -283,6 +283,7 @@ export const dictionaries = {
     },
     leadDetail: {
       allLeads: "← All leads",
+      backToScan: "← Back to scan results",
       addressPending: "Address pending verification",
       foundBy: "found by {scanId} · lead {leadId}",
       satelliteCaption: "Satellite imagery via Google Maps · roof measurements via Google Solar API",
@@ -656,6 +657,7 @@ export const dictionaries = {
     },
     leadDetail: {
       allLeads: "← Todos los leads",
+      backToScan: "← Volver a los resultados del escaneo",
       addressPending: "Dirección pendiente de verificación",
       foundBy: "encontrado por {scanId} · lead {leadId}",
       satelliteCaption: "Imágenes satelitales vía Google Maps · medidas de techo vía Google Solar API",

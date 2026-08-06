@@ -43,9 +43,17 @@ export default async function LeadProfilePage({
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-8">
-      <Link href="/app/leads" className="text-sm font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
-        {d.allLeads}
-      </Link>
+      <div className="flex flex-wrap gap-x-4 gap-y-1">
+        <Link
+          href={`/app/scan?scanId=${lead.scanId}`}
+          className="text-sm font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+        >
+          {d.backToScan}
+        </Link>
+        <Link href="/app/leads" className="text-sm font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
+          {d.allLeads}
+        </Link>
+      </div>
 
       <div className="mt-3 flex flex-wrap items-center gap-3">
         <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">{lead.address}</h1>

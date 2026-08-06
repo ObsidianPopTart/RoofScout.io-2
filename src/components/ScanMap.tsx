@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import "maplibre-gl/dist/maplibre-gl.css";
 import {
   Map as MapLibreMap,
@@ -108,6 +109,9 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
   const mapRef = useRef<MapLibreMap | null>(null);
   const leadMarkersRef = useRef<Marker[]>([]);
   const feedMarkerRef = useRef<Marker | null>(null);
+  const restoredScanRef = useRef(false);
+  const searchParams = useSearchParams();
+  const restoreScanId = searchParams.get("scanId");
 
   const [mapReady, setMapReady] = useState(false);
   const [baseLayer, setBaseLayer] = useState<BaseLayer>("satellite");
@@ -337,6 +341,38 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- only re-run on planTier/mapReady changing; fetchStormData/stormDays/stormAlerts are read fresh each call
   }, [planTier, mapReady]);
+
+  // Clicking a lead navigates away to its full profile page, which used to
+  // be a dead end — nothing pointed back at the scan the lead came from. The
+  // lead profile now links here with ?scanId=..., and this restores that
+  // scan's results (map markers + sidebar list) instead of landing on a
+  // blank map, without needing to re-run the scan.
+  useEffect(() => {
+    if (!mapReady || !restoreScanId || restoredScanRef.current) return;
+    restoredScanRef.current = true;
+    (async () => {
+      try {
+        const res = await fetch(`/api/scan/${restoreScanId}`);
+        if (!res.ok) return;
+        const data = (await res.json()) as ScanResponse;
+        renderLeads(data);
+        const map = mapRef.current;
+        const b = data.scan.bounds;
+        if (map && b) {
+          map.fitBounds(
+            [
+              [b.west, b.south],
+              [b.east, b.north],
+            ],
+            { padding: 40, duration: 0 }
+          );
+        }
+      } catch {
+        // Best-effort restore — a failed fetch just leaves a blank map, same as a fresh visit.
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- runs once per mount when the map becomes ready; renderLeads is stable enough for this one-shot restore
+  }, [mapReady, restoreScanId]);
 
   function viewAndScanStorm(item: StormFeedItem) {
     const map = mapRef.current;
