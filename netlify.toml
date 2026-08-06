@@ -2,6 +2,19 @@
   command = "prisma generate && prisma migrate deploy && next build"
   publish = ".next"
 
+[build.environment]
+  # `netlify env:set` for this var didn't reliably reach the local build
+  # process during `netlify deploy` runs — setting it directly here removes
+  # any doubt. Forces the Next.js proxy/middleware to bundle as a regular
+  # Netlify Function instead of an Edge Function, which sidesteps a
+  # Windows-only path bug in the edge-function bundler (opennextjs-netlify's
+  # edge-runtime CJS resolver mangles absolute Windows paths, so it can
+  # never find the middleware's runtime chunk — hit with both Turbopack and
+  # webpack output, so it isn't bundler-specific). Our proxy.ts is a plain
+  # session gate with no geolocation/@netlify-next usage, so none of Edge
+  # Functions' upsides apply here anyway.
+  NEXT_DISABLE_NETLIFY_EDGE = "true"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
