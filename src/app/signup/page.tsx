@@ -10,10 +10,27 @@ import { getDictionary } from "@/lib/i18n/getLocale";
 import Logo from "@/components/Logo";
 import OAuthButtons from "@/components/OAuthButtons";
 
+const TITLE = "Sign Up — RoofScout.io";
+const DESCRIPTION = "Start free with 3 satellite roof scans — no card required.";
+
 export const metadata = {
   title: "Sign Up",
-  description: "Start free with 3 satellite roof scans — no card required.",
+  description: DESCRIPTION,
   alternates: { canonical: "/signup" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: "https://roofscout.io/signup",
+    siteName: "RoofScout.io",
+    images: [{ url: "/images/hero-neighborhood-aerial.jpg", width: 1600, height: 1066 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/images/hero-neighborhood-aerial.jpg"],
+  },
 };
 
 const signupSchema = z.object({

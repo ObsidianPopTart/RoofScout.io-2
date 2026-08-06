@@ -4,11 +4,28 @@ import LunchboxBadge from "@/components/LunchboxBadge";
 import LocaleToggle from "@/components/LocaleToggle";
 import { getDictionary } from "@/lib/i18n/getLocale";
 
+const TITLE = "Pricing — RoofScout.io";
+const DESCRIPTION =
+  "Simple, scan-based pricing. Start free with 3 scans — no card required. Upgrade to Pro ($49/mo, 50 scans) or Apex ($149/mo, unlimited) anytime.";
+
 export const metadata = {
   title: "Pricing",
-  description:
-    "Simple, scan-based pricing. Start free with 3 scans — no card required. Upgrade to Pro ($49/mo, 50 scans) or Apex ($149/mo, unlimited) anytime.",
+  description: DESCRIPTION,
   alternates: { canonical: "/pricing" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: "https://roofscout.io/pricing",
+    siteName: "RoofScout.io",
+    images: [{ url: "/images/hero-neighborhood-aerial.jpg", width: 1600, height: 1066 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/images/hero-neighborhood-aerial.jpg"],
+  },
 };
 
 const PLAN_KEYS = ["free", "scanPack", "pro", "apex"] as const;

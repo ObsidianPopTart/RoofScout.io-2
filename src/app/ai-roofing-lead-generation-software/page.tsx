@@ -9,11 +9,28 @@ import type { Metadata } from "next";
 const SITE_URL = "https://roofscout.io";
 const PAGE_URL = `${SITE_URL}/ai-roofing-lead-generation-software`;
 
+const TITLE = "AI Roofing Lead Generation Software — RoofScout.io";
+const DESCRIPTION =
+  "RoofScout.io is AI roofing lead generation software that scans a neighborhood by satellite, grades every roof's condition, and hands your sales team a ranked, priced lead list — before anyone drives the street.";
+
 export const metadata: Metadata = {
   title: "AI Roofing Lead Generation Software",
-  description:
-    "RoofScout.io is AI roofing lead generation software that scans a neighborhood by satellite, grades every roof's condition, and hands your sales team a ranked, priced lead list — before anyone drives the street.",
+  description: DESCRIPTION,
   alternates: { canonical: "/ai-roofing-lead-generation-software" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: PAGE_URL,
+    siteName: "RoofScout.io",
+    images: [{ url: "/images/hero-neighborhood-aerial.jpg", width: 1600, height: 1066 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/images/hero-neighborhood-aerial.jpg"],
+  },
 };
 
 const jsonLd = {

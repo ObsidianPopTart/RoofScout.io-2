@@ -10,11 +10,28 @@ const SITE_URL = "https://roofscout.io";
 const PAGE_URL = `${SITE_URL}/hail-damage-statistics`;
 const LAST_UPDATED = "2026-08-09";
 
+const TITLE = "US Hail Damage Statistics (2026 Data) — RoofScout.io";
+const DESCRIPTION =
+  "Every major U.S. hail-damage statistic in one place — NICB metro rankings, state-level claim data, county hail-day records, and the costliest known hailstorms — with primary sources linked for every figure.";
+
 export const metadata: Metadata = {
   title: "US Hail Damage Statistics (2026 Data)",
-  description:
-    "Every major U.S. hail-damage statistic in one place — NICB metro rankings, state-level claim data, county hail-day records, and the costliest known hailstorms — with primary sources linked for every figure.",
+  description: DESCRIPTION,
   alternates: { canonical: "/hail-damage-statistics" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: PAGE_URL,
+    siteName: "RoofScout.io",
+    images: [{ url: "/images/hero-neighborhood-aerial.jpg", width: 1600, height: 1066 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/images/hero-neighborhood-aerial.jpg"],
+  },
 };
 
 const jsonLd = {

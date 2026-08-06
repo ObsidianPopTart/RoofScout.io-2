@@ -7,11 +7,28 @@ import { getDictionary } from "@/lib/i18n/getLocale";
 import { BLOG_POSTS } from "@/lib/blog/posts";
 import type { Metadata } from "next";
 
+const TITLE = "Blog — RoofScout.io";
+const DESCRIPTION =
+  "Practical guides on finding roofing leads, canvassing, and spotting a neglected roof — from the team building RoofScout.io.";
+
 export const metadata: Metadata = {
   title: "Blog",
-  description:
-    "Practical guides on finding roofing leads, canvassing, and spotting a neglected roof — from the team building RoofScout.io.",
+  description: DESCRIPTION,
   alternates: { canonical: "/blog" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: "https://roofscout.io/blog",
+    siteName: "RoofScout.io",
+    images: [{ url: "/images/hero-neighborhood-aerial.jpg", width: 1600, height: 1066 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/images/hero-neighborhood-aerial.jpg"],
+  },
 };
 
 const SITE_URL = "https://roofscout.io";

@@ -32,6 +32,14 @@ export async function generateMetadata({
       description: post.description,
       publishedTime: post.publishedAt,
       url: `${SITE_URL}/blog/${post.slug}`,
+      siteName: "RoofScout.io",
+      images: [{ url: "/images/hero-neighborhood-aerial.jpg", width: 1600, height: 1066 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      images: ["/images/hero-neighborhood-aerial.jpg"],
     },
   };
 }

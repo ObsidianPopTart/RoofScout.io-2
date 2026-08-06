@@ -1,7 +1,24 @@
+const TITLE = "Privacy Policy — RoofScout.io";
+const DESCRIPTION = "How RoofScout.io collects, uses, and protects your data.";
+
 export const metadata = {
   title: "Privacy Policy",
-  description: "How RoofScout.io collects, uses, and protects your data.",
+  description: DESCRIPTION,
   alternates: { canonical: "/privacy" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: "https://roofscout.io/privacy",
+    siteName: "RoofScout.io",
+    images: [{ url: "/images/hero-neighborhood-aerial.jpg", width: 1600, height: 1066 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/images/hero-neighborhood-aerial.jpg"],
+  },
 };
 
 export default function PrivacyPolicyPage() {
