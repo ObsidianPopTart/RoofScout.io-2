@@ -1,7 +1,6 @@
-import type { LeadDraft, ScanBounds, Condition } from "../types";
+import type { LeadDraft, Condition } from "../types";
 import { isNeglected } from "../leadFilter";
-import { liveConfig } from "./config";
-import { findBuildings, reverseGeocode, solarInsights, type BuildingCandidate } from "./providers";
+import { reverseGeocode, solarInsights, type BuildingCandidate } from "./providers";
 import { fetchRoofImage } from "./providers";
 import { gradeRoof, ungradedCondition } from "./vision";
 
@@ -28,7 +27,11 @@ function buildSalesAngles(draft: LeadDraft): string[] {
   return angles;
 }
 
-async function analyzeBuilding(b: BuildingCandidate): Promise<LeadDraft | null> {
+// Exported so step-driven scanning (src/app/api/scan/[id]/route.ts) can
+// analyze one bounded chunk of buildings per poll instead of trying to
+// cover a whole area in one (unreliable, serverless-timeout-prone)
+// background call.
+export async function analyzeBuilding(b: BuildingCandidate): Promise<LeadDraft | null> {
   const solar = await solarInsights(b.lat, b.lng);
   if (!solar) return null; // no Solar API coverage for this rooftop, or footprint failed the plausible-size check
 
@@ -71,34 +74,3 @@ async function analyzeBuilding(b: BuildingCandidate): Promise<LeadDraft | null> 
   return draft;
 }
 
-function chunk<T>(arr: T[], size: number): T[][] {
-  const out: T[][] = [];
-  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
-  return out;
-}
-
-// How many buildings are analyzed concurrently at once. Every scan covers
-// every building OSM found in the bounds (see findBuildings) — this only
-// bounds how many in-flight requests hit the Solar/vision providers at the
-// same time, so a large scan doesn't fire hundreds of requests in one burst
-// and trip provider rate limits.
-const CONCURRENCY = liveConfig.scanConcurrency;
-
-// Pure analysis — no DB writes. Runs in the background after /api/scan
-// responds (see runLiveScanInBackground / the "after()" call in the route),
-// since covering every building in the area can take well past a request's
-// lifetime for a large scan.
-export async function analyzeArea(bounds: ScanBounds): Promise<LeadDraft[]> {
-  const buildings = await findBuildings(bounds);
-
-  const drafts: LeadDraft[] = [];
-  for (const group of chunk(buildings, CONCURRENCY)) {
-    const results = await Promise.allSettled(group.map((b) => analyzeBuilding(b)));
-    for (const r of results) {
-      if (r.status === "fulfilled" && r.value) drafts.push(r.value);
-      if (r.status === "rejected") console.error("Building analysis failed:", r.reason);
-    }
-  }
-
-  return drafts;
-}

@@ -3,6 +3,7 @@ import { prisma } from "./db";
 import { generateLead, mulberry32, randomPointIn } from "./mock";
 import { isNeglected } from "./leadFilter";
 import type { ConditionLabel, Lead, LeadDraft, LeadStatus, ScanBounds, ScanRecord } from "./types";
+import type { BuildingCandidate } from "./live/providers";
 
 // --- Prisma row <-> app-shape conversion -----------------------------------
 // The DB stores Lead flat (ownerName, roofAreaSqFt, conditionScore, ...);
@@ -59,6 +60,7 @@ function toScanRecord(row: PrismaScanRow): ScanRecord {
     bounds: { north: row.north, south: row.south, east: row.east, west: row.west },
     leadCount: row.leadCount,
     status: (row.status as ScanRecord["status"]) ?? "complete",
+    totalBuildings: row.totalBuildings,
   };
 }
 
@@ -164,9 +166,13 @@ export async function createScanWithLeads(
 }
 
 // Live scans cover every building in the area, which can take well past a
-// single request's lifetime — the route creates a "processing" scan
-// immediately and returns it, then runs the actual analysis in the
-// background (see /api/scan) before calling finalizeScan/failScan.
+// single serverless invocation's timeout — rather than one long background
+// job (unreliable: nothing guarantees a killed function ever calls back in),
+// the scan is driven forward one small step per client poll. The route
+// creates a "processing" scan immediately and returns it; each subsequent
+// GET /api/scan/[id] does one bounded unit of work (building discovery, or
+// analyzing one chunk of buildings) and persists progress here, so no single
+// request has to survive longer than a few seconds.
 export async function createProcessingScan(
   orgId: string,
   bounds: ScanBounds,
@@ -188,17 +194,59 @@ export async function createProcessingScan(
   return toScanRecord(scanRow);
 }
 
-export async function finalizeScan(
+// Internal shape used only by the step-driven scan route — includes the
+// fields getScanWithLeads deliberately omits from the public ScanRecord.
+export interface ScanProgressRow {
+  status: string;
+  bounds: ScanBounds;
+  buildingsFetched: boolean;
+  pendingBuildings: BuildingCandidate[] | null;
+}
+
+export async function getScanProgress(orgId: string, scanId: string): Promise<ScanProgressRow | null> {
+  const row = await prisma.scanRecord.findUnique({ where: { id: scanId, orgId } });
+  if (!row) return null;
+  return {
+    status: row.status,
+    bounds: { north: row.north, south: row.south, east: row.east, west: row.west },
+    buildingsFetched: row.buildingsFetched,
+    pendingBuildings: row.pendingBuildings ? (JSON.parse(row.pendingBuildings) as BuildingCandidate[]) : null,
+  };
+}
+
+// Persists the result of the one-time OSM building lookup. An empty result
+// means the scan is already done — no rooftops in view.
+export async function savePendingBuildings(
   orgId: string,
   scanId: string,
-  drafts: LeadDraft[]
+  buildings: BuildingCandidate[]
 ): Promise<void> {
   await prisma.scanRecord.update({
     where: { id: scanId, orgId },
     data: {
-      leadCount: drafts.length,
-      status: "complete",
-      leads: { create: drafts.map((d) => ({ orgId, ...draftToCreateInput(d) })) },
+      buildingsFetched: true,
+      totalBuildings: buildings.length,
+      pendingBuildings: buildings.length > 0 ? JSON.stringify(buildings) : null,
+      status: buildings.length > 0 ? "processing" : "complete",
+    },
+  });
+}
+
+// Appends one chunk's worth of analyzed leads and advances the remaining
+// building queue — marks the scan "complete" once nothing is left.
+export async function appendScanChunk(
+  orgId: string,
+  scanId: string,
+  newLeads: LeadDraft[],
+  remainingBuildings: BuildingCandidate[]
+): Promise<void> {
+  await prisma.scanRecord.update({
+    where: { id: scanId, orgId },
+    data: {
+      leadCount: { increment: newLeads.length },
+      pendingBuildings: remainingBuildings.length > 0 ? JSON.stringify(remainingBuildings) : null,
+      status: remainingBuildings.length > 0 ? "processing" : "complete",
+      leads: { create: newLeads.map((d) => ({ orgId, ...draftToCreateInput(d) })) },
     },
   });
 }
@@ -206,7 +254,7 @@ export async function finalizeScan(
 export async function failScan(orgId: string, scanId: string): Promise<void> {
   await prisma.scanRecord.update({
     where: { id: scanId, orgId },
-    data: { status: "failed" },
+    data: { status: "failed", pendingBuildings: null },
   });
 }
 

@@ -97,6 +97,18 @@ model ScanRecord {
   // (see /api/scan) and start "processing"; demo/mock scans are created
   // already "complete" since they resolve synchronously.
   status    String   @default("complete")
+  // Step-driven live scan progress (see src/app/api/scan/[id]/route.ts).
+  // Serverless function invocations get killed on their platform's timeout,
+  // so a live scan can't just run to completion in one background call —
+  // instead each poll from the client processes one small chunk of
+  // `pendingBuildings` and persists progress here, so no single request ever
+  // has to run long enough to hit a timeout. buildingsFetched flips true
+  // once the initial OSM building lookup has succeeded; pendingBuildings is
+  // the JSON-encoded BuildingCandidate[] still left to analyze (null once
+  // discovery hasn't run yet, or once the scan is done).
+  buildingsFetched Boolean @default(false)
+  pendingBuildings String?
+  totalBuildings   Int     @default(0)
 
   org   Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
   leads Lead[]

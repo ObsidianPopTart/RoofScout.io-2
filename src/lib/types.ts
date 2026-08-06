@@ -66,6 +66,9 @@ export interface ScanRecord {
   bounds: ScanBounds;
   leadCount: number;
   status: ScanStatus;
+  // Only meaningful while status is "processing" — how many buildings the
+  // scan found in total, for a "N of M rooftops" progress readout.
+  totalBuildings?: number;
 }
 
 export interface Db {

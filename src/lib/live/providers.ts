@@ -95,18 +95,25 @@ const OVERPASS_HEADERS = {
 // "Scan failed while analyzing rooftops" for busier areas/mirrors.
 const OVERPASS_TIMEOUT_MS = 55_000;
 
-async function queryOverpass(query: string): Promise<{ elements?: OverpassElement[] }> {
+async function queryOverpass(
+  query: string,
+  passes = 2,
+  timeoutMs = OVERPASS_TIMEOUT_MS
+): Promise<{ elements?: OverpassElement[] }> {
   let lastError: Error | null = null;
-  // Two full passes over both mirrors — Overpass overload is usually
+  // `passes` full sweeps over both mirrors — Overpass overload is usually
   // transient (seconds), so a retry pass recovers most cases that would
-  // otherwise fail the whole scan outright.
-  for (let attempt = 0; attempt < 2; attempt++) {
+  // otherwise fail the whole scan outright. Step-driven callers (a single
+  // poll's worth of work — see /api/scan/[id]) pass passes=1 and a short
+  // timeoutMs instead, since a serverless invocation only gets one shot
+  // before it has to return control to the client's next poll.
+  for (let attempt = 0; attempt < passes; attempt++) {
     for (const endpoint of OVERPASS_ENDPOINTS) {
       try {
         const res = await fetchWithTimeout(
           endpoint,
           { method: "POST", headers: OVERPASS_HEADERS, body: `data=${encodeURIComponent(query)}` },
-          OVERPASS_TIMEOUT_MS
+          timeoutMs
         );
         if (!res.ok) {
           lastError = new Error(`Building lookup failed (Overpass HTTP ${res.status} from ${endpoint})`);
@@ -129,12 +136,19 @@ async function queryOverpass(query: string): Promise<{ elements?: OverpassElemen
 const SAFETY_CEILING = 4000;
 
 // Building footprints come from OpenStreetMap (free, ODbL-licensed) —
-// we only need centroids to feed the Google Solar API.
-export async function findBuildings(bounds: ScanBounds): Promise<BuildingCandidate[]> {
+// we only need centroids to feed the Google Solar API. `opts` lets
+// step-driven callers (one poll's worth of work) ask for a single
+// short-timeout attempt instead of the full multi-mirror retry sweep, so one
+// invocation can never run long enough to hit a serverless timeout — see
+// src/app/api/scan/[id]/route.ts.
+export async function findBuildings(
+  bounds: ScanBounds,
+  opts?: { passes?: number; timeoutMs?: number }
+): Promise<BuildingCandidate[]> {
   const bbox = `${bounds.south},${bounds.west},${bounds.north},${bounds.east}`;
   const query = `[out:json][timeout:50];way["building"](${bbox});out center tags ${SAFETY_CEILING};`;
 
-  const data = await queryOverpass(query);
+  const data = await queryOverpass(query, opts?.passes, opts?.timeoutMs);
   const withCenter = (data.elements ?? []).filter((e) => e.center);
 
   const toCandidate = (e: OverpassElement): BuildingCandidate => {
