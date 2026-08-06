@@ -39,7 +39,7 @@ export default async function BlogIndexPage() {
             <span className="hidden sm:inline">RoofScout.io</span>
           </Link>
           <div className="flex items-center gap-2 text-sm sm:gap-5">
-            <Link href="/pricing" className="hidden text-[var(--rs-paper)]/70 hover:text-[var(--rs-paper)] sm:inline">
+            <Link href="/pricing" className="whitespace-nowrap text-[var(--rs-paper)]/70 hover:text-[var(--rs-paper)]">
               {t.nav.pricing}
             </Link>
             <Link href="/login" className="whitespace-nowrap text-[var(--rs-paper)]/70 hover:text-[var(--rs-paper)]">
