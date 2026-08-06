@@ -68,8 +68,8 @@ interface OverpassElement {
 // block an entire scan for minutes with no error and no feedback.
 const FETCH_TIMEOUT_MS = 12_000;
 
-function fetchWithTimeout(url: string, init: RequestInit = {}): Promise<Response> {
-  return fetch(url, { ...init, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
+function fetchWithTimeout(url: string, init: RequestInit = {}, timeoutMs = FETCH_TIMEOUT_MS): Promise<Response> {
+  return fetch(url, { ...init, signal: AbortSignal.timeout(timeoutMs) });
 }
 
 // Overpass mirrors, tried in order. The primary (overpass-api.de) has been
@@ -87,22 +87,35 @@ const OVERPASS_HEADERS = {
   Accept: "application/json",
 };
 
+// The query itself declares `[timeout:50]` (permission for the server to
+// spend up to 50s executing), so the client timeout has to be at least that
+// generous — aborting at the old 12s meant we were cutting off requests we
+// ourselves told the server could legitimately take longer, on a free,
+// shared, sometimes-overloaded public service. This was the actual cause of
+// "Scan failed while analyzing rooftops" for busier areas/mirrors.
+const OVERPASS_TIMEOUT_MS = 55_000;
+
 async function queryOverpass(query: string): Promise<{ elements?: OverpassElement[] }> {
   let lastError: Error | null = null;
-  for (const endpoint of OVERPASS_ENDPOINTS) {
-    try {
-      const res = await fetchWithTimeout(endpoint, {
-        method: "POST",
-        headers: OVERPASS_HEADERS,
-        body: `data=${encodeURIComponent(query)}`,
-      });
-      if (!res.ok) {
-        lastError = new Error(`Building lookup failed (Overpass HTTP ${res.status} from ${endpoint})`);
-        continue;
+  // Two full passes over both mirrors — Overpass overload is usually
+  // transient (seconds), so a retry pass recovers most cases that would
+  // otherwise fail the whole scan outright.
+  for (let attempt = 0; attempt < 2; attempt++) {
+    for (const endpoint of OVERPASS_ENDPOINTS) {
+      try {
+        const res = await fetchWithTimeout(
+          endpoint,
+          { method: "POST", headers: OVERPASS_HEADERS, body: `data=${encodeURIComponent(query)}` },
+          OVERPASS_TIMEOUT_MS
+        );
+        if (!res.ok) {
+          lastError = new Error(`Building lookup failed (Overpass HTTP ${res.status} from ${endpoint})`);
+          continue;
+        }
+        return (await res.json()) as { elements?: OverpassElement[] };
+      } catch (err) {
+        lastError = err instanceof Error ? err : new Error(String(err));
       }
-      return (await res.json()) as { elements?: OverpassElement[] };
-    } catch (err) {
-      lastError = err instanceof Error ? err : new Error(String(err));
     }
   }
   throw lastError ?? new Error("Building lookup failed (no Overpass endpoint reachable)");
