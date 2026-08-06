@@ -41,7 +41,7 @@ async function analyzeBuilding(b: BuildingCandidate): Promise<LeadDraft | null> 
   if (image) {
     const outcome = await gradeRoof(image);
     if (outcome.status === "no-roof") return null; // not actually a rooftop — bad footprint data, tree cover, etc.
-    condition = outcome.status === "graded" ? outcome.condition : ungradedCondition();
+    condition = outcome.status === "graded" ? outcome.condition : ungradedCondition(outcome.reason);
   } else {
     condition = ungradedCondition();
   }

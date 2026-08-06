@@ -55,10 +55,16 @@ const SYSTEM_PROMPT =
   "Be conservative and evidence-based either way: satellite imagery has limits, so only report " +
   "issues you can actually see, and say so in the summary when image quality limits the read.";
 
+// Why grading didn't happen — surfaced to the ungraded-condition summary so
+// "we forgot to set up AI" (a config problem) reads differently from "the
+// Anthropic account is out of credits" (a billing problem needing action),
+// instead of both collapsing into the same generic message.
+export type UnavailableReason = "not_configured" | "billing" | "error";
+
 export type GradeOutcome =
   | { status: "graded"; condition: Condition }
   | { status: "no-roof"; summary: string }
-  | { status: "unavailable" };
+  | { status: "unavailable"; reason: UnavailableReason };
 
 // Grades one rooftop with Claude vision. Returns "unavailable" when
 // ANTHROPIC_API_KEY is missing or the call fails — callers fall back to an
@@ -66,7 +72,7 @@ export type GradeOutcome =
 // rooftop in the image (bad footprint data, tree cover, etc.) — callers
 // should drop that building entirely rather than surface it as a lead.
 export async function gradeRoof(imagePng: Buffer): Promise<GradeOutcome> {
-  if (!liveConfig.anthropicKey) return { status: "unavailable" };
+  if (!liveConfig.anthropicKey) return { status: "unavailable", reason: "not_configured" };
 
   try {
     const client = new Anthropic({ apiKey: liveConfig.anthropicKey, timeout: 20_000 });
@@ -100,9 +106,9 @@ export async function gradeRoof(imagePng: Buffer): Promise<GradeOutcome> {
       ],
     });
 
-    if (response.stop_reason === "refusal") return { status: "unavailable" };
+    if (response.stop_reason === "refusal") return { status: "unavailable", reason: "error" };
     const text = response.content.find((b) => b.type === "text")?.text;
-    if (!text) return { status: "unavailable" };
+    if (!text) return { status: "unavailable", reason: "error" };
 
     const parsed = JSON.parse(text) as {
       roofVisible: boolean;
@@ -129,20 +135,28 @@ export async function gradeRoof(imagePng: Buffer): Promise<GradeOutcome> {
     };
   } catch (err) {
     console.error("Roof grading failed:", err);
-    return { status: "unavailable" };
+    const message = err instanceof Error ? err.message : String(err);
+    const reason: UnavailableReason = /credit balance/i.test(message) ? "billing" : "error";
+    return { status: "unavailable", reason };
   }
 }
 
 // No verified condition — never claim neglect, never claim it's healthy.
 // See src/lib/leadFilter.ts for how `graded: false` is handled downstream.
-export function ungradedCondition(): Condition {
-  return {
-    score: 50,
-    label: "Ungraded",
-    issues: [],
-    summary:
-      "Condition not graded — add ANTHROPIC_API_KEY to .env.local to enable AI roof inspection. " +
-      "Satellite imagery is attached below for manual review.",
-    graded: false,
-  };
+// The summary differs by reason: a missing key locally is a dev setup thing,
+// but the same message shown to an actual customer when the account is out
+// of API credits would be actively misleading about what's wrong.
+export function ungradedCondition(reason: UnavailableReason = "error"): Condition {
+  let summary: string;
+  if (reason === "not_configured") {
+    summary =
+      process.env.NODE_ENV === "production"
+        ? "Condition not graded — AI roof inspection isn't set up for this account yet. Satellite imagery is attached below for manual review."
+        : "Condition not graded — add ANTHROPIC_API_KEY to .env.local to enable AI roof inspection. " +
+          "Satellite imagery is attached below for manual review.";
+  } else {
+    summary =
+      "Condition not graded — AI roof inspection is temporarily unavailable. Satellite imagery is attached below for manual review.";
+  }
+  return { score: 50, label: "Ungraded", issues: [], summary, graded: false };
 }
