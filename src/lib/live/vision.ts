@@ -78,8 +78,11 @@ export async function gradeRoof(imagePng: Buffer): Promise<GradeOutcome> {
     const client = new Anthropic({ apiKey: liveConfig.anthropicKey, timeout: 20_000 });
     const response = await client.messages.create({
       model: liveConfig.visionModel,
-      max_tokens: 2000,
-      thinking: { type: "adaptive" },
+      max_tokens: 1024,
+      // No thinking budget — grading a roof photo against the rubric in
+      // SYSTEM_PROMPT is a direct visual read, not a multi-step reasoning
+      // task, and thinking tokens were a meaningful chunk of the per-roof
+      // cost on a scan that runs this once per building in the area.
       output_config: { format: { type: "json_schema", schema: GRADE_SCHEMA } },
       system: SYSTEM_PROMPT,
       messages: [

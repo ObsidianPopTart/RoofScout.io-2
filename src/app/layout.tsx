@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { isLiveMode } from "@/lib/live/config";
 import OfflineBanner from "@/components/OfflineBanner";
 import SupportChat from "@/components/SupportChat";
 import { themeInitScript } from "@/components/ThemeToggle";
@@ -63,17 +62,6 @@ export default async function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className="flex min-h-full flex-col bg-[var(--background)] text-[var(--foreground)]">
-        {isLiveMode() ? (
-          <div className="border-b border-emerald-200 bg-emerald-50 px-4 py-1.5 text-center text-xs text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-300">
-            Live mode: scans use OpenStreetMap buildings, Google Solar measurements, real satellite
-            imagery, and Claude vision grading. Owner records need a parcel-data provider (coming next).
-          </div>
-        ) : (
-          <div className="border-b border-amber-200 bg-amber-100 px-4 py-1.5 text-center text-xs text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-300">
-            Demo mode: scan results, owners, and imagery are simulated. Add GOOGLE_MAPS_API_KEY to
-            .env.local (see SETUP.md) to switch to live scanning.
-          </div>
-        )}
         <main className="flex flex-1 flex-col">{children}</main>
         <OfflineBanner locale={locale} />
         <SupportChat t={t.supportChat} />

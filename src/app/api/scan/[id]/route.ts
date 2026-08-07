@@ -20,8 +20,14 @@ const CHUNK_SIZE = Number(process.env.ROOFSCOUT_SCAN_CHUNK_SIZE ?? 12);
 // later instead of holding one request open for up to a minute.
 const DISCOVERY_TIMEOUT_MS = 8000;
 
-// Polled by the scan map while a live scan is still running. Each call both
-// reports current progress AND advances the scan by one step.
+// Polled by the scan map's own poll loop (pollUntilDone, right after it
+// starts a scan) while a live scan is still running — that's the only
+// caller passing ?advance=1, and the only one allowed to make this route do
+// (billable) work. Every other caller — restoring a scan from a lead's
+// profile link, the browser's Back button, someone just refreshing the page
+// — gets a read-only status/results snapshot. Without this split, merely
+// looking at an unfinished scan would silently resume Solar/vision calls on
+// it, charging real API cost for something nobody asked for.
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
   if (!session?.user) {
@@ -29,13 +35,14 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   }
   const orgId = session.user.orgId;
   const { id } = await params;
+  const shouldAdvance = new URL(request.url).searchParams.get("advance") === "1";
 
   const progress = await getScanProgress(orgId, id);
   if (!progress) {
     return NextResponse.json({ error: "Scan not found" }, { status: 404 });
   }
 
-  if (progress.status === "processing") {
+  if (shouldAdvance && progress.status === "processing") {
     try {
       if (!progress.buildingsFetched) {
         const buildings = await findBuildings(progress.bounds, { passes: 1, timeoutMs: DISCOVERY_TIMEOUT_MS });

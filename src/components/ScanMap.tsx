@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import "maplibre-gl/dist/maplibre-gl.css";
 import {
   Map as MapLibreMap,
@@ -110,6 +110,7 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
   const leadMarkersRef = useRef<Marker[]>([]);
   const feedMarkerRef = useRef<Marker | null>(null);
   const restoredScanRef = useRef(false);
+  const router = useRouter();
   const searchParams = useSearchParams();
   const restoreScanId = searchParams.get("scanId");
 
@@ -432,7 +433,11 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
 
     while (Date.now() < deadline) {
       await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
-      const res = await fetch(`/api/scan/${scanId}`);
+      // ?advance=1 — this poll loop is the only caller allowed to make the
+      // server do (billable) work; merely viewing/restoring a scan (see the
+      // scanId-restore effect below) must never silently process another
+      // chunk just because someone looked at it.
+      const res = await fetch(`/api/scan/${scanId}?advance=1`);
       if (!res.ok) throw new Error(`Scan status check failed (HTTP ${res.status})`);
       const data = (await res.json()) as ScanResponse;
       if (data.scan.status === "complete") {
@@ -479,6 +484,14 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
       }
       const data = (await res.json()) as ScanResponse;
       setActiveStormLabel(null); // one-shot tag — the label is now saved on the ScanRecord itself
+
+      // Stamp the scan id onto the URL (replacing, not pushing, so this
+      // doesn't add an extra history entry) so the browser's own Back
+      // button — not just the "Back to scan results" link on a lead's
+      // profile — returns here with the scan restorable, instead of a
+      // blank map with no way to see the results again without re-scanning.
+      restoredScanRef.current = true; // this scan is already rendered locally — the restore effect shouldn't re-fetch it
+      router.replace(`/app/scan?scanId=${data.scan.id}`, { scroll: false });
 
       if (data.scan.status === "processing") {
         await pollUntilDone(data.scan.id);

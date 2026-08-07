@@ -13,8 +13,15 @@ export const liveConfig = {
   get scanConcurrency(): number {
     return Number(process.env.ROOFSCOUT_SCAN_CONCURRENCY ?? 25);
   },
+  // Opus + adaptive thinking on every single roof (one call per building in
+  // the scan area) is the single biggest cost driver in the whole app — a
+  // 292-building scan burned ~$12 in Anthropic credits. Haiku is dramatically
+  // cheaper and the grading task (read visible shingle wear off a satellite
+  // photo, no multi-step reasoning needed) doesn't need Opus-tier judgment or
+  // extended thinking — see gradeRoof() in vision.ts, which also dropped the
+  // `thinking` param for the same reason.
   get visionModel(): string {
-    return process.env.ROOFSCOUT_VISION_MODEL ?? "claude-opus-4-8";
+    return process.env.ROOFSCOUT_VISION_MODEL ?? "claude-haiku-4-5";
   },
   get supportModel(): string {
     return process.env.ROOFSCOUT_SUPPORT_MODEL ?? "claude-haiku-4-5";
