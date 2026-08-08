@@ -84,7 +84,13 @@ export async function gradeRoof(imagePng: Buffer): Promise<GradeOutcome> {
       // task, and thinking tokens were a meaningful chunk of the per-roof
       // cost on a scan that runs this once per building in the area.
       output_config: { format: { type: "json_schema", schema: GRADE_SCHEMA } },
-      system: SYSTEM_PROMPT,
+      // The grading rubric is identical on every single call — one per
+      // building in a scan, which can be hundreds in a row within minutes
+      // of each other. cache_control lets Anthropic reuse that ~400-token
+      // block at a fraction of its normal input cost on every call after
+      // the first, instead of paying full price to resend the same rubric
+      // over and over within one scan.
+      system: [{ type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }],
       messages: [
         {
           role: "user",
