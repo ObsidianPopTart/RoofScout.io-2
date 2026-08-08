@@ -153,9 +153,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       )}
       <nav>
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4">
-          <Link href="/" className="flex shrink-0 items-center gap-2 text-lg font-semibold">
-            <Logo />
-            <span className="hidden sm:inline">RoofScout.io</span>
+          <Link href="/" className="flex shrink-0 items-center">
+            <Logo height={32} />
           </Link>
           <div className="flex items-center gap-2 text-sm sm:gap-5">
             <Link href="/blog" className="whitespace-nowrap text-[var(--rs-paper)]/70 hover:text-[var(--rs-paper)]">

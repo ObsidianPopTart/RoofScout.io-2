@@ -52,9 +52,8 @@ export default async function LoginPage({
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-[var(--rs-ink)] px-4 py-16 text-[var(--rs-paper)]">
-      <Link href="/" className="mb-8 flex items-center gap-2 text-lg font-semibold">
-        <Logo />
-        RoofScout.io
+      <Link href="/" className="mb-8 flex items-center">
+        <Logo height={36} />
       </Link>
       <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-[var(--rs-ink-2)] p-6">
         <h1 className="text-2xl font-black tracking-tight">{t.login.title}</h1>
