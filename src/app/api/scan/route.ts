@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/db";
 import { runMockScan, createProcessingScan } from "@/lib/store";
 import { isLiveMode } from "@/lib/live/config";
-import { checkAndIncrementScanUsage, ScanLimitExceededError } from "@/lib/usage";
-import { isScanAreaTooLarge, MAX_SCAN_AREA_KM2 } from "@/lib/scanBounds";
+import { checkAndIncrementScanUsage, normalizePlanTier, ScanLimitExceededError } from "@/lib/usage";
+import { isScanAreaTooLarge, maxScanAreaKm2 } from "@/lib/scanBounds";
 import type { ScanBounds } from "@/lib/types";
 
 // A live scan chains an OSM building lookup, then Solar API + image fetch +
@@ -47,11 +48,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
 
-  if (isScanAreaTooLarge(bounds)) {
+  const org = await prisma.organization.findUniqueOrThrow({ where: { id: orgId } });
+  const planTier = normalizePlanTier(org.planTier);
+  const maxAreaKm2 = maxScanAreaKm2(planTier);
+
+  if (isScanAreaTooLarge(bounds, planTier)) {
     return NextResponse.json(
       {
         error: "scan_area_too_large",
-        message: `That area is too large for one scan (max ${MAX_SCAN_AREA_KM2} km²). Zoom in to a smaller neighborhood and try again.`,
+        message:
+          planTier === "free"
+            ? `Free plan scans are capped at ${maxAreaKm2} km² — zoom in to a smaller block, or upgrade for full-neighborhood scans.`
+            : `That area is too large for one scan (max ${maxAreaKm2} km²). Zoom in to a smaller neighborhood and try again.`,
       },
       { status: 400 }
     );

@@ -266,7 +266,9 @@ async function main() {
       continue;
     }
     const bounds = boundsAroundPoint(centroid.lat, centroid.lng);
-    if (isScanAreaTooLarge(bounds)) {
+    // Admin/operator tooling, not tied to any customer org's plan — use the
+    // largest (apex) cap rather than the free-tier one.
+    if (isScanAreaTooLarge(bounds, "apex")) {
       console.log(`Computed bounds exceed the ${MAX_SCAN_AREA_KM2} km² scan cap — skipping (this shouldn't normally happen).`);
       continue;
     }

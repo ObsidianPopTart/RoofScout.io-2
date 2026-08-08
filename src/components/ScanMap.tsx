@@ -17,7 +17,7 @@ import type { StormAlert } from "@/lib/weather/nws";
 import type { StormReport } from "@/lib/weather/spc";
 import { urgencyRank } from "@/lib/leadFilter";
 import { CONDITION_COLORS } from "@/components/ConditionBadge";
-import { boundsAreaKm2, isScanAreaTooLarge, MAX_SCAN_AREA_KM2 } from "@/lib/scanBounds";
+import { boundsAreaKm2, isScanAreaTooLarge, maxScanAreaKm2 } from "@/lib/scanBounds";
 import { dictionaries, type Locale } from "@/lib/i18n/dictionaries";
 import { tf } from "@/lib/i18n/format";
 import type { PlanTier } from "@/lib/usage";
@@ -465,8 +465,8 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
 
     const b = map.getBounds();
     const bounds = { north: b.getNorth(), south: b.getSouth(), east: b.getEast(), west: b.getWest() };
-    if (isScanAreaTooLarge(bounds)) {
-      setError(tf(t.tooLargeError, { max: MAX_SCAN_AREA_KM2 }));
+    if (isScanAreaTooLarge(bounds, planTier)) {
+      setError(tf(t.tooLargeError, { max: maxScanAreaKm2(planTier) }));
       return;
     }
 
@@ -509,7 +509,7 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
     ? [...result.leads].sort((a, b) => urgencyRank(a.condition) - urgencyRank(b.condition))
     : [];
 
-  const areaTooLarge = areaKm2 !== null && areaKm2 > MAX_SCAN_AREA_KM2;
+  const areaTooLarge = areaKm2 !== null && areaKm2 > maxScanAreaKm2(planTier);
 
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_330px]">
@@ -715,7 +715,7 @@ export default function ScanMap({ locale = "en", planTier = "free" }: { locale?:
         </button>
         <p className={`text-xs ${areaTooLarge ? "font-medium text-red-600 dark:text-red-400" : "text-slate-500 dark:text-slate-400"}`}>
           {areaKm2 !== null ? tf(t.visibleArea, { area: areaKm2.toFixed(1) }) : "…"} ·{" "}
-          {tf(t.largerAreasTakeLonger, { max: MAX_SCAN_AREA_KM2 })}
+          {tf(t.largerAreasTakeLonger, { max: maxScanAreaKm2(planTier) })}
         </p>
 
         {error && (
