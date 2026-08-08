@@ -75,10 +75,10 @@ export default async function MarketingHomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/60 to-[var(--rs-ink)]" />
       </div>
 
-      <nav className="relative z-10">
-        <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4">
+      <nav className="relative z-10 border-b border-white/[0.06] bg-gradient-to-b from-black/30 to-transparent">
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:py-4">
           <Link href="/" className="flex shrink-0 items-center">
-            <Logo height={32} />
+            <Logo responsiveClassName="h-14 sm:h-20 lg:h-24" />
           </Link>
           <div className="flex items-center gap-2 text-sm sm:gap-5">
             <Link href="/blog" className="whitespace-nowrap text-[var(--rs-paper)]/70 hover:text-[var(--rs-paper)]">
@@ -276,6 +276,8 @@ export default async function MarketingHomePage() {
       </section>
 
       <footer className="border-t border-white/10 bg-[var(--rs-ink)] py-6 text-center font-mono text-xs text-[var(--rs-paper)]/40">
+        {/* eslint-disable-next-line @next/next/no-img-element -- fixed brand asset, no responsive/optimization needs */}
+        <img src="/images/roofscout-mark.png" alt="" aria-hidden className="mx-auto mb-2 h-5 w-auto opacity-70" />
         RoofScout.io ·{" "}
         <Link href="/blog" className="underline hover:text-[var(--rs-paper)]/70">
           Blog
